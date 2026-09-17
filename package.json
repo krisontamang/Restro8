@@ -10,7 +10,9 @@
     "preview": "vite preview",
     "test:supabase": "node scripts/test-supabase.mjs",
     "test:reporting": "node --experimental-strip-types --test scripts/test-reporting.mjs",
-    "test:workflows": "node --experimental-strip-types --test scripts/test-reporting.mjs scripts/test-order-stock.mjs scripts/test-workflows.mjs"
+    "test:workflows": "node --experimental-strip-types --test scripts/test-reporting.mjs scripts/test-order-stock.mjs scripts/test-workflows.mjs",
+    "test:security": "node --experimental-strip-types --test scripts/test-security.mjs",
+    "test": "npm run test:workflows && npm run test:security"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",

@@ -59,6 +59,8 @@ export const Header: React.FC = () => {
   ];
 
   const roleIcons: Record<UserRole, React.ReactNode> = {
+    SuperAdmin: <ShieldCheck size={16} />,
+    admin: <ShieldCheck size={16} />,
     manager: <ShieldCheck size={16} />,
     waiter: <UserCheck size={16} />,
     chef: <ChefHat size={16} />,

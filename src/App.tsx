@@ -20,6 +20,9 @@ const TablesListView = lazy(() => import('./components/floor/TablesListView').th
 import { CommandPalette } from './components/layout/CommandPalette';
 import { RestaurantSwitcherModal } from './components/layout/RestaurantSwitcherModal';
 import { PublicMenuView } from './components/menu/PublicMenuView';
+import { PublicMenuProvider } from './context/PublicMenuContext';
+import { canAccessTab } from './lib/authorization';
+import { AccessRestrictedView } from './components/ui/AccessRestrictedView';
 
 // Code-split secondary management, finance & settings views
 const ReservationsView = lazy(() => import('./components/reservations/ReservationsView').then(m => ({ default: m.ReservationsView })));
@@ -108,7 +111,10 @@ const MainApp: React.FC = () => {
   const {
     activeTab,
     setActiveTab,
+    userRole,
   } = useRestaurant();
+
+  const isTabAuthorized = canAccessTab(userRole, activeTab);
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
@@ -238,7 +244,15 @@ const MainApp: React.FC = () => {
             onReset={() => setActiveTab('dashboard')}
           >
             <Suspense fallback={<ViewFallback />}>
-              {activeTab === 'dashboard' && <PremiumDashboard />}
+              {!isTabAuthorized ? (
+                <AccessRestrictedView
+                  role={userRole}
+                  tab={activeTab}
+                  onFallback={() => setActiveTab('dashboard')}
+                />
+              ) : (
+                <>
+                  {activeTab === 'dashboard' && <PremiumDashboard />}
               {activeTab === 'orders' && <OrdersHubView />}
               {activeTab === 'floor' && <FloorPlanView />}
               {activeTab === 'pos' && <POSView />}
@@ -302,6 +316,8 @@ const MainApp: React.FC = () => {
               {activeTab === 'reservations' && <ReservationsView />}
               {activeTab === 'analytics' && <AnalyticsView />}
               {activeTab === 'design-system' && <DesignSystemShowcase />}
+                </>
+              )}
             </Suspense>
           </ErrorBoundary>
         </main>
@@ -361,9 +377,13 @@ const MainApp: React.FC = () => {
 
 export default function App() {
   const isPublicMenu = window.location.pathname === '/menu';
-  return (
+  return isPublicMenu ? (
+    <PublicMenuProvider>
+      <PublicMenuView />
+    </PublicMenuProvider>
+  ) : (
     <RestaurantProvider>
-      {isPublicMenu ? <PublicMenuView /> : <MainApp />}
+      <MainApp />
     </RestaurantProvider>
   );
 }

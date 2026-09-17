@@ -178,7 +178,7 @@ export interface Reservation {
   assignedTableId?: string;
 }
 
-export type UserRole = 'manager' | 'waiter' | 'chef' | 'cashier';
+export type UserRole = 'SuperAdmin' | 'admin' | 'manager' | 'waiter' | 'chef' | 'cashier';
 
 export interface Customer {
   id: string;

@@ -3,6 +3,7 @@ import { Bell, ChevronDown, ChevronsLeft, ChevronsRight, Moon, Search, Sun, Volu
 import { useRestaurant, type NavigationTab } from '../../context/RestaurantContext';
 import { BrandLogo } from '../brand/BrandLogo';
 import { serviceNavigation, workspaceGroups, type NavigationEntry } from './workspaceNavigation';
+import { canAccessTab } from '../../lib/authorization';
 
 interface SidebarProps { collapsed: boolean; onToggleCollapse: () => void; mobileOpen?: boolean; onMobileClose?: () => void }
 export function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose }: SidebarProps) {
@@ -48,12 +49,17 @@ export function Sidebar({ collapsed, onToggleCollapse, mobileOpen, onMobileClose
     <label className="workspace-nav-search"><Search size={16} aria-hidden="true" /><span className="sr-only">Find a workspace page</span><input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Find a page" /></label>
     <nav className="workspace-nav-scroll" aria-label="Restaurant pages">
       <p className="workspace-nav-label">Service</p>
-      {serviceNavigation.filter(item => item.label.toLowerCase().includes(needle)).map(entry)}
+      {serviceNavigation
+        .filter(item => canAccessTab(userRole, item.tab))
+        .filter(item => item.label.toLowerCase().includes(needle))
+        .map(entry)}
       <p className="workspace-nav-label">Manage</p>
       {workspaceGroups.map(group => {
-        const matched = group.items.filter(item => !needle || (group.label + ' ' + item.label).toLowerCase().includes(needle));
+        const authorizedItems = group.items.filter(item => canAccessTab(userRole, item.tab));
+        if (!authorizedItems.length) return null;
+        const matched = authorizedItems.filter(item => !needle || (group.label + ' ' + item.label).toLowerCase().includes(needle));
         if (!matched.length) return null;
-        const active = group.items.some(item => item.tab === activeTab) || group.id === 'finance' && activeTab === 'finance-trialbalance';
+        const active = authorizedItems.some(item => item.tab === activeTab) || group.id === 'finance' && activeTab === 'finance-trialbalance';
         const open = Boolean(needle) || expanded === group.id || expanded === null && active;
         const Icon = group.icon;
         return <section key={group.id} className="workspace-nav-group">
