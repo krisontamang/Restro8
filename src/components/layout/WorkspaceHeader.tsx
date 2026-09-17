@@ -1,10 +1,23 @@
-import { Bell, ChevronDown, Menu, Moon, Search, Sun } from 'lucide-react';
+import { Bell, ChevronDown, Globe, LogOut, Menu, Moon, Search, Sun } from 'lucide-react';
 import { useRestaurant } from '../../context/RestaurantContext';
 import { BrandLogo } from '../brand/BrandLogo';
 import type { UserRole } from '../../types/restaurant';
 
-interface Props { onMenu: () => void; onSearch: () => void; onRestaurant: () => void }
-export function WorkspaceHeader({ onMenu, onSearch, onRestaurant }: Props) {
+interface Props {
+  onMenu: () => void;
+  onSearch: () => void;
+  onRestaurant: () => void;
+  onNavigateLanding?: () => void;
+  onNavigateLogin?: () => void;
+}
+
+export function WorkspaceHeader({
+  onMenu,
+  onSearch,
+  onRestaurant,
+  onNavigateLanding,
+  onNavigateLogin,
+}: Props) {
   const { settings, darkMode, setDarkMode, setActiveTab, userRole, setUserRole } = useRestaurant();
   return <header className="workspace-header">
     <div className="workspace-header-left">
@@ -15,9 +28,25 @@ export function WorkspaceHeader({ onMenu, onSearch, onRestaurant }: Props) {
     <div className="workspace-header-right">
       <span className="local-status" title="Records are saved in this browser. Cloud sync is not configured."><i /> Local workspace</span>
       <button className="workspace-search" onClick={onSearch} aria-label="Search commands"><Search size={18} /><span>Search anything…</span><kbd>Ctrl K</kbd></button>
+      {onNavigateLanding && (
+        <button className="icon-action" onClick={onNavigateLanding} title="View RESTRO8 Landing Page" aria-label="View Landing Page"><Globe size={18} /></button>
+      )}
       <button className="icon-action" onClick={() => setDarkMode(!darkMode)} aria-label={darkMode ? 'Use light theme' : 'Use dark theme'}>{darkMode ? <Sun size={19} /> : <Moon size={19} />}</button>
       <button className="icon-action header-notifications" onClick={() => setActiveTab('notifications')} aria-label="Notifications"><Bell size={19} /></button>
-      <label className="workspace-role"><span className="role-avatar">{userRole.slice(0, 1).toUpperCase()}</span><select aria-label="Workspace role" value={userRole} onChange={e => setUserRole(e.target.value as UserRole)}><option value="manager">Manager</option><option value="waiter">Waiter</option><option value="chef">Chef</option><option value="cashier">Cashier</option></select></label>
+      <label className="workspace-role">
+        <span className="role-avatar">{userRole.slice(0, 1).toUpperCase()}</span>
+        <select aria-label="Workspace role" value={userRole} onChange={e => setUserRole(e.target.value as UserRole)}>
+          <option value="SuperAdmin">Owner</option>
+          <option value="manager">Manager</option>
+          <option value="waiter">Waiter</option>
+          <option value="chef">Chef</option>
+          <option value="cashier">Cashier</option>
+        </select>
+      </label>
+      {onNavigateLogin && (
+        <button className="icon-action" onClick={onNavigateLogin} title="Sign out to Login Dashboard" aria-label="Sign out"><LogOut size={18} /></button>
+      )}
     </div>
   </header>;
 }
+

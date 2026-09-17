@@ -23,6 +23,12 @@ import { PublicMenuView } from './components/menu/PublicMenuView';
 import { PublicMenuProvider } from './context/PublicMenuContext';
 import { canAccessTab } from './lib/authorization';
 import { AccessRestrictedView } from './components/ui/AccessRestrictedView';
+import type { UserRole } from './types/restaurant';
+
+// Public Landing and Auth Dashboard views
+const LandingPageView = lazy(() => import('./components/landing/LandingPageView').then(m => ({ default: m.LandingPageView })));
+const AuthDashboardView = lazy(() => import('./components/auth/AuthDashboardView').then(m => ({ default: m.AuthDashboardView })));
+
 
 // Code-split secondary management, finance & settings views
 const ReservationsView = lazy(() => import('./components/reservations/ReservationsView').then(m => ({ default: m.ReservationsView })));
@@ -107,7 +113,12 @@ const ViewFallback: React.FC = () => (
   </div>
 );
 
-const MainApp: React.FC = () => {
+interface MainAppProps {
+  onNavigateLanding?: () => void;
+  onNavigateLogin?: () => void;
+}
+
+const MainApp: React.FC<MainAppProps> = ({ onNavigateLanding, onNavigateLogin }) => {
   const {
     activeTab,
     setActiveTab,
@@ -234,6 +245,8 @@ const MainApp: React.FC = () => {
           onMenu={() => setMobileSidebarOpen(prev => !prev)}
           onSearch={() => setIsCommandPaletteOpen(true)}
           onRestaurant={() => setIsRestaurantSwitcherOpen(true)}
+          onNavigateLanding={onNavigateLanding}
+          onNavigateLogin={onNavigateLogin}
         />
 
         {/* Dynamic Main View with Production Error Boundary & Lazy Loading */}
@@ -375,15 +388,102 @@ const MainApp: React.FC = () => {
   );
 };
 
+export type RootView = 'landing' | 'login' | 'workspace' | 'menu';
+
+const getInitialView = (): RootView => {
+  if (typeof window === 'undefined') return 'landing';
+  const path = window.location.pathname.toLowerCase();
+  if (path === '/menu' || path.startsWith('/menu/')) return 'menu';
+  if (path === '/login' || path === '/auth' || path === '/signin') return 'login';
+  if (path === '/app' || path === '/workspace' || path === '/pos' || path === '/dashboard') return 'workspace';
+
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('view') === 'app' || params.get('view') === 'workspace') return 'workspace';
+  if (params.get('view') === 'login') return 'login';
+  if (params.get('view') === 'menu') return 'menu';
+  if (params.get('view') === 'landing') return 'landing';
+
+  return 'landing';
+};
+
 export default function App() {
-  const isPublicMenu = window.location.pathname === '/menu';
-  return isPublicMenu ? (
-    <PublicMenuProvider>
-      <PublicMenuView />
-    </PublicMenuProvider>
-  ) : (
+  const [currentView, setCurrentView] = useState<RootView>(getInitialView);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentView(getInitialView());
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
+  const navigateTo = (view: RootView, path?: string) => {
+    setCurrentView(view);
+    const targetPath = path || (view === 'landing' ? '/' : view === 'workspace' ? '/app' : `/${view}`);
+    if (window.location.pathname !== targetPath) {
+      window.history.pushState({ view }, '', targetPath);
+    }
+  };
+
+  const handleLaunchWorkspace = (role?: UserRole, restaurantName?: string) => {
+    if (role) {
+      try {
+        localStorage.setItem('restrox_np_role_v2', role);
+      } catch {
+        // Safe fallback
+      }
+    }
+    if (restaurantName) {
+      try {
+        const existing = localStorage.getItem('restrox_np_settings_v2');
+        const parsed = existing ? JSON.parse(existing) : {};
+        localStorage.setItem('restrox_np_settings_v2', JSON.stringify({ ...parsed, name: restaurantName }));
+      } catch {
+        // Safe fallback
+      }
+    }
+    navigateTo('workspace', '/app');
+  };
+
+  if (currentView === 'menu') {
+    return (
+      <PublicMenuProvider>
+        <PublicMenuView />
+      </PublicMenuProvider>
+    );
+  }
+
+  if (currentView === 'login') {
+    return (
+      <Suspense fallback={<ViewFallback />}>
+        <AuthDashboardView
+          onLoginSuccess={(role, restaurantName) => handleLaunchWorkspace(role, restaurantName)}
+          onNavigateLanding={() => navigateTo('landing', '/')}
+          onNavigateMenu={() => navigateTo('menu', '/menu')}
+        />
+      </Suspense>
+    );
+  }
+
+  if (currentView === 'landing') {
+    return (
+      <Suspense fallback={<ViewFallback />}>
+        <LandingPageView
+          onLaunchWorkspace={(role) => handleLaunchWorkspace(role)}
+          onNavigateLogin={() => navigateTo('login', '/login')}
+          onNavigateMenu={() => navigateTo('menu', '/menu')}
+        />
+      </Suspense>
+    );
+  }
+
+  return (
     <RestaurantProvider>
-      <MainApp />
+      <MainApp
+        onNavigateLanding={() => navigateTo('landing', '/')}
+        onNavigateLogin={() => navigateTo('login', '/login')}
+      />
     </RestaurantProvider>
   );
 }
+
