@@ -7,15 +7,33 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Dependencies & Builds
 node_modules
 dist
 dist-ssr
 *.local
+
+# Environment & Secrets
 .env
 .env.*
+.env*.local
 !.env.example
+*.env
+*.pem
+*.key
+*.cert
+*.crt
+*.pfx
+*.p12
+secrets*
+credentials*
 
-# Editor directories and files
+# Cloud & Deployment tool caches
+.vercel
+.vercel/
+supabase/.temp/
+
+# Editor & OS files
 .vscode/*
 !.vscode/extensions.json
 .idea
@@ -26,4 +44,10 @@ dist-ssr
 *.sln
 *.sw?
 lint-review.txt
-supabase/.temp/
+
+# Local databases & dumps
+*.sqlite
+*.sqlite3
+*.db
+*.dump
+*.sql.bak
