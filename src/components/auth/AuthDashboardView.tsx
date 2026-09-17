@@ -2,19 +2,25 @@ import React, { useState } from 'react';
 import {
   ArrowLeft,
   ArrowRight,
+  Check,
   CheckCircle2,
+  ChevronRight,
   Eye,
   EyeOff,
   KeyRound,
   Lock,
   Mail,
+  MapPin,
   Phone,
+  Printer,
   QrCode,
   Receipt,
   RotateCw,
+  Shield,
   ShieldCheck,
   Sparkles,
   Store,
+  User,
   UtensilsCrossed,
   Zap,
 } from 'lucide-react';
@@ -250,6 +256,7 @@ export const AuthDashboardView: React.FC<AuthDashboardViewProps> = ({
             }}
           >
             <span
+              className="r8-pulse-dot"
               style={{
                 width: '7px',
                 height: '7px',
@@ -287,7 +294,7 @@ export const AuthDashboardView: React.FC<AuthDashboardViewProps> = ({
             overflow: 'hidden',
           }}
         >
-          {/* Subtle Ambient Radial Glows */}
+          {/* Ambient Radial Lighting */}
           <div
             style={{
               position: 'absolute',
@@ -340,7 +347,7 @@ export const AuthDashboardView: React.FC<AuthDashboardViewProps> = ({
                 fontWeight: 900,
                 lineHeight: 1.18,
                 letterSpacing: '-0.025em',
-                marginBottom: '20px',
+                marginBottom: '18px',
                 color: '#FFFFFF',
               }}
             >
@@ -358,136 +365,94 @@ export const AuthDashboardView: React.FC<AuthDashboardViewProps> = ({
 
             <p
               style={{
-                fontSize: '1.05rem',
+                fontSize: '1.02rem',
                 color: '#94A3B8',
                 lineHeight: 1.6,
                 maxWidth: '520px',
-                marginBottom: '36px',
+                marginBottom: '28px',
               }}
             >
               Ultra-fast POS, live kitchen display (KDS), Table QR ordering, IRD 13% VAT tax billing, and offline-first peace of mind.
             </p>
 
-            {/* 4 Feature Cards */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '16px', maxWidth: '540px' }}>
-              <div
-                style={{
-                  padding: '16px',
-                  borderRadius: '12px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.07)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                  <div
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '8px',
-                      backgroundColor: 'rgba(15, 143, 111, 0.15)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#19B889',
-                    }}
-                  >
-                    <Zap size={18} />
-                  </div>
-                  <strong style={{ fontSize: '0.9rem', color: '#F8FAFC' }}>Offline Resilient</strong>
+            {/* Interactive Live Operational Card (Inspired by RestroLinkView) */}
+            <div
+              className="r8-float"
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.03)',
+                border: '1px solid rgba(255, 255, 255, 0.09)',
+                borderRadius: '16px',
+                padding: '20px',
+                maxWidth: '480px',
+                marginBottom: '28px',
+                boxShadow: '0 12px 30px rgba(0, 0, 0, 0.4)',
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px dashed rgba(255, 255, 255, 0.1)', paddingBottom: '10px', marginBottom: '12px' }}>
+                <div>
+                  <div style={{ fontSize: '0.86rem', fontWeight: 800, color: '#FFFFFF' }}>Himalayan Thakali Kitchen</div>
+                  <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>Terminal #01 · Table #04 · Dine-In</div>
                 </div>
-                <p style={{ margin: 0, fontSize: '0.8rem', color: '#94A3B8', lineHeight: 1.45 }}>
-                  Punch orders and print KOTs even when local internet drops out completely.
-                </p>
+                <span style={{ fontSize: '0.74rem', padding: '3px 8px', borderRadius: '6px', backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#34D399', fontWeight: 700 }}>
+                  Offline Engine Active
+                </span>
               </div>
 
-              <div
-                style={{
-                  padding: '16px',
-                  borderRadius: '12px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.07)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                  <div
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '8px',
-                      backgroundColor: 'rgba(242, 184, 75, 0.15)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#F2B84B',
-                    }}
-                  >
-                    <Receipt size={18} />
-                  </div>
-                  <strong style={{ fontSize: '0.9rem', color: '#F8FAFC' }}>IRD 13% VAT Ready</strong>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '0.8rem', color: '#CBD5E1', marginBottom: '12px' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>1× Special Thakali Khana Set</span>
+                  <span style={{ fontWeight: 700, color: '#FFF' }}>रू 480</span>
                 </div>
-                <p style={{ margin: 0, fontSize: '0.8rem', color: '#94A3B8', lineHeight: 1.45 }}>
-                  Tax invoices, 10% Service Charge, Day Book ledgers, and audit-proof sales logs.
-                </p>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>2× Himalayan Herbal Chiya</span>
+                  <span style={{ fontWeight: 700, color: '#FFF' }}>रू 180</span>
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                  <span>1× Chicken Sekuwa Plate</span>
+                  <span style={{ fontWeight: 700, color: '#FFF' }}>रू 360</span>
+                </div>
               </div>
 
-              <div
-                style={{
-                  padding: '16px',
-                  borderRadius: '12px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.07)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                  <div
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '8px',
-                      backgroundColor: 'rgba(56, 189, 248, 0.15)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#38BDF8',
-                    }}
-                  >
-                    <UtensilsCrossed size={18} />
-                  </div>
-                  <strong style={{ fontSize: '0.9rem', color: '#F8FAFC' }}>Live KDS Routing</strong>
+              <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div>
+                  <small style={{ fontSize: '0.7rem', color: '#94A3B8' }}>Total with 10% SC & 13% VAT</small>
+                  <div style={{ fontSize: '1.1rem', fontWeight: 900, color: '#F2B84B' }}>रू 1,202.00</div>
                 </div>
-                <p style={{ margin: 0, fontSize: '0.8rem', color: '#94A3B8', lineHeight: 1.45 }}>
-                  Split tickets between food KOT and bar BOT with station color codes and timers.
-                </p>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', padding: '4px 10px', borderRadius: '8px', backgroundColor: 'rgba(242, 184, 75, 0.12)', color: '#F2B84B', fontSize: '0.75rem', fontWeight: 700 }}>
+                  <QrCode size={14} />
+                  <span>Fonepay Settled</span>
+                </div>
+              </div>
+            </div>
+
+            {/* 4 Feature Badges */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '12px', maxWidth: '480px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#CBD5E1' }}>
+                <div style={{ width: '24px', height: '24px', borderRadius: '6px', backgroundColor: 'rgba(16, 185, 129, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#10B981' }}>
+                  <Zap size={14} />
+                </div>
+                <span>Zero Downtime Offline</span>
               </div>
 
-              <div
-                style={{
-                  padding: '16px',
-                  borderRadius: '12px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                  border: '1px solid rgba(255, 255, 255, 0.07)',
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-                  <div
-                    style={{
-                      width: '32px',
-                      height: '32px',
-                      borderRadius: '8px',
-                      backgroundColor: 'rgba(168, 85, 247, 0.15)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      color: '#C084FC',
-                    }}
-                  >
-                    <QrCode size={18} />
-                  </div>
-                  <strong style={{ fontSize: '0.9rem', color: '#F8FAFC' }}>Fonepay & QR Pay</strong>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#CBD5E1' }}>
+                <div style={{ width: '24px', height: '24px', borderRadius: '6px', backgroundColor: 'rgba(242, 184, 75, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#F2B84B' }}>
+                  <Receipt size={14} />
                 </div>
-                <p style={{ margin: 0, fontSize: '0.8rem', color: '#94A3B8', lineHeight: 1.45 }}>
-                  Dynamic counter QR & table bill settlements with Fonepay and NepalPay.
-                </p>
+                <span>Nepal IRD 13% VAT</span>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#CBD5E1' }}>
+                <div style={{ width: '24px', height: '24px', borderRadius: '6px', backgroundColor: 'rgba(56, 189, 248, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#38BDF8' }}>
+                  <UtensilsCrossed size={14} />
+                </div>
+                <span>Kitchen KDS Routing</span>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.82rem', color: '#CBD5E1' }}>
+                <div style={{ width: '24px', height: '24px', borderRadius: '6px', backgroundColor: 'rgba(168, 85, 247, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#C084FC' }}>
+                  <QrCode size={14} />
+                </div>
+                <span>Table QR Ordering</span>
               </div>
             </div>
           </div>
@@ -497,8 +462,8 @@ export const AuthDashboardView: React.FC<AuthDashboardViewProps> = ({
             style={{
               position: 'relative',
               zIndex: 1,
-              marginTop: '40px',
-              paddingTop: '24px',
+              marginTop: '36px',
+              paddingTop: '20px',
               borderTop: '1px solid rgba(255, 255, 255, 0.08)',
               display: 'flex',
               alignItems: 'center',
@@ -506,10 +471,10 @@ export const AuthDashboardView: React.FC<AuthDashboardViewProps> = ({
             }}
           >
             <div>
-              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#E2E8F0', marginBottom: '4px' }}>
+              <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#E2E8F0', marginBottom: '2px' }}>
                 Trusted by 1,200+ food businesses across Nepal
               </div>
-              <div style={{ fontSize: '0.74rem', color: '#64748B' }}>
+              <div style={{ fontSize: '0.72rem', color: '#64748B' }}>
                 Kathmandu · Pokhara · Chitwan · Biratnagar · Butwal · Dharan
               </div>
             </div>
@@ -599,7 +564,7 @@ export const AuthDashboardView: React.FC<AuthDashboardViewProps> = ({
                 boxShadow: '0 20px 40px -15px rgba(0, 0, 0, 0.6)',
               }}
             >
-              {/* Top Mode Segmented Switcher */}
+              {/* Top Mode Segmented Switcher (Matching RestroLinkView Pill Design) */}
               <div
                 style={{
                   display: 'flex',
@@ -607,7 +572,7 @@ export const AuthDashboardView: React.FC<AuthDashboardViewProps> = ({
                   padding: '4px',
                   borderRadius: '10px',
                   marginBottom: '26px',
-                  border: '1px solid rgba(255, 255, 255, 0.06)',
+                  border: '1px solid rgba(255, 255, 255, 0.07)',
                 }}
               >
                 <button
@@ -624,9 +589,10 @@ export const AuthDashboardView: React.FC<AuthDashboardViewProps> = ({
                     fontSize: '0.85rem',
                     fontWeight: 700,
                     cursor: 'pointer',
-                    transition: 'all 0.15s',
+                    transition: 'all 0.15s ease',
                     backgroundColor: authMode === 'signin' ? '#0F8F6F' : 'transparent',
                     color: authMode === 'signin' ? '#FFFFFF' : '#94A3B8',
+                    boxShadow: authMode === 'signin' ? '0 2px 8px rgba(15, 143, 111, 0.35)' : 'none',
                   }}
                 >
                   Sign In
@@ -645,9 +611,10 @@ export const AuthDashboardView: React.FC<AuthDashboardViewProps> = ({
                     fontSize: '0.85rem',
                     fontWeight: 700,
                     cursor: 'pointer',
-                    transition: 'all 0.15s',
+                    transition: 'all 0.15s ease',
                     backgroundColor: authMode === 'register' ? '#0F8F6F' : 'transparent',
                     color: authMode === 'register' ? '#FFFFFF' : '#94A3B8',
+                    boxShadow: authMode === 'register' ? '0 2px 8px rgba(15, 143, 111, 0.35)' : 'none',
                   }}
                 >
                   Create Restaurant

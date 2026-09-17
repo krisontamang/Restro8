@@ -1855,3 +1855,58 @@ input, select, textarea {
     padding: 10px 14px !important;
   }
 }
+
+/* ==========================================================================
+   RESTRO8 MODERN MOTION & LANDING / AUTH SYSTEM
+   ========================================================================== */
+@keyframes r8-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes r8-pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+@keyframes r8-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+@keyframes r8-shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.r8-spin {
+  animation: r8-spin 0.85s linear infinite;
+}
+
+.r8-pulse-dot {
+  animation: r8-pulse-dot 2s ease-in-out infinite;
+}
+
+.r8-float {
+  animation: r8-float 4s ease-in-out infinite;
+}
+
+/* Auth and Landing Responsive Rules */
+@media (max-width: 960px) {
+  .auth-brand-showcase {
+    display: none !important;
+  }
+  .landing-hero-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .landing-showcase-container {
+    padding: 16px 12px !important;
+  }
+  .landing-pillars-grid {
+    grid-template-columns: 1fr !important;
+  }
+  .landing-pricing-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
