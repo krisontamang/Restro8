@@ -12,7 +12,8 @@
     "test:reporting": "node --experimental-strip-types --test scripts/test-reporting.mjs",
     "test:workflows": "node --experimental-strip-types --test scripts/test-reporting.mjs scripts/test-order-stock.mjs scripts/test-workflows.mjs",
     "test:security": "node --experimental-strip-types --test scripts/test-security.mjs",
-    "test": "npm run test:workflows && npm run test:security"
+    "test": "npm run test:workflows && npm run test:security && npm run test:accounts",
+    "test:accounts": "node --experimental-strip-types --test scripts/test-accounts.mjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.116.0",

@@ -7,13 +7,15 @@ if (!url || !key || key.startsWith('sb_secret_')) {
   process.exitCode = 1;
 } else {
   try {
-    const response = await fetch(`${url.replace(/\/$/, '')}/rest/v1/`, {
-      headers: { apikey: key, Accept: 'application/openapi+json' },
+    // The OpenAPI root now requires a secret key. Probe an explicitly public table instead.
+    const response = await fetch(`${url.replace(/\/$/, '')}/rest/v1/r8_billing_plans?select=id&limit=0`, {
+      headers: { apikey: key },
       signal: AbortSignal.timeout(8000),
     });
     if (!response.ok) throw new Error(`Data API returned HTTP ${response.status}`);
-    const schema = await response.json();
-    console.log(`PASS: Data API reachable; ${Object.keys(schema.paths ?? {}).filter(path => path !== '/').length} exposed paths.`);
+    const data = await response.json();
+    if (!Array.isArray(data)) throw new Error('Unexpected Data API response');
+    console.log('PASS: Public plans Data API reachable with the publishable key.');
     console.log('This does not verify operational cloud sync, row policies, or multi-device writes.');
   } catch (error) {
     console.error(`FAIL: ${error.message}`);

@@ -1,4 +1,5 @@
 import test from 'node:test';
+import { isSafePublicKey as isSafeKey } from '../src/lib/accountRules.ts';
 import assert from 'node:assert/strict';
 
 import { canAccessTab, canPerformAction, normalizeRole } from '../src/lib/authorization.ts';
@@ -97,20 +98,6 @@ test('Guest order validation boundaries', () => {
 });
 
 test('Service role secret detection rejects privileged tokens', () => {
-  function isSafeKey(key) {
-    if (!key) return false;
-    if (key.startsWith('sb_secret_') || key.startsWith('service_role')) return false;
-    if (key.split('.').length === 3) {
-      try {
-        const payload = JSON.parse(Buffer.from(key.split('.')[1], 'base64').toString());
-        if (payload?.role === 'service_role') return false;
-      } catch {
-        // invalid base64
-      }
-    }
-    return true;
-  }
-
   assert.equal(isSafeKey('sb_secret_abcdef123456'), false, 'sb_secret_ prefix must be blocked');
   assert.equal(isSafeKey('service_role_key_here'), false, 'service_role prefix must be blocked');
 
