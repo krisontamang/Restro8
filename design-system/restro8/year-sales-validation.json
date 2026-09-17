@@ -1,0 +1,102 @@
+{
+  "synthetic": true,
+  "description": "Automated fixture data only; never inserted into restaurant storage.",
+  "period": "2025-10-01 through 2026-09-30 Kathmandu",
+  "generatedOrders": 1200,
+  "cancelled": 51,
+  "summary": {
+    "orderCount": 1149,
+    "grossBilled": 390152.4,
+    "collected": 317328.6,
+    "outstanding": 72823.8,
+    "discount": 4520,
+    "tax": 44132.4,
+    "averageBill": 339.56
+  },
+  "months": [
+    {
+      "key": "2025-10",
+      "label": "Oct",
+      "orders": 95,
+      "billed": 34655.6,
+      "collected": 28097.2
+    },
+    {
+      "key": "2025-11",
+      "label": "Nov",
+      "orders": 93,
+      "billed": 31499.4,
+      "collected": 26136.2
+    },
+    {
+      "key": "2025-12",
+      "label": "Dec",
+      "orders": 95,
+      "billed": 31928.8,
+      "collected": 26568.2
+    },
+    {
+      "key": "2026-01",
+      "label": "Jan",
+      "orders": 95,
+      "billed": 34415.6,
+      "collected": 27013.2
+    },
+    {
+      "key": "2026-02",
+      "label": "Feb",
+      "orders": 95,
+      "billed": 29448,
+      "collected": 22912.2
+    },
+    {
+      "key": "2026-03",
+      "label": "Mar",
+      "orders": 94,
+      "billed": 31386.4,
+      "collected": 27394
+    },
+    {
+      "key": "2026-04",
+      "label": "Apr",
+      "orders": 96,
+      "billed": 32328.6,
+      "collected": 25154.8
+    },
+    {
+      "key": "2026-05",
+      "label": "May",
+      "orders": 99,
+      "billed": 33932.4,
+      "collected": 28182.4
+    },
+    {
+      "key": "2026-06",
+      "label": "Jun",
+      "orders": 99,
+      "billed": 33234.4,
+      "collected": 27447
+    },
+    {
+      "key": "2026-07",
+      "label": "Jul",
+      "orders": 93,
+      "billed": 31123,
+      "collected": 25852.8
+    },
+    {
+      "key": "2026-08",
+      "label": "Aug",
+      "orders": 97,
+      "billed": 32544.2,
+      "collected": 24571.6
+    },
+    {
+      "key": "2026-09",
+      "label": "Sep",
+      "orders": 98,
+      "billed": 33656,
+      "collected": 27999
+    }
+  ]
+}

@@ -1,0 +1,1857 @@
+:root {
+  /* ==========================================================================
+     RESTRO8 COLOR SYSTEM — BRAND PHILOSOPHY SPECIFICATION
+     Two Primary Colors (Emerald Teal + Prosperity Gold) + Pure White + True AMOLED Black
+     ========================================================================== */
+
+  /* ── 1. CANONICAL BRAND PRIMARIES ───────────────────────────────────────── */
+  --restro8-emerald:             #0F8F6F;   /* Primary Color 01 — Main brand interaction color (RGB 15, 143, 111) */
+  --restro8-emerald-dark:        #087A60;   /* Light mode hover & active navigation text */
+  --restro8-emerald-light:       #E8F7F2;   /* Light mode active navigation & subtle tinted surfaces */
+  --restro8-emerald-amoled:      #19B889;   /* Dark Mode Primary Emerald (RGB 25, 184, 137) */
+  --restro8-emerald-hover-dark:  #24C79B;   /* Dark Mode Emerald hover */
+
+  --restro8-gold:                #F2B84B;   /* Primary Color 02 — Prosperity Gold (RGB 242, 184, 75) */
+  --restro8-gold-dark:           #D99D2B;   /* Gold dark emphasis */
+  --restro8-gold-light:          #FFF7E3;   /* Gold subtle highlight / light tint */
+  --restro8-gold-amoled:         #F4C15D;   /* Dark Mode Warm Gold */
+
+  /* ── 2. LIGHT MODE FOUNDATION (Extra Pure White) ─────────────────────────── */
+  --restro8-background:          #FFFFFF;   /* Primary page background (Extra White) */
+  --restro8-surface:             #FFFFFF;   /* Primary surface (Extra White) */
+  --restro8-surface-soft:        #F8FAFC;   /* Soft neutral surface for subtle separation */
+  --restro8-border:              #E5E7EB;   /* Light neutral border */
+  --restro8-border-strong:       #CBD5E1;   /* Prominent separator border */
+  --restro8-text:                #111827;   /* Primary text: Deep crisp neutral */
+  --restro8-text-secondary:      #64748B;   /* Secondary text */
+  --restro8-text-tertiary:       #94A3B8;   /* Muted text / placeholder */
+  --restro8-text-disabled:       #D1D5DB;   /* Disabled text */
+  --restro8-text-inverse:        #FFFFFF;   /* Text on colored/dark backgrounds */
+
+  /* ── 3. SEMANTIC COLORS (Strictly functional, non-competing) ────────────── */
+  --restro8-success:             #10B981;   /* Success / paid / served */
+  --restro8-success-dark:        #059669;
+  --restro8-success-light:       #ECFDF5;
+  --restro8-success-border:      #A7F3D0;
+
+  --restro8-warning:             #F59E0B;   /* Warning / pending / attention */
+  --restro8-warning-dark:        #D97706;
+  --restro8-warning-light:       #FFFBEB;
+  --restro8-warning-border:      #FDE68A;
+
+  --restro8-danger:              #EF4444;   /* Danger / error / cancelled / void */
+  --restro8-danger-dark:         #DC2626;
+  --restro8-danger-light:        #FEF2F2;
+  --restro8-danger-border:       #FECACA;
+
+  /* ── 4. BRAND MAPPINGS TO r8-color-* ARCHITECTURE ───────────────────────── */
+  --r8-color-primary:            var(--restro8-emerald);
+  --r8-color-primary-dark:       var(--restro8-emerald-dark);
+  --r8-color-primary-subtle:     var(--restro8-emerald-light);
+  --r8-color-primary-tint:       rgba(15, 143, 111, 0.08);
+
+  --r8-color-gold:               var(--restro8-gold);
+  --r8-color-gold-dark:          var(--restro8-gold-dark);
+  --r8-color-gold-subtle:        var(--restro8-gold-light);
+  --r8-color-gold-tint:          rgba(242, 184, 75, 0.12);
+
+  --r8-color-bg:                 var(--restro8-background);
+  --r8-color-surface:            var(--restro8-surface);
+  --r8-color-surface-raised:     var(--restro8-surface);
+  --r8-color-subtle:             var(--restro8-surface-soft);
+  --r8-color-muted-bg:           var(--restro8-surface-soft);
+
+  --r8-color-border:             var(--restro8-border);
+  --r8-color-border-strong:      var(--restro8-border-strong);
+  --r8-color-border-focus:       var(--restro8-emerald);
+
+  --r8-color-text:               var(--restro8-text);
+  --r8-color-text-secondary:     var(--restro8-text-secondary);
+  --r8-color-text-tertiary:      var(--restro8-text-tertiary);
+  --r8-color-text-disabled:      var(--restro8-text-disabled);
+  --r8-color-text-inverse:       var(--restro8-text-inverse);
+
+  --r8-color-neutral:            #475569;
+  --r8-color-neutral-bg:         #F1F5F9;
+  --r8-color-neutral-border:     #E5E7EB;
+
+  --r8-color-success:            var(--restro8-success);
+  --r8-color-success-dark:       var(--restro8-success-dark);
+  --r8-color-success-bg:         var(--restro8-success-light);
+  --r8-color-success-border:     var(--restro8-success-border);
+
+  --r8-color-warning:            var(--restro8-warning);
+  --r8-color-warning-dark:       var(--restro8-warning-dark);
+  --r8-color-warning-bg:         var(--restro8-warning-light);
+  --r8-color-warning-border:     var(--restro8-warning-border);
+
+  --r8-color-danger:             var(--restro8-danger);
+  --r8-color-danger-dark:        var(--restro8-danger-dark);
+  --r8-color-danger-bg:          var(--restro8-danger-light);
+  --r8-color-danger-border:      var(--restro8-danger-border);
+
+  /* ── 5. BUTTON TOKENS ───────────────────────────────────────────────────── */
+  --r8-btn-primary-bg:           #0F8F6F;
+  --r8-btn-primary-text:         #FFFFFF;
+  --r8-btn-primary-hover-bg:     #087A60;
+
+  --r8-btn-secondary-bg:         #FFFFFF;
+  --r8-btn-secondary-text:       #111827;
+  --r8-btn-secondary-border:     #E5E7EB;
+  --r8-btn-secondary-hover-bg:   #F8FAFC;
+
+  --r8-btn-gold-bg:              #F2B84B;
+  --r8-btn-gold-text:            #000000;
+  --r8-btn-gold-hover-bg:        #D99D2B;
+
+  /* ── 6. SIDEBAR TOKENS (Calm, Pure White in Light) ──────────────────────── */
+  --r8-sidebar-bg:               #FFFFFF;
+  --r8-sidebar-text:             #64748B;
+  --r8-sidebar-icon:             #0F8F6F;
+  --r8-sidebar-active-bg:        #E8F7F2;
+  --r8-sidebar-active-text:      #087A60;
+  --r8-sidebar-active-icon:      #0F8F6F;
+  --r8-sidebar-active-indicator: #0F8F6F;
+  --r8-sidebar-active-accent:    #0F8F6F;
+  --r8-sidebar-hover-bg:         #F8FAFC;
+
+  /* ── 7. TOPBAR TOKENS ───────────────────────────────────────────────────── */
+  --r8-topbar-bg:                #FFFFFF;
+  --r8-topbar-text:              #111827;
+  --r8-topbar-border:            #E5E7EB;
+
+  /* ── 8. FINANCE ICON & METRIC TOKENS ────────────────────────────────────── */
+  --r8-finance-sales-bg:         #E8F7F2;   /* Sales: Emerald icon container */
+  --r8-finance-sales-icon:       #0F8F6F;   /* Sales: Emerald icon */
+  --r8-finance-purchase-bg:      #F8FAFC;   /* Purchase: Neutral container */
+  --r8-finance-purchase-icon:    #475569;   /* Purchase: Neutral icon */
+  --r8-finance-income-bg:        #E8F7F2;   /* Income: Emerald container */
+  --r8-finance-income-icon:      #0F8F6F;   /* Income: Emerald icon */
+  --r8-finance-expense-bg:       #FEF2F2;   /* Expense: Semantic Red */
+  --r8-finance-expense-icon:     #EF4444;   /* Expense: Semantic Red */
+  --r8-finance-payin-bg:         #E8F7F2;   /* Payment In: Emerald container */
+  --r8-finance-payin-icon:       #0F8F6F;   /* Payment In: Emerald icon */
+  --r8-finance-payout-bg:        #FEF2F2;   /* Payment Out: Semantic Red */
+  --r8-finance-payout-icon:      #EF4444;   /* Payment Out: Semantic Red */
+
+  /* ── 9. CHART PALETTE (Two Primary: Emerald + Gold) ─────────────────────── */
+  --r8-chart-primary:            #0F8F6F;   /* Primary chart: Emerald */
+  --r8-chart-secondary:          #F2B84B;   /* Secondary chart: Gold */
+  --r8-chart-positive:           #10B981;   /* Semantic success */
+  --r8-chart-warning:            #F59E0B;   /* Semantic warning */
+  --r8-chart-negative:           #EF4444;   /* Semantic danger */
+
+  /* ── 10. BACKWARD-COMPATIBILITY ALIASES ─────────────────────────────────── */
+  --r8-brand-primary:            var(--r8-color-primary);
+  --r8-brand-primary-hover:      var(--r8-color-primary-dark);
+  --r8-brand-primary-subtle:     var(--r8-color-primary-subtle);
+  --r8-brand-accent:             var(--r8-color-gold);
+  --r8-brand-accent-hover:       var(--r8-color-gold-dark);
+  --r8-brand-accent-subtle:      var(--r8-color-gold-subtle);
+  --r8-brand-gold:               var(--r8-color-gold);
+  --r8-brand-gold-hover:         var(--r8-color-gold-dark);
+  --r8-brand-gold-subtle:        var(--r8-color-gold-subtle);
+  --r8-brand-emerald:            var(--r8-color-primary);
+  --r8-brand-emerald-hover:      var(--r8-color-primary-dark);
+  --r8-brand-emerald-subtle:     var(--r8-color-primary-subtle);
+  --r8-brand-coral:              var(--r8-color-danger);
+  --r8-brand-coral-hover:        var(--r8-color-danger-dark);
+  --r8-brand-coral-subtle:       var(--r8-color-danger-bg);
+  --r8-brand-warning:            var(--r8-color-warning);
+  --r8-brand-warning-hover:      var(--r8-color-warning-dark);
+  --r8-brand-warning-subtle:     var(--r8-color-warning-bg);
+  /* Info aligned with Emerald system */
+  --r8-brand-info:               var(--r8-color-primary);
+  --r8-brand-info-hover:         var(--r8-color-primary-dark);
+  --r8-brand-info-subtle:        var(--r8-color-primary-tint);
+
+  /* Surface tokens used across UI */
+  --r8-bg-canvas:                var(--r8-color-bg);
+  --r8-bg-surface:               var(--r8-color-surface);
+  --r8-bg-surface-elevated:      var(--r8-color-surface);
+  --r8-bg-elevated:              var(--r8-color-surface-raised);
+  --r8-bg-subtle:                var(--r8-color-subtle);
+  --r8-bg-muted:                 var(--r8-color-border);
+
+  --r8-border-subtle:            var(--r8-color-border);
+  --r8-border-prominent:         var(--r8-color-border-strong);
+  --r8-border-focus:             var(--r8-color-border-focus);
+
+  --r8-text-primary:             var(--r8-color-text);
+  --r8-text-secondary:           var(--r8-color-text-secondary);
+  --r8-text-muted:               var(--r8-color-text-tertiary);
+  --r8-text-disabled:            var(--r8-color-text-disabled);
+  --r8-text-inverse:             var(--r8-color-text-inverse);
+
+  --color-primary:               var(--r8-color-primary);
+  --color-primary-hover:         var(--r8-color-primary-dark);
+  --color-on-primary:            var(--r8-color-text-inverse);
+
+  --color-secondary:             var(--r8-color-neutral);
+  --color-on-secondary:          var(--r8-color-text-inverse);
+
+  --color-accent:                var(--r8-color-gold);
+  --color-accent-hover:          var(--r8-color-gold-dark);
+  --color-on-accent:             #000000;
+
+  --color-background:            var(--r8-color-bg);
+  --color-background-subtle:     var(--r8-color-subtle);
+  --color-foreground:            var(--r8-color-text);
+
+  --color-card:                  var(--r8-color-surface);
+  --color-card-elevated:         var(--r8-color-surface-raised);
+  --color-card-foreground:       var(--r8-color-text);
+
+  --color-muted:                 var(--r8-color-subtle);
+  --color-muted-foreground:      var(--r8-color-text-secondary);
+
+  --color-border:                var(--r8-color-border);
+  --color-border-subtle:         var(--r8-color-border);
+
+  --color-ring:                  var(--r8-color-border-focus);
+
+  /* ── STATUS TOKENS ────────────────────────────────────────────────────── */
+  --status-available:        var(--r8-color-success);
+  --status-available-bg:     var(--r8-color-success-bg);
+  --status-available-border: var(--r8-color-success-border);
+
+  --status-occupied:         var(--r8-color-danger);
+  --status-occupied-bg:      var(--r8-color-danger-bg);
+  --status-occupied-border:  var(--r8-color-danger-border);
+
+  --status-reserved:         var(--r8-color-warning);
+  --status-reserved-bg:      var(--r8-color-warning-bg);
+  --status-reserved-border:  var(--r8-color-warning-border);
+
+  --status-dirty:            var(--r8-color-warning);
+  --status-dirty-bg:         var(--r8-color-warning-bg);
+  --status-dirty-border:     var(--r8-color-warning-border);
+
+  --status-cleaning:         var(--r8-color-warning);
+  --status-cleaning-bg:      var(--r8-color-warning-bg);
+  --status-cleaning-border:  var(--r8-color-warning-border);
+
+  --status-payment-pending:        var(--r8-color-gold);
+  --status-payment-pending-bg:     var(--r8-color-gold-subtle);
+  --status-payment-pending-border: rgba(242, 184, 75, 0.35);
+
+  --status-completed:        var(--r8-color-success);
+  --status-completed-bg:     var(--r8-color-success-bg);
+  --status-completed-border: var(--r8-color-success-border);
+  --status-completed-dot:    var(--r8-color-success);
+
+  --status-pending:          var(--r8-color-warning);
+  --status-pending-bg:       var(--r8-color-warning-bg);
+  --status-pending-border:   var(--r8-color-warning-border);
+  --status-pending-dot:      var(--r8-color-warning);
+
+  --status-preparing:        #F97316;
+  --status-preparing-bg:     #FFF7ED;
+  --status-preparing-border: #FED7AA;
+  --status-preparing-dot:    #F97316;
+
+  --status-cancelled:        var(--r8-color-danger);
+  --status-cancelled-bg:     var(--r8-color-danger-bg);
+  --status-cancelled-border: var(--r8-color-danger-border);
+  --status-cancelled-dot:    var(--r8-color-danger);
+
+  --status-draft:            var(--r8-color-neutral);
+  --status-draft-bg:         var(--r8-color-neutral-bg);
+  --status-draft-border:     var(--r8-color-neutral-border);
+  --status-draft-dot:        #94A3B8;
+
+  /* ── TYPOGRAPHY ───────────────────────────────────────────────────────── */
+  --r8-font-sans:    'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --r8-font-display: 'Outfit', 'Inter', system-ui, sans-serif;
+  --r8-font-mono:    'JetBrains Mono', 'SF Mono', Consolas, monospace;
+
+  /* ── SPACING SCALE (8pt grid) ─────────────────────────────────────────── */
+  --r8-space-1:  4px;
+  --r8-space-2:  8px;
+  --r8-space-3:  12px;
+  --r8-space-4:  16px;
+  --r8-space-5:  20px;
+  --r8-space-6:  24px;
+  --r8-space-8:  32px;
+  --r8-space-10: 40px;
+  --r8-space-12: 48px;
+  --r8-space-16: 64px;
+  --r8-page-padding: var(--r8-space-6);
+
+  /* ── RADIUS SCALE ─────────────────────────────────────────────────────── */
+  --r8-radius-xs:   4px;
+  --r8-radius-sm:   6px;
+  --r8-radius-md:   10px;
+  --r8-radius-lg:   16px;
+  --r8-radius-xl:   24px;
+  --r8-radius-full: 9999px;
+
+  /* ── ELEVATION SHADOWS ────────────────────────────────────────────────── */
+  --r8-shadow-none:  none;
+  --r8-shadow-sm:    0 1px 3px 0 rgba(15, 23, 42, 0.05), 0 1px 2px -1px rgba(15, 23, 42, 0.03);
+  --r8-shadow-md:    0 4px 12px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -2px rgba(15, 23, 42, 0.04);
+  --r8-shadow-lg:    0 12px 28px -4px rgba(15, 23, 42, 0.12), 0 6px 12px -6px rgba(15, 23, 42, 0.06);
+  --r8-shadow-modal: 0 20px 40px -8px rgba(15, 23, 42, 0.20), 0 10px 20px -10px rgba(15, 23, 42, 0.10);
+
+  /* ── MOTION TIMING ────────────────────────────────────────────────────── */
+  --r8-motion-fast:     120ms cubic-bezier(0.16, 1, 0.3, 1);
+  --r8-motion-standard: 180ms cubic-bezier(0.16, 1, 0.3, 1);
+  --r8-motion-slow:     280ms cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ── CONTROL SIZING ───────────────────────────────────────────────────── */
+  --r8-control-h-sm:     32px;
+  --r8-control-h-md:     40px;
+  --r8-control-h-lg:     48px;
+  --r8-touch-target-min: 44px;
+
+  /* ── Z-INDEX HIERARCHY ────────────────────────────────────────────────── */
+  --r8-z-dropdown: 1000;
+  --r8-z-sticky:   1100;
+  --r8-z-drawer:   1200;
+  --r8-z-modal:    1300;
+  --r8-z-toast:    1400;
+  --r8-z-tooltip:  1500;
+
+  /* ── BACKWARD-COMPAT RADIUS/SHADOW ALIASES ────────────────────────────── */
+  --radius-sm: var(--r8-radius-sm);
+  --radius-md: var(--r8-radius-md);
+  --radius-lg: var(--r8-radius-lg);
+  --radius-xl: var(--r8-radius-xl);
+  --radius-full: var(--r8-radius-full);
+
+  --font-display: var(--r8-font-display);
+  --font-sans:    var(--r8-font-sans);
+  --font-mono:    var(--r8-font-mono);
+
+  --shadow-xs: var(--r8-shadow-sm);
+  --shadow-sm: var(--r8-shadow-sm);
+  --shadow-md: var(--r8-shadow-md);
+  --shadow-lg: var(--r8-shadow-lg);
+  --shadow-xl: var(--r8-shadow-modal);
+
+  --header-height: 56px;
+}
+
+/* ==========================================================================
+   RESTRO8 DARK MODE — TRUE AMOLED BLACK FOUNDATION
+   Deep, Calm, Premium, Focused & Energetic (#000000 Foundation)
+   ========================================================================== */
+.dark {
+  /* ── 1. CORE DARK BRAND OVERRIDES ───────────────────────────────────────── */
+  --r8-color-primary:            #19B889;   /* Recognizable AMOLED Emerald */
+  --r8-color-primary-dark:       #24C79B;   /* Hover Emerald */
+  --r8-color-primary-subtle:     #062D25;   /* Active / Subtle Emerald BG */
+  --r8-color-primary-tint:       rgba(25, 184, 137, 0.12);
+
+  --r8-color-gold:               #F4C15D;   /* Readable Warm AMOLED Gold */
+  --r8-color-gold-dark:          #E2A83E;
+  --r8-color-gold-subtle:        rgba(244, 193, 93, 0.15);
+  --r8-color-gold-tint:          rgba(244, 193, 93, 0.10);
+
+  /* ── 2. TRUE AMOLED BLACK SURFACES ──────────────────────────────────────── */
+  --r8-color-bg:                 #000000;   /* Foundation: True AMOLED Black (NOT #111111 or #121212) */
+  --r8-color-surface:            #050505;   /* Primary surface */
+  --r8-color-surface-raised:     #0A0A0A;   /* Secondary / elevated surface */
+  --r8-color-subtle:             #0A0A0A;   /* Soft neutral surface */
+  --r8-color-muted-bg:           #070707;
+
+  /* ── 3. AMOLED BORDERS & DIVIDERS ───────────────────────────────────────── */
+  --r8-color-border:             #1F2937;   /* Thin separation border */
+  --r8-color-border-strong:      #27272A;   /* Defined contrast border */
+  --r8-color-border-focus:       #19B889;   /* Emerald focus ring */
+
+  /* ── 4. AMOLED TEXT HIERARCHY ───────────────────────────────────────────── */
+  --r8-color-text:               #FFFFFF;   /* Primary text: Pure crisp white */
+  --r8-color-text-secondary:     #A1A1AA;   /* Secondary text */
+  --r8-color-text-tertiary:      #71717A;   /* Muted text / placeholder */
+  --r8-color-text-disabled:      #3F3F46;   /* Disabled text */
+  --r8-color-text-inverse:       #000000;   /* Text on bright emerald/gold */
+
+  /* ── 5. BUTTON DARK OVERRIDES ───────────────────────────────────────────── */
+  --r8-btn-primary-bg:           #19B889;   /* Dark Mode Primary Button */
+  --r8-btn-primary-text:         #000000;   /* High contrast black text on emerald */
+  --r8-btn-primary-hover-bg:     #24C79B;
+
+  --r8-btn-secondary-bg:         #050505;   /* Dark Mode Secondary Button */
+  --r8-btn-secondary-text:       #FFFFFF;
+  --r8-btn-secondary-border:     #27272A;
+  --r8-btn-secondary-hover-bg:   #0A0A0A;
+
+  --r8-btn-gold-bg:              #F4C15D;
+  --r8-btn-gold-text:            #000000;
+  --r8-btn-gold-hover-bg:        #E2A83E;
+
+  /* ── 6. SIDEBAR AMOLED DARK OVERRIDES ───────────────────────────────────── */
+  --r8-sidebar-bg:               #000000;   /* Pure AMOLED Black sidebar */
+  --r8-sidebar-text:             #A1A1AA;
+  --r8-sidebar-icon:             #19B889;
+  --r8-sidebar-active-bg:        #062D25;   /* Active item background */
+  --r8-sidebar-active-text:      #39CFA2;   /* Active text */
+  --r8-sidebar-active-icon:      #19B889;   /* Active icon */
+  --r8-sidebar-active-indicator: #19B889;   /* Active indicator bar */
+  --r8-sidebar-active-accent:    #19B889;
+  --r8-sidebar-hover-bg:         #050505;
+
+  /* ── 7. TOPBAR AMOLED DARK OVERRIDES ────────────────────────────────────── */
+  --r8-topbar-bg:                #000000;
+  --r8-topbar-text:              #FFFFFF;
+  --r8-topbar-border:            #1F2937;
+
+  /* ── 8. FINANCE ICON AMOLED OVERRIDES ───────────────────────────────────── */
+  --r8-finance-sales-bg:         rgba(25, 184, 137, 0.15);
+  --r8-finance-sales-icon:       #19B889;
+  --r8-finance-purchase-bg:      rgba(161, 161, 170, 0.12);
+  --r8-finance-purchase-icon:    #A1A1AA;
+  --r8-finance-income-bg:        rgba(25, 184, 137, 0.15);
+  --r8-finance-income-icon:      #19B889;
+  --r8-finance-expense-bg:       rgba(239, 68, 68, 0.15);
+  --r8-finance-expense-icon:     #EF4444;
+  --r8-finance-payin-bg:         rgba(25, 184, 137, 0.15);
+  --r8-finance-payin-icon:       #19B889;
+  --r8-finance-payout-bg:        rgba(239, 68, 68, 0.15);
+  --r8-finance-payout-icon:      #EF4444;
+
+  /* ── 9. CHART PALETTE (Dark Mode) ───────────────────────────────────────── */
+  --r8-chart-primary:            #19B889;   /* Dark Mode Emerald */
+  --r8-chart-secondary:          #F4C15D;   /* Dark Mode Warm Gold */
+
+  /* ── 10. STATUS OVERRIDES (dark-tinted) ─────────────────────────────────── */
+  --status-available-bg:         rgba(16, 185, 129, 0.16);
+  --status-available-border:     rgba(16, 185, 129, 0.35);
+  --status-occupied-bg:          rgba(239, 68, 68, 0.16);
+  --status-occupied-border:      rgba(239, 68, 68, 0.35);
+  --status-reserved-bg:          rgba(244, 193, 93, 0.16);
+  --status-reserved-border:      rgba(244, 193, 93, 0.35);
+  --status-dirty-bg:             rgba(245, 158, 11, 0.16);
+  --status-dirty-border:         rgba(245, 158, 11, 0.35);
+  --status-completed-bg:         rgba(16, 185, 129, 0.16);
+  --status-completed-border:     rgba(16, 185, 129, 0.35);
+  --status-pending-bg:           rgba(245, 158, 11, 0.16);
+  --status-pending-border:       rgba(245, 158, 11, 0.35);
+  --status-preparing-bg:         rgba(249, 115, 22, 0.16);
+  --status-preparing-border:     rgba(249, 115, 22, 0.35);
+  --status-cancelled-bg:         rgba(239, 68, 68, 0.16);
+  --status-cancelled-border:     rgba(239, 68, 68, 0.35);
+  --status-draft-bg:             rgba(113, 113, 122, 0.18);
+  --status-draft-border:         rgba(113, 113, 122, 0.30);
+
+  /* ── 11. SEMANTIC OVERRIDES (dark tint-adjusted) ────────────────────────── */
+  --r8-color-success-bg:         rgba(16, 185, 129, 0.15);
+  --r8-color-success-border:     rgba(16, 185, 129, 0.3);
+  --r8-color-warning-bg:         rgba(245, 158, 11, 0.15);
+  --r8-color-warning-border:     rgba(245, 158, 11, 0.3);
+  --r8-color-danger-bg:          rgba(239, 68, 68, 0.15);
+  --r8-color-danger-border:      rgba(239, 68, 68, 0.3);
+  --r8-color-neutral-bg:         rgba(113, 113, 122, 0.18);
+  --r8-color-neutral-border:     rgba(113, 113, 122, 0.30);
+
+  /* ── 12. ELEVATED SHADOWS (Crisp AMOLED depth) ──────────────────────────── */
+  --r8-shadow-sm:    0 1px 3px 0 rgba(0, 0, 0, 0.60);
+  --r8-shadow-md:    0 4px 12px -2px rgba(0, 0, 0, 0.80);
+  --r8-shadow-lg:    0 12px 28px -4px rgba(0, 0, 0, 0.90);
+}
+
+
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color 250ms ease, color 250ms ease;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  transition: all 180ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--color-ring);
+  outline-offset: 2px;
+}
+
+input, select, textarea {
+  font-family: inherit;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-muted-foreground);
+  opacity: 0.3;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-primary);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseBorder {
+  0%, 100% { border-color: var(--color-primary); box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); }
+  50% { border-color: #EF4444; box-shadow: 0 0 0 6px rgba(220, 38, 38, 0); }
+}
+
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes r8-spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 220ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-pop-in {
+  animation: popIn 200ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* RESTRO8 Core Utilities */
+.r8-tabular-num {
+  font-family: var(--r8-font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+.r8-font-display {
+  font-family: var(--r8-font-display);
+}
+
+.r8-font-sans {
+  font-family: var(--r8-font-sans);
+}
+
+.r8-focus-ring:focus-visible {
+  outline: 2px solid var(--r8-border-focus, #0F8F6F);
+  outline-offset: 2px;
+}
+
+/* Accessibility: WCAG 2.1 Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.r8-container-fluid {
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.r8-container-constrained {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+.r8-touch-target {
+  min-height: var(--r8-touch-target-min);
+  min-width: var(--r8-touch-target-min);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Common UI Utilities */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+}
+
+.badge-available {
+  background: var(--status-available-bg);
+  color: var(--status-available);
+  border: 1px solid var(--status-available-border);
+}
+
+.badge-occupied {
+  background: var(--status-occupied-bg);
+  color: var(--status-occupied);
+  border: 1px solid var(--status-occupied-border);
+}
+
+.badge-reserved {
+  background: var(--status-reserved-bg);
+  color: var(--status-reserved);
+  border: 1px solid var(--status-reserved-border);
+}
+
+.badge-dirty {
+  background: var(--status-dirty-bg);
+  color: var(--status-dirty);
+  border: 1px solid var(--status-dirty-border);
+}
+
+.btn-primary {
+  background: var(--r8-btn-primary-bg, var(--color-primary));
+  color: var(--r8-btn-primary-text, var(--color-on-primary));
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid transparent;
+}
+.btn-primary:hover {
+  background: var(--r8-btn-primary-hover-bg, var(--color-primary-hover));
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+.btn-secondary {
+  background: var(--r8-btn-secondary-bg, var(--color-card-elevated));
+  color: var(--r8-btn-secondary-text, var(--color-foreground));
+  border: 1px solid var(--r8-btn-secondary-border, var(--color-border));
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+}
+.btn-secondary:hover {
+  background: var(--r8-btn-secondary-hover-bg, var(--color-muted));
+  border-color: var(--r8-btn-secondary-border, var(--color-border));
+  transform: translateY(-1px);
+}
+
+.btn-accent, .btn-gold {
+  background: var(--r8-btn-gold-bg, var(--color-accent));
+  color: var(--r8-btn-gold-text, var(--color-on-accent));
+  padding: 10px 18px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  border: 1px solid transparent;
+}
+.btn-accent:hover, .btn-gold:hover {
+  background: var(--r8-btn-gold-hover-bg, var(--color-accent-hover));
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: var(--r8-color-danger-bg);
+  color: var(--r8-color-danger);
+  border: 1px solid var(--r8-color-danger-border);
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+}
+.btn-danger:hover {
+  background: var(--r8-color-danger);
+  color: var(--r8-color-text-inverse);
+  border-color: var(--r8-color-danger);
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--r8-color-neutral);
+  border: none;
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+}
+.btn-ghost:hover {
+  background: var(--r8-color-neutral-bg);
+  color: var(--r8-color-text);
+}
+
+/* ==========================================================================
+   RESTRO8 STATUS BADGE SYSTEM — Semantic, Accessible, Token-driven
+   ========================================================================== */
+
+/* Status badge base */
+.r8-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: var(--r8-radius-full);
+  border: 1px solid transparent;
+  white-space: nowrap;
+}
+
+/* Status dot */
+.r8-badge::before {
+  content: '';
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* Completed / Paid / Served */
+.r8-badge-success,
+.r8-badge-completed,
+.r8-badge-paid,
+.r8-badge-served {
+  background: var(--r8-color-success-bg);
+  color: var(--r8-color-success-dark);
+  border-color: var(--r8-color-success-border);
+}
+.r8-badge-success::before,
+.r8-badge-completed::before,
+.r8-badge-paid::before,
+.r8-badge-served::before {
+  background: var(--r8-color-success);
+}
+
+/* Pending / Attention */
+.r8-badge-warning,
+.r8-badge-pending,
+.r8-badge-low-stock {
+  background: var(--r8-color-warning-bg);
+  color: var(--r8-color-warning-dark);
+  border-color: var(--r8-color-warning-border);
+}
+.r8-badge-warning::before,
+.r8-badge-pending::before,
+.r8-badge-low-stock::before {
+  background: var(--r8-color-warning);
+}
+
+/* Preparing */
+.r8-badge-preparing {
+  background: var(--status-preparing-bg);
+  color: #C2410C;
+  border-color: var(--status-preparing-border);
+}
+.r8-badge-preparing::before {
+  background: var(--status-preparing);
+}
+
+/* Cancelled / Failed / Error */
+.r8-badge-danger,
+.r8-badge-cancelled,
+.r8-badge-failed,
+.r8-badge-error {
+  background: var(--r8-color-danger-bg);
+  color: var(--r8-color-danger-dark);
+  border-color: var(--r8-color-danger-border);
+}
+.r8-badge-danger::before,
+.r8-badge-cancelled::before,
+.r8-badge-failed::before,
+.r8-badge-error::before {
+  background: var(--r8-color-danger);
+}
+
+/* Draft / Neutral / Inactive */
+.r8-badge-neutral,
+.r8-badge-draft,
+.r8-badge-inactive {
+  background: var(--r8-color-neutral-bg);
+  color: var(--r8-color-neutral);
+  border-color: var(--r8-color-neutral-border);
+}
+.r8-badge-neutral::before,
+.r8-badge-draft::before,
+.r8-badge-inactive::before {
+  background: #94A3B8;
+}
+
+/* Info / Primary — Aligned with RESTRO8 Emerald system */
+.r8-badge-info,
+.r8-badge-primary {
+  background: var(--r8-color-primary-subtle);
+  color: var(--r8-color-primary-dark);
+  border-color: rgba(15, 143, 111, 0.30);
+}
+.r8-badge-info::before,
+.r8-badge-primary::before {
+  background: var(--r8-color-primary);
+}
+
+/* Gold / Accent — Prosperity Gold */
+.r8-badge-gold,
+.r8-badge-accent {
+  background: var(--r8-color-gold-subtle);
+  color: var(--r8-color-gold-dark);
+  border-color: rgba(242, 184, 75, 0.35);
+}
+.r8-badge-gold::before,
+.r8-badge-accent::before {
+  background: var(--r8-color-gold);
+}
+
+/* ==========================================================================
+   RESTRO8 ALERT SYSTEM — Info / Success / Warning / Danger
+   ========================================================================== */
+
+.r8-alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  border-radius: var(--r8-radius-md);
+  border: 1px solid transparent;
+  font-size: 0.85rem;
+  line-height: 1.5;
+}
+
+.r8-alert-info {
+  background: var(--r8-color-primary-subtle);
+  border-color: rgba(15, 143, 111, 0.30);
+  color: var(--r8-color-primary-dark);
+}
+
+.r8-alert-success {
+  background: var(--r8-color-success-bg);
+  border-color: var(--r8-color-success-border);
+  color: var(--r8-color-success-dark);
+}
+
+.r8-alert-warning {
+  background: var(--r8-color-warning-bg);
+  border-color: var(--r8-color-warning-border);
+  color: var(--r8-color-warning-dark);
+}
+
+.r8-alert-danger {
+  background: var(--r8-color-danger-bg);
+  border-color: var(--r8-color-danger-border);
+  color: var(--r8-color-danger-dark);
+}
+
+/* ==========================================================================
+   RESTRO8 TABLE SYSTEM — Neutral, Readable, Semantic-only color
+   ========================================================================== */
+
+.r8-table-header {
+  background: var(--r8-color-muted-bg);
+  color: var(--r8-color-text-secondary);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px solid var(--r8-color-border);
+}
+
+.r8-table-row {
+  border-bottom: 1px solid var(--r8-color-border);
+  color: var(--r8-color-text);
+  transition: background-color 120ms ease;
+}
+
+.r8-table-row:hover {
+  background: var(--r8-color-muted-bg);
+}
+
+.r8-table-row.is-selected {
+  background: var(--r8-color-primary-subtle);
+  color: var(--r8-color-primary-dark);
+}
+
+/* ==========================================================================
+   RESTRO8 FINANCE ICON CONTAINERS — Token-driven, not arbitrary colors
+   ========================================================================== */
+
+.r8-finance-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--r8-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.r8-finance-icon-sales     { background: var(--r8-finance-sales-bg);    color: var(--r8-finance-sales-icon);    }
+.r8-finance-icon-purchase  { background: var(--r8-finance-purchase-bg); color: var(--r8-finance-purchase-icon); }
+.r8-finance-icon-income    { background: var(--r8-finance-income-bg);   color: var(--r8-finance-income-icon);   }
+.r8-finance-icon-expense   { background: var(--r8-finance-expense-bg);  color: var(--r8-finance-expense-icon);  }
+.r8-finance-icon-payin     { background: var(--r8-finance-payin-bg);    color: var(--r8-finance-payin-icon);    }
+.r8-finance-icon-payout    { background: var(--r8-finance-payout-bg);   color: var(--r8-finance-payout-icon);   }
+
+/* Finance KPI card — neutral white with icon containers (not full-card colors) */
+.r8-finance-card {
+  background: var(--r8-color-surface);
+  border: 1px solid var(--r8-color-border);
+  border-radius: var(--r8-radius-md);
+  padding: 16px;
+  cursor: pointer;
+  transition: box-shadow 150ms ease, border-color 150ms ease;
+}
+.r8-finance-card:hover {
+  border-color: var(--r8-color-border-strong);
+  box-shadow: var(--r8-shadow-sm);
+}
+
+/* ==========================================================================
+   RESTRO8 SIDEBAR NAV — Token-driven active/hover states
+   ========================================================================== */
+
+.r8-sidebar {
+  background: var(--r8-sidebar-bg);
+}
+
+.r8-nav-item {
+  display: flex;
+  align-items: center;
+  padding: 9px 12px;
+  border-radius: 9px;
+  border: none;
+  background: transparent;
+  color: var(--r8-sidebar-text);
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  gap: 11px;
+  transition: all 150ms ease;
+}
+.r8-nav-item:hover {
+  background: var(--r8-sidebar-hover-bg);
+  color: var(--r8-color-text);
+}
+.r8-nav-item.is-active {
+  background: var(--r8-sidebar-active-bg);
+  color: var(--r8-sidebar-active-text);
+  font-weight: 700;
+}
+.r8-nav-item.is-active svg {
+  color: var(--r8-sidebar-active-icon);
+}
+
+/* ==========================================================================
+   RESTRO8 FORM INPUTS — Focus ring, error, success states
+   ========================================================================== */
+
+.r8-input {
+  background: var(--r8-color-surface);
+  border: 1px solid var(--r8-color-border);
+  border-radius: var(--r8-radius-sm);
+  color: var(--r8-color-text);
+  font-size: 0.875rem;
+  padding: 8px 12px;
+  width: 100%;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+.r8-input::placeholder {
+  color: var(--r8-color-text-tertiary);
+}
+.r8-input:focus {
+  outline: none;
+  border-color: var(--r8-color-border-focus);
+  box-shadow: 0 0 0 3px rgba(15, 143, 111, 0.15);
+}
+.r8-input.is-error {
+  border-color: var(--r8-color-danger);
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.10);
+}
+.r8-input.is-success {
+  border-color: var(--r8-color-success);
+}
+
+/* ==========================================================================
+   RESTRO8 CHART COLOR UTILITIES
+   ========================================================================== */
+.r8-chart-color-primary   { color: var(--r8-chart-primary);   fill: var(--r8-chart-primary);   stroke: var(--r8-chart-primary);   }
+.r8-chart-color-secondary { color: var(--r8-chart-secondary); fill: var(--r8-chart-secondary); stroke: var(--r8-chart-secondary); }
+.r8-chart-color-positive  { color: var(--r8-chart-positive);  fill: var(--r8-chart-positive);  stroke: var(--r8-chart-positive);  }
+.r8-chart-color-warning   { color: var(--r8-chart-warning);   fill: var(--r8-chart-warning);   stroke: var(--r8-chart-warning);   }
+.r8-chart-color-negative  { color: var(--r8-chart-negative);  fill: var(--r8-chart-negative);  stroke: var(--r8-chart-negative);  }
+
+
+/* Modal Backdrop */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 14, 25, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--r8-z-modal);
+  padding: 16px;
+  box-sizing: border-box;
+  animation: fadeIn 150ms ease-out;
+}
+
+.modal-content {
+  background: var(--color-card);
+  color: var(--color-card-foreground);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xl);
+  max-height: 90vh;
+  max-width: 100% !important;
+  box-sizing: border-box !important;
+  overflow-y: auto;
+  position: relative;
+  animation: popIn 200ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ==========================================================================
+   FOCUSED THERMAL / KOT / RECEIPT PRINT STYLES (80mm Thermal POS Standards)
+   ========================================================================== */
+@media print {
+  /* Hide standard application chrome, navigation, headers, footers, buttons */
+  aside,
+  nav,
+  header,
+  .sidebar,
+  .no-print,
+  button,
+  input,
+  select {
+    display: none !important;
+  }
+
+  /* Reset document for clean receipt paper */
+  html,
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  /* Modal overlay neutrality during print */
+  .modal-overlay {
+    position: static !important;
+    background: transparent !important;
+    backdrop-filter: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    inset: auto !important;
+  }
+
+  .modal-content {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  max-height: none !important;
+    overflow: visible !important;
+  }
+
+  /* When printing KOT or Receipt: Hide all page content by default */
+  body.printing-kot *,
+  body.printing-receipt *,
+  body:has(#printable-kot) *:not(#printable-kot, #printable-kot *),
+  body:has(#printable-receipt) *:not(#printable-receipt, #printable-receipt *) {
+    visibility: hidden !important;
+  }
+
+  /* Thermal KOT Ticket Printing: Target only the thermal slip */
+  #printable-kot,
+  body.printing-kot #printable-kot,
+  #printable-kot * {
+    visibility: visible !important;
+    color: #000000 !important;
+    background: #FFFFFF !important;
+    background-image: none !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  #printable-kot {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 76mm !important;
+    max-width: 76mm !important;
+    margin: 0 auto !important;
+    padding: 3mm 2mm !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    font-size: 11px !important;
+    line-height: 1.35 !important;
+    box-shadow: none !important;
+    border: none !important;
+    box-sizing: border-box !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  /* Thermal Receipt / Tax Invoice Printing */
+  #printable-receipt,
+  body.printing-receipt #printable-receipt,
+  #printable-receipt * {
+    visibility: visible !important;
+    color: #000000 !important;
+    background: #FFFFFF !important;
+    background-image: none !important;
+    border-color: #000000 !important;
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  #printable-receipt {
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    width: 76mm !important;
+    max-width: 76mm !important;
+    margin: 0 auto !important;
+    padding: 3mm 2mm !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    box-shadow: none !important;
+    border: none !important;
+    box-sizing: border-box !important;
+    page-break-after: avoid !important;
+    page-break-inside: avoid !important;
+  }
+
+  @page {
+    size: 80mm auto;
+    margin: 0mm;
+  }
+}
+
+/* Global @page for thermal receipt printers */
+@page {
+  size: 80mm auto;
+  margin: 0mm;
+}
+
+/* ==========================================================================
+   Responsive Mobile & Tablet View Adjustments (Tiered Breakpoints)
+   ========================================================================== */
+
+/* Dashboard Responsive Layout Utilities */
+.dashboard-container {
+  padding: 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+  font-family: var(--font-sans);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.dashboard-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dashboard-kpi-grid-6 {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.dashboard-split-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.dashboard-split-grid-15 {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.dashboard-cards-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+  margin-bottom: 24px;
+}
+
+.dashboard-greeting-banner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.dashboard-greeting-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.dashboard-controls-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding: 12px 18px;
+  background-color: var(--color-card);
+  border-radius: 14px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-xs);
+}
+
+.dashboard-hero-banner {
+  position: relative;
+  border-radius: 16px;
+  background-color: #A8131B;
+  padding: 36px 40px;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+
+.responsive-table-container {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mobile-pos-switcher {
+  display: none;
+}
+
+/* Tablet & Smaller Screens (< 1100px) */
+@media (max-width: 1100px) {
+  .header-pan-pill {
+    display: none !important;
+  }
+}
+
+/* Tablets & Small Laptops (<= 1024px) - Addresses 893px DevTools View */
+@media (max-width: 1024px) {
+  :root {
+    --r8-page-padding: var(--r8-space-4);
+  }
+
+  /* Show hamburger toggle button */
+  .mobile-menu-btn {
+    display: flex !important;
+  }
+
+  /* Slide-out Sidebar Drawer on Tablet & Mobile */
+  .app-sidebar {
+    position: fixed !important;
+    top: 0 !important;
+    bottom: 0 !important;
+    left: -300px !important;
+    width: 280px !important;
+    height: 100vh !important;
+    z-index: 100 !important;
+    transition: left 0.25s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    box-shadow: none !important;
+  }
+
+  .app-sidebar.mobile-open {
+    left: 0 !important;
+    box-shadow: 0 0 35px rgba(0, 0, 0, 0.85) !important;
+  }
+
+  /* Responsive Grid Adaptations */
+  .dashboard-kpi-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 14px !important;
+  }
+
+  .dashboard-kpi-grid-6 {
+    grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+    gap: 12px !important;
+  }
+
+  .dashboard-split-grid,
+  .dashboard-split-grid-15 {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .dashboard-cards-grid-3 {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  .dashboard-container {
+    padding: 16px !important;
+  }
+
+  .pos-workspace {
+    grid-template-columns: 1fr 340px !important;
+  }
+
+  .header-date-pill {
+    display: none !important;
+  }
+
+  .header-search-box {
+    width: 36px !important;
+    padding: 0 !important;
+    justify-content: center !important;
+  }
+  .header-search-box span,
+  .header-search-box kbd {
+    display: none !important;
+  }
+}
+
+/* Mobile Screens (< 768px) */
+@media (max-width: 768px) {
+  :root {
+    --r8-page-padding: var(--r8-space-3);
+  }
+
+  .modal-overlay {
+    padding: 10px !important;
+  }
+
+  .app-header {
+    padding: 0 10px !important;
+    gap: 6px !important;
+  }
+
+  .app-header-context {
+    flex: 1 1 auto;
+    min-width: 0;
+    gap: 6px !important;
+  }
+
+  .header-restaurant-switcher {
+    min-width: 0;
+    max-width: 128px;
+    padding: 4px 6px !important;
+  }
+
+  .app-header-actions {
+    gap: 4px !important;
+  }
+
+  .header-ds-btn,
+  .header-role-container,
+  .header-reset-btn {
+    display: none !important;
+  }
+
+  .header-kds-btn {
+    display: none !important;
+  }
+
+  .header-pos-btn span {
+    display: none !important;
+  }
+
+  .header-pos-btn {
+    padding: 0 10px !important;
+    width: 34px !important;
+    justify-content: center !important;
+  }
+
+  .header-role-container select {
+    max-width: 80px !important;
+  }
+
+  .header-restaurant-title {
+    max-width: 100px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .header-role-title {
+    display: none !important;
+  }
+
+  .dashboard-container {
+    padding: 12px 10px !important;
+  }
+
+  .dashboard-greeting-banner {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 14px 14px !important;
+    gap: 14px !important;
+  }
+
+  .dashboard-greeting-banner h1 {
+    font-size: 1.25rem !important;
+  }
+
+  .dashboard-greeting-actions {
+    width: 100% !important;
+    display: flex !important;
+    gap: 8px !important;
+  }
+
+  .dashboard-greeting-actions > * {
+    flex: 1 1 auto !important;
+    justify-content: center !important;
+  }
+
+  .dashboard-controls-bar {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    padding: 10px 12px !important;
+    gap: 12px !important;
+  }
+
+  .dashboard-subtabs-group {
+    width: 100% !important;
+    display: flex !important;
+  }
+
+  .dashboard-subtabs-group button {
+    flex: 1 1 0 !important;
+    text-align: center !important;
+    justify-content: center !important;
+    padding: 7px 8px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .dashboard-date-controls {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .dashboard-date-controls > div,
+  .dashboard-date-controls > button {
+    flex: 1 1 calc(50% - 4px) !important;
+  }
+
+  .dashboard-date-controls button {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+
+  .dashboard-kpi-grid-6 {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .dashboard-hero-banner {
+    padding: 20px 18px !important;
+  }
+
+  .dashboard-hero-banner h2 {
+    font-size: 1.25rem !important;
+  }
+
+  /* Hotkeys footer is irrelevant and wastes vertical space on mobile */
+  .desktop-hotkeys-footer {
+    display: none !important;
+  }
+
+  /* Show floating mobile navigation bar on phones */
+  .mobile-bottom-nav {
+    display: flex !important;
+  }
+
+  /* Bottom spacing for fixed mobile nav bar */
+  .app-main-content {
+    padding-bottom: 76px !important;
+  }
+
+  /* Orders Hub Mobile Adjustments */
+  .orders-hub-header {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    gap: 12px !important;
+  }
+
+  .orders-hub-subtabs {
+    width: 100% !important;
+    display: flex !important;
+  }
+
+  .orders-hub-subtabs button {
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 8px 10px !important;
+  }
+
+  .orders-hub-actions {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
+  }
+
+  .orders-hub-search {
+    flex: 1 1 140px !important;
+  }
+
+  .orders-hub-search input {
+    width: 100% !important;
+  }
+
+  .order-ticket-card {
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  .tables-grid-responsive {
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)) !important;
+    gap: 10px !important;
+  }
+
+  .kot-grid-responsive {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* On a phone, menu and ticket are intentional, reachable views—not competing grid columns. */
+  .pos-shell {
+    min-height: calc(100dvh - var(--header-height));
+    background: var(--color-background);
+  }
+
+  .mobile-pos-switcher {
+    position: sticky;
+    top: 0;
+    z-index: var(--r8-z-sticky);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 8px 10px;
+    background: var(--color-card);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .mobile-pos-switcher button {
+    min-height: var(--r8-touch-target-min);
+    border: 1px solid var(--color-border);
+    border-radius: var(--r8-radius-sm);
+    background: var(--color-muted);
+    color: var(--color-muted-foreground);
+    font-size: 0.82rem;
+    font-weight: 750;
+  }
+
+  .mobile-pos-switcher button.is-active {
+    background: var(--r8-brand-primary);
+    border-color: var(--r8-brand-primary);
+    color: var(--r8-text-inverse);
+  }
+
+  .mobile-pos-switcher span {
+    display: inline-flex;
+    min-width: 20px;
+    min-height: 20px;
+    align-items: center;
+    justify-content: center;
+    margin-left: 4px;
+    padding: 0 5px;
+    border-radius: var(--r8-radius-full);
+    background: color-mix(in srgb, currentColor 16%, transparent);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .pos-workspace {
+    display: block !important;
+    min-height: calc(100dvh - var(--header-height) - 60px);
+    height: auto !important;
+    overflow: visible !important;
+  }
+
+  .pos-catalog,
+  .pos-ticket {
+    display: none !important;
+    min-height: calc(100dvh - var(--header-height) - 60px);
+    height: auto !important;
+    border: none !important;
+  }
+
+  .pos-catalog.is-active,
+  .pos-ticket.is-active {
+    display: flex !important;
+  }
+
+  .pos-catalog-toolbar {
+    padding: 12px !important;
+  }
+
+  .pos-search-row {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+
+  .pos-dietary-filters {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .pos-dietary-filters button {
+    min-height: 40px;
+  }
+
+  .pos-category-filters {
+    margin-inline: -12px;
+    padding-inline: 12px;
+  }
+
+  .pos-menu-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    padding: 12px !important;
+    overflow: visible !important;
+  }
+
+  .pos-menu-item {
+    text-align: left;
+  }
+
+  .ticket-item-control {
+    width: var(--r8-touch-target-min) !important;
+    height: var(--r8-touch-target-min) !important;
+  }
+}
+
+/* Small Handset Screens (< 380px) */
+@media (max-width: 379px) {
+  :root {
+    --r8-page-padding: var(--r8-space-2);
+  }
+
+  .modal-overlay {
+    padding: 6px !important;
+  }
+
+  .header-restaurant-title {
+    display: none;
+  }
+
+  .dashboard-kpi-grid,
+  .dashboard-kpi-grid-6 {
+    grid-template-columns: 1fr !important;
+    gap: 10px !important;
+  }
+
+  .dashboard-greeting-actions {
+    flex-direction: column !important;
+  }
+
+  .dashboard-date-controls > div,
+  .dashboard-date-controls > button {
+    flex: 1 1 100% !important;
+  }
+}
+
+/* ── Live Settlement Ledger Responsive Cards ── */
+.live-orders-mobile-cards {
+  display: none;
+}
+
+.live-orders-desktop-table {
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .live-orders-mobile-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 12px 14px 16px;
+  }
+
+  .live-orders-desktop-table {
+    display: none !important;
+  }
+}
+
+/* ── Restaurant Details Responsive Styles ── */
+.restaurant-details-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 24px;
+  margin-bottom: 24px;
+}
+
+.restaurant-social-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 24px;
+}
+
+.restaurant-counters-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.restaurant-danger-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+/* ── Billing Pricing Plans Responsive Grid ── */
+.billing-pricing-grid {
+  display: grid;
+  grid-template-columns: 260px 1fr 1fr 1fr;
+  gap: 18px;
+  align-items: stretch;
+  max-width: 1240px;
+  margin: 0 auto;
+}
+
+/* ── Mobile Responsive Overrides: Form 1-col, Menu 2x2, neat & clean ── */
+@media (max-width: 768px) {
+  .restaurant-details-page {
+    padding: 14px 12px !important;
+    overflow-x: hidden !important;
+  }
+
+  .restaurant-details-card {
+    padding: 16px 14px !important;
+  }
+
+  .restaurant-details-form-grid,
+  .restaurant-social-grid,
+  .restaurant-danger-grid {
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+  }
+
+  .restaurant-counters-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .billing-pricing-grid {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+  }
+
+  /* POS Menu 2x2 Grid on Mobile - Small, neat and clean */
+  .pos-menu-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px !important;
+  }
+
+  .pos-menu-item .pos-dish-image-wrapper {
+    height: 95px !important;
+  }
+
+  .pos-menu-item .pos-dish-content {
+    padding: 8px 10px !important;
+    gap: 4px !important;
+  }
+
+  .pos-menu-item .pos-dish-name {
+    font-size: 0.8rem !important;
+  }
+
+  .pos-menu-item .pos-dish-meta {
+    font-size: 0.7rem !important;
+  }
+
+  /* Restaurant Switcher Modal Mobile Adaptation - Neat, small, and fits perfectly */
+  .restaurant-switcher-window {
+    width: 95% !important;
+    max-width: 440px !important;
+    max-height: 90vh !important;
+    margin: 8px auto !important;
+    border-radius: 16px !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .restaurant-switcher-body {
+    grid-template-columns: 1fr !important;
+    gap: 16px !important;
+    padding: 16px 14px 12px 14px !important;
+  }
+
+  .restaurant-switcher-actions {
+    flex-direction: column !important;
+    gap: 8px !important;
+  }
+
+  .restaurant-switcher-actions > button {
+    width: 100% !important;
+    padding: 10px 14px !important;
+    font-size: 0.82rem !important;
+  }
+
+  .restaurant-switcher-footer {
+    padding: 0 14px 16px 14px !important;
+  }
+
+  .restaurant-switcher-footer-inner {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 10px !important;
+    padding: 10px 14px !important;
+  }
+}
