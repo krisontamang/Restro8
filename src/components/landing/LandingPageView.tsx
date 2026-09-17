@@ -10,7 +10,6 @@ import {
   Flame,
   Globe,
   HelpCircle,
-  Laptop,
   Layers,
   Lock,
   Menu,
@@ -92,6 +91,14 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
     });
   };
 
+  const handleUpdateQty = (name: string, delta: number) => {
+    setPosCart((prev) =>
+      prev
+        .map((item) => (item.name === name ? { ...item, qty: item.qty + delta } : item))
+        .filter((item) => item.qty > 0)
+    );
+  };
+
   const handleSimulatePayment = () => {
     setPosSuccessChime(true);
     setTimeout(() => setPosSuccessChime(false), 2400);
@@ -137,8 +144,8 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
       className="r8-landing-root"
       style={{
         minHeight: '100vh',
-        backgroundColor: '#070B11',
-        color: '#F8FAFC',
+        backgroundColor: '#FFFFFF',
+        color: '#0F172A',
         fontFamily: "'Plus Jakarta Sans', system-ui, -apple-system, sans-serif",
       }}
     >
@@ -148,12 +155,13 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
           position: 'sticky',
           top: 0,
           zIndex: 100,
-          backgroundColor: 'rgba(7, 11, 17, 0.85)',
-          backdropFilter: 'blur(20px)',
-          borderBottom: '1px solid rgba(255, 255, 255, 0.08)',
+          backgroundColor: 'rgba(255, 255, 255, 0.92)',
+          backdropFilter: 'blur(16px)',
+          borderBottom: '1px solid #E2E8F0',
           height: '72px',
           display: 'flex',
           alignItems: 'center',
+          transition: 'all 0.2s ease',
         }}
       >
         <div
@@ -167,6 +175,7 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
             justifyContent: 'space-between',
           }}
         >
+          {/* Left: Brand Logo */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '36px' }}>
             <div
               style={{ cursor: 'pointer', display: 'flex', alignItems: 'center' }}
@@ -175,67 +184,107 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
               <BrandLogo />
             </div>
 
-            <nav className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '24px' }}>
+            {/* Desktop Navigation Links */}
+            <nav className="desktop-nav" style={{ display: 'flex', alignItems: 'center', gap: '28px' }}>
               <a
                 href="#features"
-                style={{ color: '#94A3B8', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, transition: 'color 0.15s' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFF')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#94A3B8')}
+                style={{
+                  color: '#475569',
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  transition: 'color 0.15s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#0F8F6F')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#475569')}
               >
                 Features
               </a>
               <a
                 href="#solutions"
-                style={{ color: '#94A3B8', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, transition: 'color 0.15s' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFF')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#94A3B8')}
+                style={{
+                  color: '#475569',
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  transition: 'color 0.15s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#0F8F6F')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#475569')}
               >
                 Live Interactive Demo
               </a>
               <a
+                href="#comparison"
+                style={{
+                  color: '#475569',
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  transition: 'color 0.15s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#0F8F6F')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#475569')}
+              >
+                Why Restro8
+              </a>
+              <a
                 href="#pricing"
-                style={{ color: '#94A3B8', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, transition: 'color 0.15s' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFF')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#94A3B8')}
+                style={{
+                  color: '#475569',
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  transition: 'color 0.15s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#0F8F6F')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#475569')}
               >
                 Pricing
               </a>
               <a
                 href="#faq"
-                style={{ color: '#94A3B8', textDecoration: 'none', fontSize: '0.88rem', fontWeight: 600, transition: 'color 0.15s' }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = '#FFF')}
-                onMouseLeave={(e) => (e.currentTarget.style.color = '#94A3B8')}
+                style={{
+                  color: '#475569',
+                  textDecoration: 'none',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  transition: 'color 0.15s',
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = '#0F8F6F')}
+                onMouseLeave={(e) => (e.currentTarget.style.color = '#475569')}
               >
                 FAQ
               </a>
             </nav>
           </div>
 
+          {/* Right: Actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <button
               type="button"
               onClick={onNavigateMenu}
               style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                border: '1px solid rgba(255, 255, 255, 0.12)',
-                color: '#CBD5E1',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                color: '#334155',
                 padding: '8px 14px',
-                borderRadius: '8px',
-                fontSize: '0.82rem',
+                borderRadius: '9999px',
+                fontSize: '0.85rem',
                 fontWeight: 600,
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
+                gap: '7px',
                 cursor: 'pointer',
                 transition: 'all 0.15s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = '#0F8F6F';
-                e.currentTarget.style.color = '#10B981';
+                e.currentTarget.style.backgroundColor = '#F1F5F9';
+                e.currentTarget.style.borderColor = '#CBD5E1';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.12)';
-                e.currentTarget.style.color = '#CBD5E1';
+                e.currentTarget.style.backgroundColor = '#F8FAFC';
+                e.currentTarget.style.borderColor = '#E2E8F0';
               }}
             >
               <QrCode size={15} color="#0F8F6F" />
@@ -246,18 +295,18 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
               type="button"
               onClick={onNavigateLogin}
               style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                color: '#FFFFFF',
-                padding: '8px 18px',
+                backgroundColor: 'transparent',
+                border: 'none',
+                color: '#334155',
+                padding: '8px 16px',
                 borderRadius: '8px',
-                fontSize: '0.84rem',
+                fontSize: '0.9rem',
                 fontWeight: 600,
                 cursor: 'pointer',
-                transition: 'background-color 0.15s',
+                transition: 'color 0.15s',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)')}
+              onMouseEnter={(e) => (e.currentTarget.style.color = '#0F8F6F')}
+              onMouseLeave={(e) => (e.currentTarget.style.color = '#334155')}
             >
               Sign In
             </button>
@@ -269,85 +318,190 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
                 backgroundColor: '#0F8F6F',
                 border: 'none',
                 color: '#FFFFFF',
-                padding: '8px 18px',
-                borderRadius: '8px',
-                fontSize: '0.84rem',
+                padding: '10px 20px',
+                borderRadius: '9999px',
+                fontSize: '0.9rem',
                 fontWeight: 700,
-                cursor: 'pointer',
-                display: 'inline-flex',
+                display: 'flex',
                 alignItems: 'center',
-                gap: '6px',
-                boxShadow: '0 2px 10px rgba(15, 143, 111, 0.4)',
-                transition: 'all 0.15s',
+                gap: '8px',
+                cursor: 'pointer',
+                boxShadow: '0 4px 14px rgba(15, 143, 111, 0.25)',
+                transition: 'all 0.2s ease',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#10B981')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#0F8F6F')}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#087A60';
+                e.currentTarget.style.transform = 'translateY(-1px)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#0F8F6F';
+                e.currentTarget.style.transform = 'translateY(0)';
+              }}
             >
               <span>Launch Workspace</span>
               <ArrowRight size={15} />
             </button>
+
+            {/* Mobile Hamburger Button */}
+            <button
+              className="mobile-nav-toggle"
+              onClick={() => setMobileNavOpen((prev) => !prev)}
+              style={{
+                display: 'none',
+                backgroundColor: 'transparent',
+                border: '1px solid #E2E8F0',
+                borderRadius: '8px',
+                padding: '8px',
+                color: '#334155',
+                cursor: 'pointer',
+              }}
+              aria-label="Toggle menu"
+            >
+              {mobileNavOpen ? <X size={20} /> : <Menu size={20} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Nav Dropdown */}
+        {mobileNavOpen && (
+          <div
+            style={{
+              position: 'absolute',
+              top: '72px',
+              left: 0,
+              right: 0,
+              backgroundColor: '#FFFFFF',
+              borderBottom: '1px solid #E2E8F0',
+              padding: '20px 24px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '16px',
+              boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            <a
+              href="#features"
+              onClick={() => setMobileNavOpen(false)}
+              style={{ color: '#0F172A', textDecoration: 'none', fontWeight: 600, fontSize: '1rem' }}
+            >
+              Features
+            </a>
+            <a
+              href="#solutions"
+              onClick={() => setMobileNavOpen(false)}
+              style={{ color: '#0F172A', textDecoration: 'none', fontWeight: 600, fontSize: '1rem' }}
+            >
+              Live Interactive Demo
+            </a>
+            <a
+              href="#pricing"
+              onClick={() => setMobileNavOpen(false)}
+              style={{ color: '#0F172A', textDecoration: 'none', fontWeight: 600, fontSize: '1rem' }}
+            >
+              Pricing
+            </a>
+            <a
+              href="#faq"
+              onClick={() => setMobileNavOpen(false)}
+              style={{ color: '#0F172A', textDecoration: 'none', fontWeight: 600, fontSize: '1rem' }}
+            >
+              FAQ
+            </a>
+            <div style={{ height: '1px', backgroundColor: '#E2E8F0' }} />
+            <button
+              onClick={() => {
+                setMobileNavOpen(false);
+                onNavigateMenu();
+              }}
+              style={{
+                padding: '12px',
+                borderRadius: '10px',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                color: '#0F172A',
+                fontWeight: 600,
+                textAlign: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              Guest QR Menu View
+            </button>
+            <button
+              onClick={() => {
+                setMobileNavOpen(false);
+                onNavigateLogin();
+              }}
+              style={{
+                padding: '12px',
+                borderRadius: '10px',
+                backgroundColor: '#0F8F6F',
+                border: 'none',
+                color: '#FFFFFF',
+                fontWeight: 700,
+                textAlign: 'center',
+                cursor: 'pointer',
+              }}
+            >
+              Sign In to Workspace
+            </button>
+          </div>
+        )}
       </header>
 
-      {/* ── 2. HERO SECTION WITH AMBIENT GLOW ─────────────────────────────── */}
+      {/* ── 2. HERO SECTION ─────────────────────────────────────────────────── */}
       <section
         style={{
           position: 'relative',
-          padding: '80px 24px 70px',
+          padding: '80px 24px 60px',
+          background: 'radial-gradient(50% 50% at 50% 0%, rgba(15, 143, 111, 0.07) 0%, rgba(248, 250, 252, 0.6) 50%, #FFFFFF 100%)',
           overflow: 'hidden',
         }}
       >
-        {/* Subtle Ambient Radial Lighting */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '-15%',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            width: '950px',
-            height: '520px',
-            background: 'radial-gradient(circle, rgba(15, 143, 111, 0.22) 0%, rgba(242, 184, 75, 0.06) 50%, transparent 80%)',
-            filter: 'blur(70px)',
-            pointerEvents: 'none',
-          }}
-        />
-
-        <div style={{ maxWidth: '1240px', margin: '0 auto', position: 'relative', textAlign: 'center' }}>
-          {/* Mission Badge */}
+        <div style={{ maxWidth: '1240px', margin: '0 auto', textAlign: 'center' }}>
+          {/* Top Pill Tag */}
           <div
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              backgroundColor: 'rgba(15, 143, 111, 0.12)',
-              border: '1px solid rgba(16, 185, 129, 0.35)',
-              borderRadius: '999px',
-              padding: '6px 18px',
+              backgroundColor: '#ECFDF5',
+              border: '1px solid #A7F3D0',
+              padding: '6px 16px',
+              borderRadius: '9999px',
               marginBottom: '24px',
             }}
           >
-            <span style={{ fontSize: '0.9rem' }}>🇳🇵</span>
-            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#34D399', letterSpacing: '0.02em' }}>
+            <span
+              style={{
+                width: '8px',
+                height: '8px',
+                borderRadius: '50%',
+                backgroundColor: '#10B981',
+                boxShadow: '0 0 8px rgba(16, 185, 129, 0.8)',
+              }}
+            />
+            <span style={{ fontSize: '0.85rem', fontWeight: 700, color: '#065F46', letterSpacing: '0.01em' }}>
               Nepal's Premier Restaurant OS · 13% IRD Fiscal VAT Certified
             </span>
           </div>
 
+          {/* Main Headline */}
           <h1
             style={{
-              fontSize: 'clamp(2.4rem, 5.5vw, 4.4rem)',
+              fontSize: 'clamp(2.4rem, 5.5vw, 4.2rem)',
               fontWeight: 900,
-              lineHeight: 1.1,
-              letterSpacing: '-0.03em',
-              margin: '0 auto 24px',
+              lineHeight: 1.12,
+              letterSpacing: '-0.035em',
+              color: '#0F172A',
               maxWidth: '960px',
-              color: '#FFFFFF',
+              margin: '0 auto 20px',
             }}
           >
             Run Your Restaurant with{' '}
             <span
               style={{
-                background: 'linear-gradient(135deg, #10B981 0%, #34D399 50%, #F2B84B 100%)',
+                color: '#0F8F6F',
+                background: 'linear-gradient(135deg, #0F8F6F 0%, #059669 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
               }}
@@ -356,1051 +510,1923 @@ export const LandingPageView: React.FC<LandingPageViewProps> = ({
             </span>
           </h1>
 
+          {/* Subheadline */}
           <p
             style={{
-              fontSize: 'clamp(1.05rem, 1.8vw, 1.25rem)',
-              color: '#94A3B8',
+              fontSize: 'clamp(1rem, 2vw, 1.25rem)',
               lineHeight: 1.6,
-              maxWidth: '740px',
+              color: '#475569',
+              maxWidth: '780px',
               margin: '0 auto 36px',
+              fontWeight: 400,
             }}
           >
-            From bustling Thamel cafes and authentic Thakali kitchens to multi-outlet restro-bars — RESTRO8 unifies lightning POS billing, kitchen KOT automation, table QR ordering, and offline inventory in one elegant platform.
+            From bustling Thamel cafes and authentic Thakali kitchens to multi-outlet restro-bars — RESTRO8 unifies lightning POS billing, kitchen KOT automation, table QR ordering, and offline-first peace of mind.
           </p>
 
-          <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', flexWrap: 'wrap', marginBottom: '48px' }}>
+          {/* Hero CTAs */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '16px',
+              flexWrap: 'wrap',
+              marginBottom: '48px',
+            }}
+          >
             <button
               type="button"
               onClick={() => onLaunchWorkspace('SuperAdmin')}
               style={{
                 backgroundColor: '#0F8F6F',
-                border: 'none',
                 color: '#FFFFFF',
-                padding: '16px 34px',
+                border: 'none',
+                padding: '16px 32px',
                 borderRadius: '12px',
-                fontSize: '1.02rem',
+                fontSize: '1.05rem',
                 fontWeight: 700,
-                cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '10px',
-                boxShadow: '0 8px 24px rgba(15, 143, 111, 0.45)',
-                transition: 'all 0.18s',
+                cursor: 'pointer',
+                boxShadow: '0 10px 25px -5px rgba(15, 143, 111, 0.35)',
+                transition: 'all 0.2s ease',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = '#10B981';
+                e.currentTarget.style.backgroundColor = '#087A60';
                 e.currentTarget.style.transform = 'translateY(-2px)';
+                e.currentTarget.style.boxShadow = '0 15px 30px -5px rgba(15, 143, 111, 0.45)';
               }}
               onMouseLeave={(e) => {
                 e.currentTarget.style.backgroundColor = '#0F8F6F';
                 e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 10px 25px -5px rgba(15, 143, 111, 0.35)';
               }}
             >
-              <Zap size={20} />
+              <Zap size={18} fill="#FFFFFF" />
               <span>Launch Free Workspace (Instant Access)</span>
+              <ArrowRight size={18} />
             </button>
 
             <button
               type="button"
               onClick={onNavigateLogin}
               style={{
-                backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                border: '1px solid rgba(255, 255, 255, 0.18)',
-                color: '#FFFFFF',
-                padding: '16px 30px',
+                backgroundColor: '#FFFFFF',
+                color: '#1E293B',
+                border: '1px solid #CBD5E1',
+                padding: '16px 28px',
                 borderRadius: '12px',
-                fontSize: '1.02rem',
+                fontSize: '1.05rem',
                 fontWeight: 600,
-                cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '8px',
-                transition: 'background-color 0.15s',
+                gap: '10px',
+                cursor: 'pointer',
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.04)',
+                transition: 'all 0.15s',
               }}
-              onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.12)')}
-              onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.06)')}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.backgroundColor = '#F8FAFC';
+                e.currentTarget.style.borderColor = '#94A3B8';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.backgroundColor = '#FFFFFF';
+                e.currentTarget.style.borderColor = '#CBD5E1';
+              }}
             >
-              <ShieldCheck size={20} style={{ color: '#10B981' }} />
+              <ShieldCheck size={18} color="#0F8F6F" />
               <span>Sign In / Demo Role Access</span>
             </button>
           </div>
 
-          {/* Social Proof Stats Ribbon */}
+          {/* 4 Value Metric Badges */}
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
               gap: '16px',
-              maxWidth: '980px',
-              margin: '0 auto',
-              padding: '20px 24px',
-              backgroundColor: 'rgba(255, 255, 255, 0.03)',
-              borderRadius: '16px',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              backdropFilter: 'blur(10px)',
+              maxWidth: '1060px',
+              margin: '0 auto 64px',
             }}
           >
-            <div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#10B981' }}>100%</div>
-              <div style={{ fontSize: '0.8rem', color: '#94A3B8', fontWeight: 500 }}>Offline-Ready Architecture</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#F2B84B' }}>13% VAT</div>
-              <div style={{ fontSize: '0.8rem', color: '#94A3B8', fontWeight: 500 }}>Nepal IRD Tax Compliant</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#60A5FA' }}>&lt; 1.2s</div>
-              <div style={{ fontSize: '0.8rem', color: '#94A3B8', fontWeight: 500 }}>Fast Thermal Bill Printing</div>
-            </div>
-            <div>
-              <div style={{ fontSize: '1.75rem', fontWeight: 800, color: '#A78BFA' }}>1,200+</div>
-              <div style={{ fontSize: '0.8rem', color: '#94A3B8', fontWeight: 500 }}>Restaurants Across Nepal</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* ── 3. INTERACTIVE LIVE PRODUCT DEMO WIDGET ───────────────────────── */}
-      <section
-        id="solutions"
-        style={{
-          padding: '60px 24px 80px',
-          maxWidth: '1240px',
-          margin: '0 auto',
-        }}
-      >
-        <div style={{ textAlign: 'center', marginBottom: '32px' }}>
-          <p style={{ color: '#10B981', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 8px' }}>
-            Hands-on Workspace Simulator
-          </p>
-          <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 800, margin: 0 }}>
-            Crafted for speed on the counter, calm in the kitchen.
-          </h2>
-          <p style={{ color: '#94A3B8', fontSize: '0.92rem', marginTop: '8px' }}>
-            Click the tabs below to test POS billing, kitchen KDS bumping, and table QR ordering live:
-          </p>
-        </div>
-
-        {/* Top Segmented Pill Bar matching RestroLinkView design */}
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '6px',
-            backgroundColor: 'rgba(255, 255, 255, 0.04)',
-            padding: '5px',
-            borderRadius: '12px',
-            border: '1px solid rgba(255, 255, 255, 0.09)',
-            width: 'fit-content',
-            margin: '0 auto 30px',
-            flexWrap: 'wrap',
-          }}
-        >
-          {[
-            { id: 'pos', label: 'Counter POS & Billing', icon: ShoppingBag },
-            { id: 'kds', label: 'Kitchen KOT / BOT Display', icon: Flame },
-            { id: 'qr', label: 'Table QR Ordering (Mobile)', icon: QrCode },
-            { id: 'finance', label: 'Day Book & 13% VAT', icon: Receipt },
-          ].map((tab) => {
-            const Icon = tab.icon;
-            const active = activeShowcaseTab === tab.id;
-            return (
-              <button
-                key={tab.id}
-                type="button"
-                onClick={() => setActiveShowcaseTab(tab.id as any)}
+            {[
+              {
+                stat: '100%',
+                label: 'Offline-Ready Architecture',
+                sub: 'Continuous POS billing with zero internet',
+                icon: WifiOff,
+                color: '#0F8F6F',
+                bg: '#ECFDF5',
+              },
+              {
+                stat: '13% VAT',
+                label: 'Nepal IRD Tax Compliant',
+                sub: 'Sequential audit bills & Day Book register',
+                icon: ShieldCheck,
+                color: '#0284C7',
+                bg: '#F0F9FF',
+              },
+              {
+                stat: '< 1.2s',
+                label: 'Fast Thermal Bill Printing',
+                sub: '80mm/58mm split KOT to kitchen line',
+                icon: Printer,
+                color: '#D97706',
+                bg: '#FFFBEB',
+              },
+              {
+                stat: '1,200+',
+                label: 'Restaurants Across Nepal',
+                sub: 'Kathmandu, Pokhara, Chitwan & Lalitpur',
+                icon: Users,
+                color: '#7C3AED',
+                bg: '#F5F3FF',
+              },
+            ].map((item, idx) => (
+              <div
+                key={idx}
                 style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '8px',
-                  padding: '9px 20px',
-                  borderRadius: '9px',
-                  fontSize: '0.86rem',
-                  fontWeight: active ? 800 : 600,
-                  border: 'none',
-                  backgroundColor: active ? '#0F8F6F' : 'transparent',
-                  color: active ? '#FFFFFF' : '#94A3B8',
-                  cursor: 'pointer',
-                  boxShadow: active ? '0 4px 14px rgba(15, 143, 111, 0.35)' : 'none',
-                  transition: 'all 0.15s ease',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #E2E8F0',
+                  borderRadius: '16px',
+                  padding: '20px 18px',
+                  textAlign: 'left',
+                  boxShadow: '0 4px 12px rgba(15, 23, 42, 0.04)',
+                  transition: 'transform 0.2s, box-shadow 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-3px)';
+                  e.currentTarget.style.boxShadow = '0 12px 24px rgba(15, 23, 42, 0.08)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(15, 23, 42, 0.04)';
                 }}
               >
-                <Icon size={16} />
-                <span>{tab.label}</span>
-              </button>
-            );
-          })}
-        </div>
-
-        {/* ── SHOWCASE CONTENT FRAME ────────────────────────────────────────── */}
-        <div
-          className="landing-showcase-container"
-          style={{
-            backgroundColor: '#0C121D',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            borderRadius: '20px',
-            padding: '32px',
-            boxShadow: '0 25px 60px -20px rgba(0, 0, 0, 0.7)',
-            minHeight: '440px',
-          }}
-        >
-          {/* TAB 1: POS TERMINAL SIMULATOR */}
-          {activeShowcaseTab === 'pos' && (
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '28px' }}>
-              {/* Left Column: Quick Dish Picker */}
-              <div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
-                  <div>
-                    <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: 0, color: '#FFFFFF' }}>Quick POS Punching</h3>
-                    <small style={{ color: '#94A3B8', fontSize: '0.78rem' }}>Tap any item to add to the live order bill:</small>
-                  </div>
-                  <span
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                  <span style={{ fontSize: '1.75rem', fontWeight: 900, color: item.color, letterSpacing: '-0.02em' }}>
+                    {item.stat}
+                  </span>
+                  <div
                     style={{
-                      padding: '4px 10px',
-                      borderRadius: '8px',
-                      backgroundColor: 'rgba(16, 185, 129, 0.12)',
-                      color: '#10B981',
-                      fontSize: '0.75rem',
-                      fontWeight: 700,
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '10px',
+                      backgroundColor: item.bg,
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
                   >
-                    Table #04 (Dine-in)
+                    <item.icon size={18} color={item.color} />
+                  </div>
+                </div>
+                <div style={{ fontSize: '0.92rem', fontWeight: 700, color: '#0F172A', marginBottom: '4px' }}>
+                  {item.label}
+                </div>
+                <div style={{ fontSize: '0.8rem', color: '#64748B', lineHeight: 1.4 }}>
+                  {item.sub}
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* ── HERO PRODUCT MOCKUP WITH FLOATING CARDS ──────────────────────── */}
+          <div style={{ position: 'relative', maxWidth: '1100px', margin: '0 auto' }}>
+            {/* Main Mockup Screen Container */}
+            <div
+              style={{
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #CBD5E1',
+                borderRadius: '20px',
+                boxShadow: '0 25px 60px -12px rgba(15, 23, 42, 0.15), 0 0 0 1px rgba(15, 23, 42, 0.02)',
+                overflow: 'hidden',
+                textAlign: 'left',
+              }}
+            >
+              {/* Mockup Browser/App Chrome Header */}
+              <div
+                style={{
+                  height: '46px',
+                  backgroundColor: '#F8FAFC',
+                  borderBottom: '1px solid #E2E8F0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  padding: '0 18px',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <span style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#EF4444' }} />
+                  <span style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#F59E0B' }} />
+                  <span style={{ width: '12px', height: '12px', borderRadius: '50%', backgroundColor: '#10B981' }} />
+                  <span style={{ marginLeft: '12px', fontSize: '0.8rem', fontWeight: 600, color: '#64748B' }}>
+                    RESTRO8 Enterprise POS — Himalayan Thakali Kitchen (Jhamsikhel)
                   </span>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
-                  {[
-                    { name: 'Special Thakali Khana Set', price: 480, tag: 'Best Seller', icon: '🍛' },
-                    { name: 'Steamed Chicken MoMo (10 pcs)', price: 260, tag: 'Quick Prep', icon: '🥟' },
-                    { name: 'Chicken Sekuwa Plate', price: 360, tag: 'Clay Oven', icon: '🍢' },
-                    { name: 'Himalayan Herbal Chiya', price: 90, tag: 'Beverage', icon: '☕' },
-                    { name: 'Garlic Butter Naan', price: 110, tag: 'Tandoori', icon: '🫓' },
-                    { name: 'Gorkha Beer 650ml', price: 540, tag: 'Bar BOT', icon: '🍺' },
-                  ].map((item) => (
-                    <div
-                      key={item.name}
-                      onClick={() => handleAddPosItem(item.name, item.price)}
-                      style={{
-                        padding: '12px',
-                        borderRadius: '12px',
-                        backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                        border: '1px solid rgba(255, 255, 255, 0.08)',
-                        cursor: 'pointer',
-                        transition: 'all 0.15s ease',
-                      }}
-                      onMouseEnter={(e) => {
-                        e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.07)';
-                        e.currentTarget.style.borderColor = 'rgba(15, 143, 111, 0.4)';
-                      }}
-                      onMouseLeave={(e) => {
-                        e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.03)';
-                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                      }}
-                    >
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-                        <span style={{ fontSize: '1.3rem' }}>{item.icon}</span>
-                        <span style={{ fontSize: '0.68rem', padding: '2px 6px', borderRadius: '4px', backgroundColor: 'rgba(255, 255, 255, 0.06)', color: '#94A3B8' }}>
-                          {item.tag}
-                        </span>
-                      </div>
-                      <div style={{ fontSize: '0.84rem', fontWeight: 700, color: '#F1F5F9', marginBottom: '4px' }}>{item.name}</div>
-                      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <span style={{ fontSize: '0.88rem', fontWeight: 800, color: '#F2B84B' }}>रू {item.price}</span>
-                        <span style={{ fontSize: '0.74rem', color: '#10B981', fontWeight: 700 }}>+ Add</span>
-                      </div>
-                    </div>
-                  ))}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                  <span
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '5px',
+                      fontSize: '0.75rem',
+                      fontWeight: 700,
+                      backgroundColor: '#ECFDF5',
+                      color: '#065F46',
+                      padding: '3px 9px',
+                      borderRadius: '9999px',
+                    }}
+                  >
+                    <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981' }} />
+                    Terminal #01 Active
+                  </span>
+                  <span style={{ fontSize: '0.75rem', color: '#94A3B8' }}>ESC/POS 80mm Ready</span>
                 </div>
               </div>
 
-              {/* Right Column: Live Bill Receipt */}
+              {/* Mockup Body: Two Column Live POS Preview */}
               <div
                 style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                  borderRadius: '16px',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  padding: '20px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'space-between',
+                  display: 'grid',
+                  gridTemplateColumns: '1.6fr 1fr',
+                  minHeight: '440px',
+                  backgroundColor: '#F8FAFC',
                 }}
               >
-                <div>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px dashed rgba(255, 255, 255, 0.12)', paddingBottom: '12px', marginBottom: '14px' }}>
-                    <div>
-                      <strong style={{ fontSize: '0.95rem', color: '#FFFFFF' }}>Live Tax Invoice</strong>
-                      <div style={{ fontSize: '0.74rem', color: '#64748B' }}>Bill #80/81-004291 · IRD Reg. 601234567</div>
+                {/* Left: Menu & Table Selection */}
+                <div style={{ padding: '24px', borderRight: '1px solid #E2E8F0' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '18px' }}>
+                    <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+                      {['All Dishes', 'Thakali Specials', 'MoMo & Khaja', 'Beverages'].map((cat, i) => (
+                        <button
+                          key={cat}
+                          type="button"
+                          style={{
+                            padding: '6px 14px',
+                            borderRadius: '8px',
+                            border: '1px solid',
+                            borderColor: i === 0 ? '#0F8F6F' : '#E2E8F0',
+                            backgroundColor: i === 0 ? '#0F8F6F' : '#FFFFFF',
+                            color: i === 0 ? '#FFFFFF' : '#334155',
+                            fontSize: '0.82rem',
+                            fontWeight: 600,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          {cat}
+                        </button>
+                      ))}
                     </div>
-                    <span style={{ fontSize: '0.78rem', color: '#10B981', fontWeight: 700 }}>● Connected</span>
+                    <span style={{ fontSize: '0.8rem', color: '#64748B', fontWeight: 600 }}>Table: #04 (Dine-in)</span>
                   </div>
 
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '180px', overflowY: 'auto', marginBottom: '16px' }}>
-                    {posCart.map((item, idx) => (
-                      <div key={idx} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.84rem' }}>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <span style={{ color: '#94A3B8', fontWeight: 700 }}>{item.qty}×</span>
-                          <span style={{ color: '#E2E8F0' }}>{item.name}</span>
+                  {/* Menu Items Grid */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: '12px' }}>
+                    {[
+                      { name: 'Special Thakali Khana Set', cat: 'Traditional', price: 480, tag: 'Bestseller' },
+                      { name: 'Steamed Chicken MoMo', cat: '10 pcs with achar', price: 260, tag: 'Chef Choice' },
+                      { name: 'Chicken Sekuwa Plate', cat: 'Charcoal grilled', price: 360, tag: 'Hot' },
+                      { name: 'Buff C-MoMo (Spicy Gravy)', cat: 'Signature chili broth', price: 310, tag: 'Popular' },
+                      { name: 'Himalayan Herbal Chiya', cat: 'Hot Masala Brew', price: 90, tag: 'Organic' },
+                      { name: 'Fresh Mint Lime Soda', cat: 'Chilled beverage', price: 140, tag: 'Refresher' },
+                    ].map((dish, idx) => (
+                      <div
+                        key={idx}
+                        onClick={() => handleAddPosItem(dish.name, dish.price)}
+                        style={{
+                          backgroundColor: '#FFFFFF',
+                          border: '1px solid #E2E8F0',
+                          borderRadius: '12px',
+                          padding: '12px',
+                          cursor: 'pointer',
+                          transition: 'all 0.15s',
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.borderColor = '#0F8F6F';
+                          e.currentTarget.style.boxShadow = '0 4px 12px rgba(15, 143, 111, 0.12)';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.borderColor = '#E2E8F0';
+                          e.currentTarget.style.boxShadow = 'none';
+                        }}
+                      >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '8px' }}>
+                          <span
+                            style={{
+                              fontSize: '0.68rem',
+                              fontWeight: 700,
+                              backgroundColor: '#ECFDF5',
+                              color: '#065F46',
+                              padding: '2px 6px',
+                              borderRadius: '4px',
+                            }}
+                          >
+                            {dish.tag}
+                          </span>
+                          <span style={{ fontSize: '0.85rem', fontWeight: 800, color: '#0F8F6F' }}>
+                            रू {dish.price}
+                          </span>
                         </div>
-                        <span style={{ fontWeight: 700, color: '#FFFFFF' }}>रू {item.price * item.qty}</span>
+                        <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0F172A', marginBottom: '2px' }}>
+                          {dish.name}
+                        </div>
+                        <div style={{ fontSize: '0.75rem', color: '#64748B' }}>{dish.cat}</div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Right: Active Order Ticket & Billing */}
+                <div style={{ padding: '24px', backgroundColor: '#FFFFFF', display: 'flex', flexDirection: 'column' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
+                    <div>
+                      <div style={{ fontSize: '0.95rem', fontWeight: 800, color: '#0F172A' }}>Active Bill #INV-2081-492</div>
+                      <div style={{ fontSize: '0.78rem', color: '#64748B' }}>Dine-In · Waiter: Ramesh K.</div>
+                    </div>
+                    <span
+                      style={{
+                        backgroundColor: '#ECFDF5',
+                        border: '1px solid #A7F3D0',
+                        color: '#065F46',
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        padding: '3px 8px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      IRD 13% Active
+                    </span>
+                  </div>
+
+                  {/* Cart Items List */}
+                  <div style={{ flex: 1, overflowY: 'auto', marginBottom: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    {posCart.map((item) => (
+                      <div
+                        key={item.name}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          padding: '8px 10px',
+                          backgroundColor: '#F8FAFC',
+                          borderRadius: '8px',
+                          border: '1px solid #E2E8F0',
+                        }}
+                      >
+                        <div style={{ flex: 1, minWidth: 0, paddingRight: '8px' }}>
+                          <div style={{ fontSize: '0.82rem', fontWeight: 700, color: '#0F172A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                            {item.name}
+                          </div>
+                          <div style={{ fontSize: '0.75rem', color: '#64748B' }}>
+                            रू {item.price} × {item.qty}
+                          </div>
+                        </div>
+
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleUpdateQty(item.name, -1);
+                            }}
+                            style={{
+                              width: '24px',
+                              height: '24px',
+                              borderRadius: '6px',
+                              border: '1px solid #CBD5E1',
+                              backgroundColor: '#FFFFFF',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            <Minus size={12} />
+                          </button>
+                          <span style={{ fontSize: '0.82rem', fontWeight: 800, minWidth: '16px', textAlign: 'center' }}>
+                            {item.qty}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleUpdateQty(item.name, 1);
+                            }}
+                            style={{
+                              width: '24px',
+                              height: '24px',
+                              borderRadius: '6px',
+                              border: '1px solid #CBD5E1',
+                              backgroundColor: '#FFFFFF',
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              cursor: 'pointer',
+                            }}
+                          >
+                            <Plus size={12} />
+                          </button>
+                          <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#0F172A', minWidth: '55px', textAlign: 'right' }}>
+                            रू {item.price * item.qty}
+                          </span>
+                        </div>
                       </div>
                     ))}
                   </div>
 
-                  {/* Calculations breakdown */}
-                  <div style={{ borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '10px', display: 'flex', flexDirection: 'column', gap: '4px', fontSize: '0.78rem', color: '#94A3B8' }}>
+                  {/* Calculations */}
+                  <div
+                    style={{
+                      borderTop: '1px dashed #CBD5E1',
+                      paddingTop: '12px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '6px',
+                      fontSize: '0.8rem',
+                      color: '#475569',
+                      marginBottom: '16px',
+                    }}
+                  >
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <span>Subtotal</span>
                       <span>रू {posSubtotal.toLocaleString()}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span>Service Charge (10%)</span>
+                      <span>10% Service Charge</span>
                       <span>रू {posServiceCharge.toLocaleString()}</span>
                     </div>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      <span>Inland Revenue VAT (13%)</span>
+                      <span>13% VAT (Nepal IRD)</span>
                       <span>रू {posVat.toLocaleString()}</span>
                     </div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '1.05rem', fontWeight: 800, color: '#F2B84B', marginTop: '6px', paddingTop: '6px', borderTop: '1px dashed rgba(255, 255, 255, 0.15)' }}>
-                      <span>Grand Total (NPR)</span>
-                      <span>रू {posGrandTotal.toLocaleString()}</span>
+                    <div
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        fontSize: '1rem',
+                        fontWeight: 900,
+                        color: '#0F172A',
+                        paddingTop: '6px',
+                        borderTop: '1px solid #E2E8F0',
+                      }}
+                    >
+                      <span>Grand Total</span>
+                      <span style={{ color: '#0F8F6F' }}>रू {posGrandTotal.toLocaleString()}</span>
                     </div>
                   </div>
-                </div>
 
-                <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
-                  <button
-                    type="button"
-                    onClick={handleSimulatePayment}
+                  {/* Action Buttons */}
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
+                    <button
+                      type="button"
+                      onClick={handleSimulatePayment}
+                      style={{
+                        backgroundColor: '#F8FAFC',
+                        border: '1px solid #CBD5E1',
+                        color: '#334155',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        fontSize: '0.82rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px',
+                      }}
+                    >
+                      <Printer size={15} />
+                      <span>Print KOT</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={handleSimulatePayment}
+                      style={{
+                        backgroundColor: '#0F8F6F',
+                        border: 'none',
+                        color: '#FFFFFF',
+                        padding: '10px',
+                        borderRadius: '8px',
+                        fontSize: '0.82rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px',
+                        boxShadow: '0 2px 8px rgba(15, 143, 111, 0.3)',
+                      }}
+                    >
+                      <QrCode size={15} />
+                      <span>Fonepay Settle</span>
+                    </button>
+                  </div>
+
+                  {posSuccessChime && (
+                    <div
+                      style={{
+                        marginTop: '10px',
+                        padding: '8px 12px',
+                        backgroundColor: '#ECFDF5',
+                        border: '1px solid #A7F3D0',
+                        borderRadius: '6px',
+                        fontSize: '0.78rem',
+                        color: '#065F46',
+                        fontWeight: 700,
+                        textAlign: 'center',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px',
+                      }}
+                    >
+                      <CheckCircle2 size={15} color="#10B981" />
+                      <span>Invoice Printed & Fonepay Settled (रू {posGrandTotal})</span>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+
+            {/* ── FLOATING REALISTIC SAAS BADGES (Matching RestroX) ────────────── */}
+            {/* 1. Floating Live QR Order Badge (Top Right) */}
+            <div
+              className="r8-float"
+              style={{
+                position: 'absolute',
+                top: '-20px',
+                right: '-24px',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #CBD5E1',
+                borderRadius: '16px',
+                padding: '16px 20px',
+                boxShadow: '0 20px 30px -10px rgba(15, 23, 42, 0.15)',
+                maxWidth: '290px',
+                textAlign: 'left',
+                zIndex: 20,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    color: '#065F46',
+                    backgroundColor: '#ECFDF5',
+                    padding: '3px 8px',
+                    borderRadius: '6px',
+                  }}
+                >
+                  <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981' }} />
+                  New QR Order
+                </span>
+                <span style={{ fontSize: '0.75rem', fontWeight: 600, color: '#64748B' }}>Table 07 · Just now</span>
+              </div>
+              <div style={{ fontSize: '0.86rem', fontWeight: 700, color: '#0F172A', marginBottom: '2px' }}>
+                2× Chicken MoMo, 1× Chiya
+              </div>
+              <div style={{ fontSize: '0.82rem', color: '#0F8F6F', fontWeight: 800, marginBottom: '10px' }}>
+                Total: रू 610.00
+              </div>
+              <div style={{ display: 'flex', gap: '6px' }}>
+                <button
+                  type="button"
+                  onClick={() => onLaunchWorkspace('chef')}
+                  style={{
+                    flex: 1,
+                    backgroundColor: '#0F8F6F',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    padding: '6px 10px',
+                    borderRadius: '6px',
+                    fontSize: '0.75rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                  }}
+                >
+                  Accept to KDS
+                </button>
+                <button
+                  type="button"
+                  style={{
+                    backgroundColor: '#F1F5F9',
+                    color: '#475569',
+                    border: 'none',
+                    padding: '6px 10px',
+                    borderRadius: '6px',
+                    fontSize: '0.75rem',
+                    fontWeight: 600,
+                    cursor: 'pointer',
+                  }}
+                >
+                  Decline
+                </button>
+              </div>
+            </div>
+
+            {/* 2. Floating Live Revenue Card (Bottom Left) */}
+            <div
+              className="r8-float"
+              style={{
+                position: 'absolute',
+                bottom: '-28px',
+                left: '-24px',
+                backgroundColor: '#FFFFFF',
+                border: '1px solid #CBD5E1',
+                borderRadius: '16px',
+                padding: '16px 20px',
+                boxShadow: '0 20px 30px -10px rgba(15, 23, 42, 0.15)',
+                minWidth: '240px',
+                textAlign: 'left',
+                zIndex: 20,
+              }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <span style={{ fontSize: '0.78rem', fontWeight: 600, color: '#64748B' }}>Today's Net Sales</span>
+                <span
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    fontSize: '0.72rem',
+                    fontWeight: 700,
+                    color: '#065F46',
+                    backgroundColor: '#ECFDF5',
+                    padding: '2px 6px',
+                    borderRadius: '4px',
+                  }}
+                >
+                  <TrendingUp size={12} />
+                  +18.4%
+                </span>
+              </div>
+              <div style={{ fontSize: '1.45rem', fontWeight: 900, color: '#0F172A', letterSpacing: '-0.02em', marginBottom: '6px' }}>
+                रू 64,820.00
+              </div>
+              {/* Mini Sparkline Bar Chart */}
+              <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '24px' }}>
+                {[30, 45, 60, 40, 85, 95, 70, 90, 100, 80].map((h, i) => (
+                  <div
+                    key={i}
                     style={{
                       flex: 1,
-                      backgroundColor: posSuccessChime ? '#10B981' : '#0F8F6F',
-                      border: 'none',
-                      color: '#FFFFFF',
-                      padding: '12px',
-                      borderRadius: '8px',
-                      fontSize: '0.88rem',
-                      fontWeight: 700,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      gap: '6px',
-                      boxShadow: '0 4px 14px rgba(15, 143, 111, 0.35)',
+                      height: `${h}%`,
+                      backgroundColor: i === 8 ? '#0F8F6F' : '#E2E8F0',
+                      borderRadius: '2px',
                     }}
-                  >
-                    {posSuccessChime ? <CheckCircle2 size={16} /> : <QrCode size={16} />}
-                    <span>{posSuccessChime ? 'Fonepay Paid (Done!)' : 'Collect Fonepay QR'}</span>
-                  </button>
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
+      {/* ── 3. TRUSTED BY / SOCIAL PROOF STRIP ──────────────────────────────── */}
+      <section
+        style={{
+          borderTop: '1px solid #E2E8F0',
+          borderBottom: '1px solid #E2E8F0',
+          backgroundColor: '#F8FAFC',
+          padding: '28px 24px',
+          textAlign: 'center',
+        }}
+      >
+        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+          <p
+            style={{
+              fontSize: '0.82rem',
+              fontWeight: 700,
+              color: '#64748B',
+              letterSpacing: '0.08em',
+              textTransform: 'uppercase',
+              marginBottom: '16px',
+            }}
+          >
+            Trusted by 1,200+ food & beverage businesses across Nepal
+          </p>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '24px',
+              flexWrap: 'wrap',
+            }}
+          >
+            {[
+              'Kathmandu (Thamel & Jhamsikhel)',
+              'Pokhara (Lakeside)',
+              'Lalitpur (Patan Durbar)',
+              'Chitwan (Sauraha)',
+              'Biratnagar',
+              'Butwal',
+              'Dharan',
+            ].map((city) => (
+              <span
+                key={city}
+                style={{
+                  fontSize: '0.85rem',
+                  fontWeight: 600,
+                  color: '#475569',
+                  backgroundColor: '#FFFFFF',
+                  padding: '6px 14px',
+                  borderRadius: '9999px',
+                  border: '1px solid #E2E8F0',
+                  boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
+                }}
+              >
+                📍 {city}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 4. CORE CAPABILITIES (6 CLEAN WHITE CARDS) ────────────────────── */}
+      <section id="features" style={{ padding: '80px 24px', backgroundColor: '#FFFFFF' }}>
+        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 56px' }}>
+            <span
+              style={{
+                fontSize: '0.82rem',
+                fontWeight: 800,
+                color: '#0F8F6F',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                marginBottom: '8px',
+                display: 'inline-block',
+              }}
+            >
+              Enterprise-Grade Features
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)',
+                fontWeight: 900,
+                color: '#0F172A',
+                letterSpacing: '-0.03em',
+                marginBottom: '16px',
+              }}
+            >
+              Everything you need to run your restaurant seamlessly.
+            </h2>
+            <p style={{ fontSize: '1.05rem', color: '#64748B', lineHeight: 1.6 }}>
+              Built specifically for the realities of Nepal hospitality — power cuts, unstable internet, split bills, and strict IRD fiscal tax regulations.
+            </p>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+              gap: '24px',
+            }}
+          >
+            {[
+              {
+                icon: Zap,
+                color: '#0F8F6F',
+                bg: '#ECFDF5',
+                title: 'Ultra-Fast POS Billing & Invoicing',
+                desc: 'Punch orders in 2 taps, merge tables, apply item-level discounts, and split payments between Cash, Fonepay, and Card in seconds.',
+                badge: '< 1.2s bill cycle',
+              },
+              {
+                icon: WifiOff,
+                color: '#0284C7',
+                bg: '#F0F9FF',
+                title: '100% Offline-First Architecture',
+                desc: 'Kathmandu fiber cut or storm? RESTRO8 never stops. Print KOTs and finalize bills completely offline, syncing safely once reconnected.',
+                badge: 'Zero downtime',
+              },
+              {
+                icon: Utensils,
+                color: '#D97706',
+                bg: '#FFFBEB',
+                title: 'Live Kitchen Display (KDS) & KOT',
+                desc: 'Send items straight to kitchen screens or thermal ticket printers. Food items route to Kitchen KOT and drinks route to Bar BOT automatically.',
+                badge: 'Multi-station routing',
+              },
+              {
+                icon: QrCode,
+                color: '#7C3AED',
+                bg: '#F5F3FF',
+                title: 'Contactless Table QR Ordering',
+                desc: 'Guests scan the table QR with their phone camera to browse photo menus in English or Nepali and submit orders directly to your kitchen.',
+                badge: 'No app download',
+              },
+              {
+                icon: ShieldCheck,
+                color: '#0F8F6F',
+                bg: '#ECFDF5',
+                title: 'Nepal IRD 13% VAT Fiscal Compliance',
+                desc: 'Sequential bill numbering, 10% Service Charge calculations, daily Day Book registers, and single-click CSV exports for IRD audits.',
+                badge: 'Nepal Tax Ready',
+              },
+              {
+                icon: Receipt,
+                color: '#EA580C',
+                bg: '#FFF7ED',
+                title: 'Fonepay & Dynamic QR Payments',
+                desc: 'Display dynamic Fonepay, NepalPay, and eSewa QR codes directly on guest receipts for instant, error-free cashier settlement.',
+                badge: 'Instant QR Pay',
+              },
+            ].map((feat, idx) => (
+              <div
+                key={idx}
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #E2E8F0',
+                  borderRadius: '16px',
+                  padding: '32px',
+                  boxShadow: '0 4px 12px rgba(15, 23, 42, 0.03)',
+                  transition: 'all 0.2s ease',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-4px)';
+                  e.currentTarget.style.borderColor = feat.color;
+                  e.currentTarget.style.boxShadow = '0 16px 32px rgba(15, 23, 42, 0.08)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = 'translateY(0)';
+                  e.currentTarget.style.borderColor = '#E2E8F0';
+                  e.currentTarget.style.boxShadow = '0 4px 12px rgba(15, 23, 42, 0.03)';
+                }}
+              >
+                <div>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
+                    <div
+                      style={{
+                        width: '48px',
+                        height: '48px',
+                        borderRadius: '12px',
+                        backgroundColor: feat.bg,
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                      }}
+                    >
+                      <feat.icon size={24} color={feat.color} />
+                    </div>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        color: feat.color,
+                        backgroundColor: feat.bg,
+                        padding: '4px 10px',
+                        borderRadius: '9999px',
+                      }}
+                    >
+                      {feat.badge}
+                    </span>
+                  </div>
+
+                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, color: '#0F172A', marginBottom: '10px' }}>
+                    {feat.title}
+                  </h3>
+                  <p style={{ fontSize: '0.92rem', color: '#64748B', lineHeight: 1.6 }}>
+                    {feat.desc}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 5. INTERACTIVE LIVE PRODUCT SIMULATOR TABS ───────────────────────── */}
+      <section id="solutions" style={{ padding: '80px 24px', backgroundColor: '#F8FAFC', borderTop: '1px solid #E2E8F0' }}>
+        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 40px' }}>
+            <span
+              style={{
+                fontSize: '0.82rem',
+                fontWeight: 800,
+                color: '#0F8F6F',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                marginBottom: '8px',
+                display: 'inline-block',
+              }}
+            >
+              Hands-On Simulator
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)',
+                fontWeight: 900,
+                color: '#0F172A',
+                letterSpacing: '-0.03em',
+                marginBottom: '16px',
+              }}
+            >
+              Experience RESTRO8 right here in your browser.
+            </h2>
+            <p style={{ fontSize: '1.05rem', color: '#64748B' }}>
+              Click between tools below to interact with real workflows — POS billing, Kitchen KDS tickets, and Guest Table QR ordering.
+            </p>
+          </div>
+
+          {/* Segmented Tab Pill Selector */}
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              backgroundColor: '#FFFFFF',
+              padding: '6px',
+              borderRadius: '12px',
+              width: 'fit-content',
+              margin: '0 auto 36px',
+              border: '1px solid #E2E8F0',
+              boxShadow: '0 2px 6px rgba(0, 0, 0, 0.03)',
+              flexWrap: 'wrap',
+            }}
+          >
+            {[
+              { id: 'pos', label: '⚡ POS Billing Terminal', icon: ShoppingBag },
+              { id: 'kds', label: '👨‍🍳 Kitchen KDS Line', icon: UtensilsCrossed },
+              { id: 'qr', label: '📱 Guest Table QR Menu', icon: QrCode },
+              { id: 'finance', label: '📊 IRD Sales & Day Book', icon: Receipt },
+            ].map((tab) => {
+              const isSelected = activeShowcaseTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveShowcaseTab(tab.id as any)}
+                  style={{
+                    padding: '9px 18px',
+                    borderRadius: '8px',
+                    border: 'none',
+                    backgroundColor: isSelected ? '#0F8F6F' : 'transparent',
+                    color: isSelected ? '#FFFFFF' : '#475569',
+                    fontSize: '0.88rem',
+                    fontWeight: isSelected ? 700 : 600,
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '8px',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <tab.icon size={16} />
+                  <span>{tab.label}</span>
+                </button>
+              );
+            })}
+          </div>
+
+          {/* Tab Content Container */}
+          <div
+            style={{
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #E2E8F0',
+              borderRadius: '20px',
+              boxShadow: '0 20px 40px -15px rgba(15, 23, 42, 0.08)',
+              padding: '32px',
+              maxWidth: '1000px',
+              margin: '0 auto',
+            }}
+          >
+            {/* TAB 1: POS TERMINAL */}
+            {activeShowcaseTab === 'pos' && (
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                  <div>
+                    <h4 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0F172A', marginBottom: '4px' }}>
+                      Fast POS Billing with 13% IRD VAT
+                    </h4>
+                    <p style={{ fontSize: '0.88rem', color: '#64748B' }}>
+                      Click dishes below to add them to your live bill. Watch VAT & service charge calculate instantly.
+                    </p>
+                  </div>
                   <button
                     type="button"
                     onClick={() => onLaunchWorkspace('cashier')}
                     style={{
-                      padding: '12px 16px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                      border: '1px solid rgba(255, 255, 255, 0.15)',
+                      backgroundColor: '#ECFDF5',
+                      border: '1px solid #A7F3D0',
+                      color: '#065F46',
+                      padding: '8px 14px',
                       borderRadius: '8px',
-                      color: '#FFFFFF',
                       fontSize: '0.82rem',
                       fontWeight: 700,
                       cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '6px',
                     }}
                   >
-                    <Printer size={16} />
-                    <span>Print KOT</span>
+                    Open Full POS Workspace →
                   </button>
                 </div>
-              </div>
-            </div>
-          )}
 
-          {/* TAB 2: LIVE KITCHEN DISPLAY (KDS) */}
-          {activeShowcaseTab === 'kds' && (
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
-                <div>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: 0, color: '#FFFFFF' }}>Kitchen Display System (KDS Line)</h3>
-                  <small style={{ color: '#94A3B8', fontSize: '0.78rem' }}>Click any ticket to bump its station status:</small>
-                </div>
-                <div style={{ display: 'flex', gap: '10px' }}>
-                  <span style={{ fontSize: '0.76rem', padding: '4px 10px', borderRadius: '6px', backgroundColor: 'rgba(239, 68, 68, 0.15)', color: '#F87171', fontWeight: 700 }}>● New KOT</span>
-                  <span style={{ fontSize: '0.76rem', padding: '4px 10px', borderRadius: '6px', backgroundColor: 'rgba(245, 158, 11, 0.15)', color: '#FBBF24', fontWeight: 700 }}>● Preparing</span>
-                  <span style={{ fontSize: '0.76rem', padding: '4px 10px', borderRadius: '6px', backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#34D399', fontWeight: 700 }}>● Ready</span>
-                </div>
-              </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
-                {kdsTickets.map((ticket) => (
-                  <div
-                    key={ticket.id}
-                    onClick={() => handleBumpKdsTicket(ticket.id)}
-                    style={{
-                      padding: '16px',
-                      borderRadius: '14px',
-                      backgroundColor: 'rgba(255, 255, 255, 0.03)',
-                      border:
-                        ticket.status === 'new'
-                          ? '1px solid rgba(239, 68, 68, 0.4)'
-                          : ticket.status === 'preparing'
-                          ? '1px solid rgba(245, 158, 11, 0.4)'
-                          : '1px solid rgba(16, 185, 129, 0.4)',
-                      cursor: 'pointer',
-                      transition: 'all 0.15s ease',
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                      <div>
-                        <strong style={{ fontSize: '1rem', color: '#FFFFFF' }}>{ticket.table}</strong>
-                        <div style={{ fontSize: '0.72rem', color: '#94A3B8' }}>Ticket #{ticket.id}</div>
-                      </div>
-                      <span
-                        style={{
-                          fontSize: '0.75rem',
-                          fontWeight: 800,
-                          padding: '3px 8px',
-                          borderRadius: '6px',
-                          textTransform: 'uppercase',
-                          backgroundColor:
-                            ticket.status === 'new'
-                              ? 'rgba(239, 68, 68, 0.15)'
-                              : ticket.status === 'preparing'
-                              ? 'rgba(245, 158, 11, 0.15)'
-                              : 'rgba(16, 185, 129, 0.15)',
-                          color:
-                            ticket.status === 'new'
-                              ? '#F87171'
-                              : ticket.status === 'preparing'
-                              ? '#FBBF24'
-                              : '#34D399',
-                        }}
-                      >
-                        {ticket.status} · {ticket.time}
-                      </span>
-                    </div>
-
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '16px' }}>
-                      {ticket.items.map((item, idx) => (
-                        <div key={idx} style={{ fontSize: '0.84rem', color: '#E2E8F0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                          <Check size={14} color="#0F8F6F" />
-                          <span>{item}</span>
-                        </div>
-                      ))}
-                    </div>
-
-                    <div
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '20px' }}>
+                  {[
+                    { name: 'Special Thakali Khana Set', price: 480 },
+                    { name: 'Steamed Chicken MoMo', price: 260 },
+                    { name: 'Chicken Sekuwa Plate', price: 360 },
+                    { name: 'Himalayan Herbal Chiya', price: 90 },
+                  ].map((dish) => (
+                    <button
+                      key={dish.name}
+                      onClick={() => handleAddPosItem(dish.name, dish.price)}
                       style={{
-                        padding: '8px',
-                        borderRadius: '8px',
-                        backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                        textAlign: 'center',
-                        fontSize: '0.75rem',
-                        fontWeight: 700,
-                        color: '#CBD5E1',
+                        padding: '14px',
+                        borderRadius: '12px',
+                        border: '1px solid #E2E8F0',
+                        backgroundColor: '#F8FAFC',
+                        textAlign: 'left',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s',
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.borderColor = '#0F8F6F';
+                        e.currentTarget.style.backgroundColor = '#FFFFFF';
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.borderColor = '#E2E8F0';
+                        e.currentTarget.style.backgroundColor = '#F8FAFC';
                       }}
                     >
-                      Tap to Bump Status &rarr;
-                    </div>
+                      <div style={{ fontSize: '0.88rem', fontWeight: 700, color: '#0F172A', marginBottom: '4px' }}>
+                        + Add {dish.name}
+                      </div>
+                      <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#0F8F6F' }}>
+                        रू {dish.price}
+                      </div>
+                    </button>
+                  ))}
+                </div>
+
+                <div style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '16px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 700, color: '#0F172A' }}>
+                      Current Guest Ticket ({posCart.length} unique items)
+                    </span>
+                    <span style={{ fontSize: '0.82rem', color: '#64748B' }}>Table 04 · Terminal #01</span>
                   </div>
+
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '16px' }}>
+                    {posCart.map((item) => (
+                      <span
+                        key={item.name}
+                        style={{
+                          backgroundColor: '#FFFFFF',
+                          border: '1px solid #CBD5E1',
+                          padding: '6px 12px',
+                          borderRadius: '8px',
+                          fontSize: '0.82rem',
+                          fontWeight: 600,
+                          color: '#1E293B',
+                        }}
+                      >
+                        {item.name} × <strong>{item.qty}</strong> (रू {item.price * item.qty})
+                      </span>
+                    ))}
+                  </div>
+
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px dashed #CBD5E1', paddingTop: '12px' }}>
+                    <div>
+                      <span style={{ fontSize: '0.85rem', color: '#64748B' }}>Total with 10% SC & 13% VAT: </span>
+                      <strong style={{ fontSize: '1.2rem', color: '#0F8F6F' }}>रू {posGrandTotal.toLocaleString()}</strong>
+                    </div>
+                    <button
+                      onClick={handleSimulatePayment}
+                      style={{
+                        backgroundColor: '#0F8F6F',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        padding: '10px 18px',
+                        borderRadius: '8px',
+                        fontSize: '0.85rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      Simulate Fonepay Payment
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 2: KDS TICKETS */}
+            {activeShowcaseTab === 'kds' && (
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                  <div>
+                    <h4 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0F172A', marginBottom: '4px' }}>
+                      Interactive Kitchen Display System (KDS)
+                    </h4>
+                    <p style={{ fontSize: '0.88rem', color: '#64748B' }}>
+                      Click any ticket below to cycle status: <strong>New → Preparing → Ready for Pickup</strong>.
+                    </p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => onLaunchWorkspace('chef')}
+                    style={{
+                      backgroundColor: '#ECFDF5',
+                      border: '1px solid #A7F3D0',
+                      color: '#065F46',
+                      padding: '8px 14px',
+                      borderRadius: '8px',
+                      fontSize: '0.82rem',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                    }}
+                  >
+                    Launch Chef KDS View →
+                  </button>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
+                  {kdsTickets.map((ticket) => {
+                    const statusColor =
+                      ticket.status === 'new' ? '#EF4444' : ticket.status === 'preparing' ? '#F59E0B' : '#10B981';
+                    const statusBg =
+                      ticket.status === 'new' ? '#FEF2F2' : ticket.status === 'preparing' ? '#FFFBEB' : '#ECFDF5';
+
+                    return (
+                      <div
+                        key={ticket.id}
+                        onClick={() => handleBumpKdsTicket(ticket.id)}
+                        style={{
+                          backgroundColor: '#FFFFFF',
+                          border: `2px solid ${statusColor}`,
+                          borderRadius: '14px',
+                          padding: '18px',
+                          cursor: 'pointer',
+                          boxShadow: '0 4px 12px rgba(0, 0, 0, 0.04)',
+                          transition: 'transform 0.15s',
+                        }}
+                        onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
+                        onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
+                      >
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+                          <span style={{ fontSize: '1rem', fontWeight: 800, color: '#0F172A' }}>
+                            {ticket.table} ({ticket.id})
+                          </span>
+                          <span
+                            style={{
+                              fontSize: '0.75rem',
+                              fontWeight: 800,
+                              color: statusColor,
+                              backgroundColor: statusBg,
+                              padding: '3px 8px',
+                              borderRadius: '6px',
+                              textTransform: 'uppercase',
+                            }}
+                          >
+                            {ticket.status}
+                          </span>
+                        </div>
+
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '14px' }}>
+                          {ticket.items.map((it, i) => (
+                            <div key={i} style={{ fontSize: '0.85rem', color: '#1E293B', fontWeight: 600 }}>
+                              • {it}
+                            </div>
+                          ))}
+                        </div>
+
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderTop: '1px solid #F1F5F9', paddingTop: '10px' }}>
+                          <span style={{ fontSize: '0.75rem', color: '#64748B' }}>Timer: {ticket.time} elapsed</span>
+                          <span style={{ fontSize: '0.75rem', fontWeight: 700, color: '#0F8F6F' }}>Tap to Advance ➔</span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+
+            {/* TAB 3: TABLE QR MENU */}
+            {activeShowcaseTab === 'qr' && (
+              <div style={{ textAlign: 'center', padding: '16px 0' }}>
+                <div style={{ maxWidth: '460px', margin: '0 auto' }}>
+                  <div
+                    style={{
+                      width: '56px',
+                      height: '56px',
+                      borderRadius: '14px',
+                      backgroundColor: '#ECFDF5',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      margin: '0 auto 16px',
+                    }}
+                  >
+                    <QrCode size={28} color="#0F8F6F" />
+                  </div>
+                  <h4 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F172A', marginBottom: '8px' }}>
+                    Zero App Install Table QR Ordering
+                  </h4>
+                  <p style={{ fontSize: '0.92rem', color: '#64748B', lineHeight: 1.5, marginBottom: '24px' }}>
+                    Every dining table receives a dedicated high-resolution QR code. Diners scan with any iPhone or Android camera to view the menu in English or Nepali.
+                  </p>
+
+                  <div style={{ display: 'flex', justifyContent: 'center', gap: '12px' }}>
+                    <button
+                      type="button"
+                      onClick={onNavigateMenu}
+                      style={{
+                        backgroundColor: '#0F8F6F',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        padding: '12px 24px',
+                        borderRadius: '10px',
+                        fontSize: '0.9rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '8px',
+                      }}
+                    >
+                      <ExternalLink size={16} />
+                      <span>Open Live Table QR Menu Preview</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* TAB 4: IRD SALES & DAY BOOK */}
+            {activeShowcaseTab === 'finance' && (
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+                  <div>
+                    <h4 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#0F172A', marginBottom: '4px' }}>
+                      Inland Revenue Department (IRD) Fiscal Audit Register
+                    </h4>
+                    <p style={{ fontSize: '0.88rem', color: '#64748B' }}>
+                      Sequential invoice numbers, non-voidable audit logs, and automatic Day Book closing.
+                    </p>
+                  </div>
+                  <span
+                    style={{
+                      backgroundColor: '#ECFDF5',
+                      border: '1px solid #A7F3D0',
+                      color: '#065F46',
+                      padding: '4px 10px',
+                      borderRadius: '6px',
+                      fontSize: '0.78rem',
+                      fontWeight: 700,
+                    }}
+                  >
+                    Nepal Fiscal Verified
+                  </span>
+                </div>
+
+                <div
+                  style={{
+                    backgroundColor: '#F8FAFC',
+                    border: '1px solid #E2E8F0',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.85rem' }}>
+                    <thead>
+                      <tr style={{ backgroundColor: '#EDF2F7', textAlign: 'left', color: '#475569' }}>
+                        <th style={{ padding: '10px 14px' }}>Invoice No.</th>
+                        <th style={{ padding: '10px 14px' }}>Time</th>
+                        <th style={{ padding: '10px 14px' }}>Type</th>
+                        <th style={{ padding: '10px 14px' }}>Subtotal</th>
+                        <th style={{ padding: '10px 14px' }}>13% VAT</th>
+                        <th style={{ padding: '10px 14px' }}>Grand Total</th>
+                        <th style={{ padding: '10px 14px' }}>Settlement</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {[
+                        { inv: '#INV-2081-492', time: '13:42', type: 'Dine-In', sub: 'रू 1,020', vat: 'रू 132', total: 'रू 1,202', mode: 'Fonepay QR' },
+                        { inv: '#INV-2081-491', time: '13:28', type: 'Takeout', sub: 'रू 840', vat: 'रू 109', total: 'रू 949', mode: 'Cash Drawer' },
+                        { inv: '#INV-2081-490', time: '13:15', type: 'Dine-In', sub: 'रू 2,450', vat: 'रू 318', total: 'रू 2,768', mode: 'NepalPay' },
+                      ].map((row, i) => (
+                        <tr key={i} style={{ borderBottom: '1px solid #E2E8F0', backgroundColor: '#FFFFFF' }}>
+                          <td style={{ padding: '10px 14px', fontWeight: 700, color: '#0F172A' }}>{row.inv}</td>
+                          <td style={{ padding: '10px 14px', color: '#64748B' }}>{row.time}</td>
+                          <td style={{ padding: '10px 14px' }}>{row.type}</td>
+                          <td style={{ padding: '10px 14px' }}>{row.sub}</td>
+                          <td style={{ padding: '10px 14px', color: '#0F8F6F', fontWeight: 600 }}>{row.vat}</td>
+                          <td style={{ padding: '10px 14px', fontWeight: 800, color: '#0F172A' }}>{row.total}</td>
+                          <td style={{ padding: '10px 14px' }}>
+                            <span style={{ backgroundColor: '#F1F5F9', padding: '2px 8px', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>
+                              {row.mode}
+                            </span>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 6. WHY RESTRO8 VS TRADITIONAL SOFTWARE COMPARISON ──────────────── */}
+      <section id="comparison" style={{ padding: '80px 24px', backgroundColor: '#FFFFFF' }}>
+        <div style={{ maxWidth: '980px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 48px' }}>
+            <span
+              style={{
+                fontSize: '0.82rem',
+                fontWeight: 800,
+                color: '#0F8F6F',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                marginBottom: '8px',
+                display: 'inline-block',
+              }}
+            >
+              The Modern Difference
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)',
+                fontWeight: 900,
+                color: '#0F172A',
+                letterSpacing: '-0.03em',
+                marginBottom: '16px',
+              }}
+            >
+              Why restaurant owners switch to RESTRO8.
+            </h2>
+            <p style={{ fontSize: '1.05rem', color: '#64748B' }}>
+              Say goodbye to clunky, outdated Windows XP-era desktop software that crashes and locks you to a single cashier counter.
+            </p>
+          </div>
+
+          <div
+            style={{
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #E2E8F0',
+              borderRadius: '16px',
+              overflow: 'hidden',
+              boxShadow: '0 10px 30px -10px rgba(15, 23, 42, 0.06)',
+            }}
+          >
+            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+              <thead>
+                <tr style={{ backgroundColor: '#F8FAFC', borderBottom: '1px solid #E2E8F0' }}>
+                  <th style={{ padding: '16px 20px', fontSize: '0.9rem', color: '#475569', fontWeight: 700 }}>Feature</th>
+                  <th style={{ padding: '16px 20px', fontSize: '0.9rem', color: '#0F8F6F', fontWeight: 800, width: '38%' }}>
+                    RESTRO8
+                  </th>
+                  <th style={{ padding: '16px 20px', fontSize: '0.9rem', color: '#94A3B8', fontWeight: 600, width: '32%' }}>
+                    Traditional Legacy POS
+                  </th>
+                </tr>
+              </thead>
+              <tbody style={{ fontSize: '0.88rem' }}>
+                {[
+                  { feat: 'Full Offline Operation', r8: 'Yes — 100% offline-first local cache', old: 'No — freezes when ISP drops' },
+                  { feat: 'Contactless Table QR Ordering', r8: 'Built-in (Zero app download)', old: 'Not supported or extra fee' },
+                  { feat: 'Live Kitchen Display (KDS)', r8: 'Included with ticket bumping', old: 'Paper thermal printing only' },
+                  { feat: 'Nepal IRD 13% Fiscal Compliance', r8: 'Certified sequential invoices', old: 'Manual Day Book entry' },
+                  { feat: 'Fonepay & eSewa QR Integration', r8: 'Dynamic QR printed on bill', old: 'Static paper printouts' },
+                  { feat: 'Device Support', r8: 'Any Laptop, iPad, Android or Tablet', old: 'Locked to 1 heavy Windows PC' },
+                ].map((row, idx) => (
+                  <tr key={idx} style={{ borderBottom: '1px solid #F1F5F9' }}>
+                    <td style={{ padding: '14px 20px', fontWeight: 600, color: '#0F172A' }}>{row.feat}</td>
+                    <td style={{ padding: '14px 20px', fontWeight: 700, color: '#0F8F6F' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <CheckCircle2 size={16} color="#0F8F6F" />
+                        <span>{row.r8}</span>
+                      </div>
+                    </td>
+                    <td style={{ padding: '14px 20px', color: '#64748B' }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <X size={15} color="#94A3B8" />
+                        <span>{row.old}</span>
+                      </div>
+                    </td>
+                  </tr>
                 ))}
-              </div>
-            </div>
-          )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
 
-          {/* TAB 3: CONTACTLESS TABLE QR (SMARTPHONE MOCKUP) */}
-          {activeShowcaseTab === 'qr' && (
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '20px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                <span style={{ fontSize: '0.84rem', color: '#94A3B8' }}>Select Guest Menu Language:</span>
-                <button
-                  type="button"
-                  onClick={() => setQrLanguage('en')}
-                  style={{
-                    padding: '4px 12px',
-                    borderRadius: '6px',
-                    border: 'none',
-                    backgroundColor: qrLanguage === 'en' ? '#0F8F6F' : 'rgba(255, 255, 255, 0.08)',
-                    color: '#FFFFFF',
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                  }}
-                >
-                  English
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setQrLanguage('np')}
-                  style={{
-                    padding: '4px 12px',
-                    borderRadius: '6px',
-                    border: 'none',
-                    backgroundColor: qrLanguage === 'np' ? '#0F8F6F' : 'rgba(255, 255, 255, 0.08)',
-                    color: '#FFFFFF',
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                  }}
-                >
-                  नेपाली
-                </button>
-              </div>
+      {/* ── 7. PRICING SECTION (TRANSPARENT NEPAL RUPEES) ─────────────────── */}
+      <section id="pricing" style={{ padding: '80px 24px', backgroundColor: '#F8FAFC', borderTop: '1px solid #E2E8F0' }}>
+        <div style={{ maxWidth: '1240px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', maxWidth: '720px', margin: '0 auto 40px' }}>
+            <span
+              style={{
+                fontSize: '0.82rem',
+                fontWeight: 800,
+                color: '#0F8F6F',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                marginBottom: '8px',
+                display: 'inline-block',
+              }}
+            >
+              Transparent Pricing
+            </span>
+            <h2
+              style={{
+                fontSize: 'clamp(1.8rem, 3.5vw, 2.5rem)',
+                fontWeight: 900,
+                color: '#0F172A',
+                letterSpacing: '-0.03em',
+                marginBottom: '16px',
+              }}
+            >
+              Simple plans for single cafes to multi-outlet chains.
+            </h2>
+            <p style={{ fontSize: '1.05rem', color: '#64748B' }}>
+              No hidden setup fees. Free local training in Kathmandu & Pokhara.
+            </p>
 
-              {/* Smartphone Frame */}
-              <div
+            {/* Monthly / Yearly Switcher */}
+            <div
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '8px',
+                backgroundColor: '#FFFFFF',
+                padding: '4px',
+                borderRadius: '9999px',
+                border: '1px solid #E2E8F0',
+                marginTop: '20px',
+              }}
+            >
+              <button
+                type="button"
+                onClick={() => setBillingCycle('monthly')}
                 style={{
-                  width: '320px',
-                  borderRadius: '32px',
-                  border: '4px solid rgba(255, 255, 255, 0.2)',
-                  backgroundColor: '#0F172A',
-                  padding: '16px 14px',
-                  boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8)',
+                  padding: '6px 16px',
+                  borderRadius: '9999px',
+                  border: 'none',
+                  backgroundColor: billingCycle === 'monthly' ? '#0F8F6F' : 'transparent',
+                  color: billingCycle === 'monthly' ? '#FFFFFF' : '#475569',
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                }}
+              >
+                Monthly Billing
+              </button>
+              <button
+                type="button"
+                onClick={() => setBillingCycle('yearly')}
+                style={{
+                  padding: '6px 16px',
+                  borderRadius: '9999px',
+                  border: 'none',
+                  backgroundColor: billingCycle === 'yearly' ? '#0F8F6F' : 'transparent',
+                  color: billingCycle === 'yearly' ? '#FFFFFF' : '#475569',
+                  fontSize: '0.85rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                }}
+              >
+                <span>Annual Billing</span>
+                <span style={{ fontSize: '0.72rem', backgroundColor: '#ECFDF5', color: '#065F46', padding: '1px 6px', borderRadius: '4px' }}>
+                  Save 20%
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gap: '24px',
+              maxWidth: '1080px',
+              margin: '0 auto',
+            }}
+          >
+            {[
+              {
+                title: 'Starter',
+                desc: 'Perfect for small cafes, juice bars & takeaway outlets.',
+                priceMonthly: 'रू 1,200',
+                priceYearly: 'रू 960',
+                badge: '14-Day Free Trial',
+                isPopular: false,
+                features: [
+                  '1 POS Terminal',
+                  '13% IRD VAT Tax Invoicing',
+                  'Thermal 80mm/58mm printing',
+                  'Offline-first billing engine',
+                  'Daily Day Book sales reports',
+                  'Phone & WhatsApp support',
+                ],
+              },
+              {
+                title: 'Professional',
+                desc: 'Ideal for busy dine-in restaurants, Thakali kitchens & restro-bars.',
+                priceMonthly: 'रू 2,400',
+                priceYearly: 'रू 1,920',
+                badge: 'Most Popular',
+                isPopular: true,
+                features: [
+                  'Unlimited POS & Waiter Tablets',
+                  'Table QR Ordering (Unlimited scans)',
+                  'Kitchen Display System (KDS)',
+                  'Split KOT & Bar BOT routing',
+                  'Inventory & Recipe costing',
+                  'Fonepay Dynamic QR integration',
+                  'Staff permission roles (RBAC)',
+                ],
+              },
+              {
+                title: 'Enterprise Multi-Branch',
+                desc: 'Designed for restaurant groups with multiple branches across Nepal.',
+                priceMonthly: 'रू 4,800',
+                priceYearly: 'रू 3,840',
+                badge: 'Multi-Outlet',
+                isPopular: false,
+                features: [
+                  'Centralized multi-outlet dashboard',
+                  'Master catalog & dish sync',
+                  'Inter-branch stock transfers',
+                  'Dedicated account manager',
+                  'Custom ERP & accounting exports',
+                  '24/7 Kathmandu on-site priority support',
+                ],
+              },
+            ].map((plan, idx) => (
+              <div
+                key={idx}
+                style={{
+                  backgroundColor: '#FFFFFF',
+                  border: plan.isPopular ? '2px solid #0F8F6F' : '1px solid #E2E8F0',
+                  borderRadius: '20px',
+                  padding: '36px 30px',
+                  boxShadow: plan.isPopular
+                    ? '0 20px 40px -15px rgba(15, 143, 111, 0.18)'
+                    : '0 4px 12px rgba(15, 23, 42, 0.03)',
                   display: 'flex',
                   flexDirection: 'column',
-                  gap: '12px',
+                  justifyContent: 'space-between',
                   position: 'relative',
                 }}
               >
-                {/* Dynamic Island / Notch */}
-                <div style={{ width: '80px', height: '14px', borderRadius: '10px', backgroundColor: '#000000', margin: '0 auto 6px' }} />
-
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', paddingBottom: '8px' }}>
-                  <div>
-                    <strong style={{ fontSize: '0.85rem', color: '#FFFFFF' }}>Himalayan Bistro</strong>
-                    <div style={{ fontSize: '0.7rem', color: '#10B981' }}>Table #07 · Kathmandu</div>
+                {plan.isPopular && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: '-13px',
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      backgroundColor: '#0F8F6F',
+                      color: '#FFFFFF',
+                      fontSize: '0.75rem',
+                      fontWeight: 800,
+                      padding: '4px 14px',
+                      borderRadius: '9999px',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.05em',
+                    }}
+                  >
+                    Most Popular
                   </div>
-                  <span style={{ fontSize: '0.72rem', padding: '2px 8px', borderRadius: '12px', backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#34D399', fontWeight: 700 }}>
-                    Live Menu
-                  </span>
-                </div>
+                )}
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  <div style={{ padding: '8px 10px', borderRadius: '10px', backgroundColor: 'rgba(255, 255, 255, 0.04)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#FFFFFF' }}>
-                        {qrLanguage === 'en' ? 'Buff Steam MoMo' : 'बफ स्टिम मोमो'}
-                      </div>
-                      <small style={{ color: '#F2B84B', fontSize: '0.72rem', fontWeight: 700 }}>रू 180</small>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setQrOrderedCount((c) => c + 1)}
-                      style={{ padding: '4px 10px', borderRadius: '6px', border: 'none', backgroundColor: '#0F8F6F', color: '#FFF', fontSize: '0.74rem', fontWeight: 700, cursor: 'pointer' }}
-                    >
-                      + Add
-                    </button>
-                  </div>
-
-                  <div style={{ padding: '8px 10px', borderRadius: '10px', backgroundColor: 'rgba(255, 255, 255, 0.04)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <div>
-                      <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#FFFFFF' }}>
-                        {qrLanguage === 'en' ? 'Thakali Mutton Khana' : 'थकाली खसीको खाना सेट'}
-                      </div>
-                      <small style={{ color: '#F2B84B', fontSize: '0.72rem', fontWeight: 700 }}>रू 480</small>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={() => setQrOrderedCount((c) => c + 1)}
-                      style={{ padding: '4px 10px', borderRadius: '6px', border: 'none', backgroundColor: '#0F8F6F', color: '#FFF', fontSize: '0.74rem', fontWeight: 700, cursor: 'pointer' }}
-                    >
-                      + Add
-                    </button>
-                  </div>
-                </div>
-
-                {/* Floating Bottom Cart Bar */}
-                <div
-                  style={{
-                    marginTop: '8px',
-                    padding: '10px 12px',
-                    borderRadius: '12px',
-                    backgroundColor: '#0F8F6F',
-                    color: '#FFFFFF',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    fontSize: '0.78rem',
-                    fontWeight: 700,
-                  }}
-                >
-                  <span>{qrOrderedCount} Items Selected</span>
-                  <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <span>Send Order &rarr;</span>
-                  </span>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* TAB 4: DAY BOOK & IRD FISCAL VAT */}
-          {activeShowcaseTab === 'finance' && (
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '20px' }}>
                 <div>
-                  <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: 0, color: '#FFFFFF' }}>Daily Cashier Register & Day Book</h3>
-                  <small style={{ color: '#94A3B8', fontSize: '0.78rem' }}>Real-time cash drawers, digital collections, and IRD 13% tax ledgers:</small>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                    <h3 style={{ fontSize: '1.35rem', fontWeight: 800, color: '#0F172A' }}>{plan.title}</h3>
+                    <span
+                      style={{
+                        fontSize: '0.75rem',
+                        fontWeight: 700,
+                        backgroundColor: plan.isPopular ? '#ECFDF5' : '#F1F5F9',
+                        color: plan.isPopular ? '#065F46' : '#475569',
+                        padding: '3px 8px',
+                        borderRadius: '6px',
+                      }}
+                    >
+                      {plan.badge}
+                    </span>
+                  </div>
+
+                  <p style={{ fontSize: '0.88rem', color: '#64748B', lineHeight: 1.5, marginBottom: '24px' }}>
+                    {plan.desc}
+                  </p>
+
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', marginBottom: '24px' }}>
+                    <span style={{ fontSize: '2.4rem', fontWeight: 900, color: '#0F172A', letterSpacing: '-0.03em' }}>
+                      {billingCycle === 'monthly' ? plan.priceMonthly : plan.priceYearly}
+                    </span>
+                    <span style={{ fontSize: '0.88rem', color: '#64748B' }}>/ month</span>
+                  </div>
+
+                  <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '20px', marginBottom: '32px' }}>
+                    <div style={{ fontSize: '0.8rem', fontWeight: 700, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '14px' }}>
+                      Included Features:
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                      {plan.features.map((feat, i) => (
+                        <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '10px', fontSize: '0.88rem', color: '#334155' }}>
+                          <Check size={16} color="#0F8F6F" />
+                          <span>{feat}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
+
                 <button
                   type="button"
                   onClick={() => onLaunchWorkspace('SuperAdmin')}
                   style={{
-                    padding: '6px 14px',
-                    borderRadius: '8px',
-                    border: '1px solid rgba(255, 255, 255, 0.15)',
-                    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-                    color: '#FFFFFF',
-                    fontSize: '0.8rem',
+                    backgroundColor: plan.isPopular ? '#0F8F6F' : '#FFFFFF',
+                    border: plan.isPopular ? 'none' : '1px solid #CBD5E1',
+                    color: plan.isPopular ? '#FFFFFF' : '#1E293B',
+                    padding: '14px',
+                    borderRadius: '12px',
+                    fontSize: '0.95rem',
                     fontWeight: 700,
                     cursor: 'pointer',
+                    width: '100%',
+                    textAlign: 'center',
+                    transition: 'all 0.15s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!plan.isPopular) {
+                      e.currentTarget.style.backgroundColor = '#F8FAFC';
+                      e.currentTarget.style.borderColor = '#0F8F6F';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!plan.isPopular) {
+                      e.currentTarget.style.backgroundColor = '#FFFFFF';
+                      e.currentTarget.style.borderColor = '#CBD5E1';
+                    }
                   }}
                 >
-                  Open Full Ledger &rarr;
+                  Start 14-Day Free Trial
                 </button>
               </div>
-
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', marginBottom: '20px' }}>
-                <div style={{ padding: '16px', borderRadius: '12px', backgroundColor: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.08)' }}>
-                  <div style={{ fontSize: '0.74rem', color: '#94A3B8', fontWeight: 600 }}>Opening Float</div>
-                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#FFFFFF', marginTop: '4px' }}>रू 15,000</div>
-                  <small style={{ fontSize: '0.7rem', color: '#64748B' }}>Cashier Start Balance</small>
-                </div>
-                <div style={{ padding: '16px', borderRadius: '12px', backgroundColor: 'rgba(15, 143, 111, 0.08)', border: '1px solid rgba(15, 143, 111, 0.25)' }}>
-                  <div style={{ fontSize: '0.74rem', color: '#34D399', fontWeight: 600 }}>Total Sales (Gross)</div>
-                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#10B981', marginTop: '4px' }}>रू 84,250</div>
-                  <small style={{ fontSize: '0.7rem', color: '#34D399' }}>64 Invoices Generated</small>
-                </div>
-                <div style={{ padding: '16px', borderRadius: '12px', backgroundColor: 'rgba(242, 184, 75, 0.08)', border: '1px solid rgba(242, 184, 75, 0.25)' }}>
-                  <div style={{ fontSize: '0.74rem', color: '#FBBF24', fontWeight: 600 }}>Fonepay QR Collected</div>
-                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#F2B84B', marginTop: '4px' }}>रू 52,100</div>
-                  <small style={{ fontSize: '0.7rem', color: '#FBBF24' }}>Zero Delay Settlement</small>
-                </div>
-                <div style={{ padding: '16px', borderRadius: '12px', backgroundColor: 'rgba(56, 189, 248, 0.08)', border: '1px solid rgba(56, 189, 248, 0.25)' }}>
-                  <div style={{ fontSize: '0.74rem', color: '#38BDF8', fontWeight: 600 }}>13% VAT Payable</div>
-                  <div style={{ fontSize: '1.3rem', fontWeight: 800, color: '#38BDF8', marginTop: '4px' }}>रू 9,692</div>
-                  <small style={{ fontSize: '0.7rem', color: '#38BDF8' }}>IRD Export Ready</small>
-                </div>
-              </div>
-            </div>
-          )}
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ── 4. SIX CORE SOLUTION PILLARS ──────────────────────────────────── */}
-      <section id="features" style={{ padding: '70px 24px', maxWidth: '1240px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-          <p style={{ color: '#10B981', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 8px' }}>
-            Built for Real Nepali Hospitality
-          </p>
-          <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 800, margin: 0 }}>
-            Every tool your restaurant needs to thrive.
-          </h2>
-        </div>
-
-        <div className="landing-pillars-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
-          {[
-            {
-              title: '100% Offline-First Architecture',
-              desc: 'Never halt billing or cooking when Kathmandu internet goes down. Orders, kitchen printing, and bills punch locally with zero lag.',
-              icon: WifiOff,
-              color: '#10B981',
-            },
-            {
-              title: 'Inland Revenue (IRD) 13% VAT',
-              desc: 'Fully compliant sequential tax invoices, 10% Service Charge, Day Book ledgers, and tamper-evident sales audit trails.',
-              icon: Receipt,
-              color: '#F2B84B',
-            },
-            {
-              title: 'Multi-Station KDS & Kitchen Routing',
-              desc: 'Route food orders to kitchen KOT and beverages to bar BOT. Eliminate missing paper tickets with real-time cooking timers.',
-              icon: UtensilsCrossed,
-              color: '#38BDF8',
-            },
-            {
-              title: 'Contactless Table QR Dining',
-              desc: 'Guests scan with any smartphone camera to browse English/Nepali menus, view dish availability, and place orders directly.',
-              icon: QrCode,
-              color: '#C084FC',
-            },
-            {
-              title: 'Integrated Fonepay & NepalPay',
-              desc: 'Instant dynamic QR counter settlements. Cashiers close tabs in seconds with split-tender support for cash and wallet.',
-              icon: Zap,
-              color: '#F43F5E',
-            },
-            {
-              title: 'Inventory & Recipe Consumption',
-              desc: 'Automatically deduct raw chicken, spices, dairy, and packaging every time a dish is punched at the POS counter.',
-              icon: Layers,
-              color: '#34D399',
-            },
-          ].map((pillar, idx) => {
-            const Icon = pillar.icon;
-            return (
-              <div
-                key={idx}
-                style={{
-                  padding: '24px',
-                  borderRadius: '16px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  transition: 'all 0.15s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.05)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.16)';
-                  e.currentTarget.style.transform = 'translateY(-2px)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.02)';
-                  e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.08)';
-                  e.currentTarget.style.transform = 'translateY(0)';
-                }}
-              >
-                <div
-                  style={{
-                    width: '44px',
-                    height: '44px',
-                    borderRadius: '12px',
-                    backgroundColor: `${pillar.color}1A`,
-                    color: pillar.color,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    marginBottom: '16px',
-                  }}
-                >
-                  <Icon size={22} />
-                </div>
-                <h3 style={{ fontSize: '1.1rem', fontWeight: 800, margin: '0 0 8px', color: '#FFFFFF' }}>{pillar.title}</h3>
-                <p style={{ margin: 0, fontSize: '0.86rem', color: '#94A3B8', lineHeight: 1.55 }}>{pillar.desc}</p>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ── 5. TRANSPARENT PRICING TABLE ─────────────────────────────────── */}
-      <section id="pricing" style={{ padding: '70px 24px', maxWidth: '1240px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '36px' }}>
-          <p style={{ color: '#10B981', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 8px' }}>
-            Predictable Pricing
-          </p>
-          <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.6rem)', fontWeight: 800, margin: '0 0 16px' }}>
-            Transparent plans for restaurants of every size.
-          </h2>
-
-          {/* Billing switcher */}
-          <div
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              backgroundColor: 'rgba(255, 255, 255, 0.04)',
-              padding: '4px',
-              borderRadius: '10px',
-              border: '1px solid rgba(255, 255, 255, 0.09)',
-              gap: '6px',
-            }}
-          >
-            <button
-              type="button"
-              onClick={() => setBillingCycle('monthly')}
-              style={{
-                padding: '6px 16px',
-                borderRadius: '8px',
-                border: 'none',
-                backgroundColor: billingCycle === 'monthly' ? '#0F8F6F' : 'transparent',
-                color: billingCycle === 'monthly' ? '#FFF' : '#94A3B8',
-                fontWeight: 700,
-                fontSize: '0.82rem',
-                cursor: 'pointer',
-              }}
-            >
-              Billed Monthly
-            </button>
-            <button
-              type="button"
-              onClick={() => setBillingCycle('yearly')}
-              style={{
-                padding: '6px 16px',
-                borderRadius: '8px',
-                border: 'none',
-                backgroundColor: billingCycle === 'yearly' ? '#0F8F6F' : 'transparent',
-                color: billingCycle === 'yearly' ? '#FFF' : '#94A3B8',
-                fontWeight: 700,
-                fontSize: '0.82rem',
-                cursor: 'pointer',
-                display: 'flex',
-                alignItems: 'center',
-                gap: '6px',
-              }}
-            >
-              <span>Billed Annually</span>
-              <span style={{ fontSize: '0.7rem', padding: '2px 6px', borderRadius: '4px', backgroundColor: '#F2B84B', color: '#000', fontWeight: 800 }}>
-                2 Mos Free
-              </span>
-            </button>
-          </div>
-        </div>
-
-        <div className="landing-pricing-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '24px' }}>
-          {/* Plan 1: Starter */}
-          <div
-            style={{
-              padding: '32px 24px',
-              borderRadius: '16px',
-              backgroundColor: 'rgba(255, 255, 255, 0.02)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 6px', color: '#FFFFFF' }}>Starter Cafe & Chiya</h3>
-              <p style={{ margin: '0 0 20px', fontSize: '0.84rem', color: '#94A3B8' }}>Ideal for small cafes, boba bars, and quick takeaway counters.</p>
-              <div style={{ fontSize: '2.2rem', fontWeight: 900, color: '#FFFFFF', marginBottom: '20px' }}>
-                रू {billingCycle === 'yearly' ? '1,599' : '1,999'}
-                <span style={{ fontSize: '0.85rem', fontWeight: 500, color: '#94A3B8' }}> / month</span>
-              </div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.85rem', color: '#CBD5E1' }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> 1 POS Billing Terminal</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> Thermal Printer KOT integration</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> Offline billing support</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> Fonepay Dynamic QR</li>
-              </ul>
-            </div>
-            <button
-              type="button"
-              onClick={() => onLaunchWorkspace('cashier')}
-              style={{
-                width: '100%',
-                padding: '12px',
-                borderRadius: '8px',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                backgroundColor: 'rgba(255, 255, 255, 0.06)',
-                color: '#FFFFFF',
-                fontWeight: 700,
-                fontSize: '0.88rem',
-                cursor: 'pointer',
-              }}
-            >
-              Start Free Trial
-            </button>
-          </div>
-
-          {/* Plan 2: Pro Restaurant (Highlighted) */}
-          <div
-            style={{
-              padding: '32px 24px',
-              borderRadius: '16px',
-              backgroundColor: 'rgba(15, 143, 111, 0.06)',
-              border: '2px solid #0F8F6F',
-              boxShadow: '0 10px 30px rgba(15, 143, 111, 0.25)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-              position: 'relative',
-            }}
-          >
+      {/* ── 8. FREQUENTLY ASKED QUESTIONS (FAQ) ───────────────────────────── */}
+      <section id="faq" style={{ padding: '80px 24px', backgroundColor: '#FFFFFF', borderTop: '1px solid #E2E8F0' }}>
+        <div style={{ maxWidth: '820px', margin: '0 auto' }}>
+          <div style={{ textAlign: 'center', marginBottom: '48px' }}>
             <span
               style={{
-                position: 'absolute',
-                top: '-12px',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                backgroundColor: '#0F8F6F',
-                color: '#FFFFFF',
-                padding: '3px 12px',
-                borderRadius: '12px',
-                fontSize: '0.72rem',
+                fontSize: '0.82rem',
                 fontWeight: 800,
-                letterSpacing: '0.04em',
+                color: '#0F8F6F',
+                letterSpacing: '0.08em',
+                textTransform: 'uppercase',
+                marginBottom: '8px',
+                display: 'inline-block',
               }}
             >
-              MOST POPULAR
+              Frequently Asked Questions
             </span>
-            <div>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 6px', color: '#FFFFFF' }}>Pro Full-Service</h3>
-              <p style={{ margin: '0 0 20px', fontSize: '0.84rem', color: '#94A3B8' }}>For dine-in restaurants, Thakali kitchens, and restro-bars.</p>
-              <div style={{ fontSize: '2.2rem', fontWeight: 900, color: '#10B981', marginBottom: '20px' }}>
-                रू {billingCycle === 'yearly' ? '2,899' : '3,499'}
-                <span style={{ fontSize: '0.85rem', fontWeight: 500, color: '#94A3B8' }}> / month</span>
-              </div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.85rem', color: '#E2E8F0' }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> Unlimited POS & Waiter Tablets</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> Real-Time Kitchen KDS & Bar BOT</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> Contactless Table QR Ordering</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> IRD 13% VAT & Day Book Ledger</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> Recipe & Stock Inventory Engine</li>
-              </ul>
-            </div>
+            <h2
+              style={{
+                fontSize: 'clamp(1.8rem, 3.5vw, 2.4rem)',
+                fontWeight: 900,
+                color: '#0F172A',
+                letterSpacing: '-0.03em',
+              }}
+            >
+              Everything you need to know.
+            </h2>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {faqs.map((faq, idx) => {
+              const isOpen = openFaqIndex === idx;
+              return (
+                <div
+                  key={idx}
+                  style={{
+                    backgroundColor: '#FFFFFF',
+                    border: '1px solid #E2E8F0',
+                    borderRadius: '12px',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
+                    style={{
+                      width: '100%',
+                      padding: '18px 20px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      textAlign: 'left',
+                      cursor: 'pointer',
+                      fontSize: '0.98rem',
+                      fontWeight: 700,
+                      color: '#0F172A',
+                    }}
+                  >
+                    <span>{faq.q}</span>
+                    <ChevronDown
+                      size={18}
+                      color="#64748B"
+                      style={{
+                        transform: isOpen ? 'rotate(180deg)' : 'rotate(0)',
+                        transition: 'transform 0.2s ease',
+                      }}
+                    />
+                  </button>
+
+                  {isOpen && (
+                    <div style={{ padding: '0 20px 20px', color: '#64748B', fontSize: '0.92rem', lineHeight: 1.6 }}>
+                      {faq.a}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── 9. BOTTOM HIGH-CONVERTING CTA BANNER ────────────────────────────── */}
+      <section style={{ padding: '60px 24px', backgroundColor: '#F8FAFC' }}>
+        <div
+          style={{
+            maxWidth: '1100px',
+            margin: '0 auto',
+            backgroundColor: '#0F8F6F',
+            backgroundImage: 'radial-gradient(circle at 100% 0%, rgba(255, 255, 255, 0.15) 0%, transparent 60%)',
+            borderRadius: '24px',
+            padding: '56px 40px',
+            color: '#FFFFFF',
+            textAlign: 'center',
+            boxShadow: '0 20px 40px -10px rgba(15, 143, 111, 0.4)',
+          }}
+        >
+          <h2 style={{ fontSize: 'clamp(2rem, 4vw, 3rem)', fontWeight: 900, marginBottom: '16px', letterSpacing: '-0.03em' }}>
+            Ready to modernize your restaurant?
+          </h2>
+          <p style={{ fontSize: '1.15rem', opacity: 0.9, maxWidth: '640px', margin: '0 auto 36px', lineHeight: 1.6 }}>
+            Join 1,200+ restaurants across Nepal saving hours daily with lightning POS billing and zero-downtime offline reliability.
+          </p>
+
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', flexWrap: 'wrap' }}>
             <button
               type="button"
               onClick={() => onLaunchWorkspace('SuperAdmin')}
               style={{
-                width: '100%',
-                padding: '12px',
-                borderRadius: '8px',
+                backgroundColor: '#FFFFFF',
+                color: '#0F8F6F',
                 border: 'none',
-                backgroundColor: '#0F8F6F',
-                color: '#FFFFFF',
-                fontWeight: 700,
-                fontSize: '0.88rem',
+                padding: '16px 36px',
+                borderRadius: '12px',
+                fontSize: '1.05rem',
+                fontWeight: 800,
                 cursor: 'pointer',
-                boxShadow: '0 4px 14px rgba(15, 143, 111, 0.4)',
+                boxShadow: '0 4px 14px rgba(0, 0, 0, 0.1)',
+                transition: 'transform 0.15s ease',
               }}
+              onMouseEnter={(e) => (e.currentTarget.style.transform = 'translateY(-2px)')}
+              onMouseLeave={(e) => (e.currentTarget.style.transform = 'translateY(0)')}
             >
-              Get Started with Pro
+              Start Free 14-Day Trial →
             </button>
-          </div>
 
-          {/* Plan 3: Multi-Outlet Enterprise */}
-          <div
-            style={{
-              padding: '32px 24px',
-              borderRadius: '16px',
-              backgroundColor: 'rgba(255, 255, 255, 0.02)',
-              border: '1px solid rgba(255, 255, 255, 0.08)',
-              display: 'flex',
-              flexDirection: 'column',
-              justifyContent: 'space-between',
-            }}
-          >
-            <div>
-              <h3 style={{ fontSize: '1.2rem', fontWeight: 800, margin: '0 0 6px', color: '#FFFFFF' }}>Multi-Branch Enterprise</h3>
-              <p style={{ margin: '0 0 20px', fontSize: '0.84rem', color: '#94A3B8' }}>For hotel chains, food court franchises, and multi-location brands.</p>
-              <div style={{ fontSize: '2.2rem', fontWeight: 900, color: '#FFFFFF', marginBottom: '20px' }}>
-                रू {billingCycle === 'yearly' ? '5,899' : '6,999'}
-                <span style={{ fontSize: '0.85rem', fontWeight: 500, color: '#94A3B8' }}> / month</span>
-              </div>
-              <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 24px', display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.85rem', color: '#CBD5E1' }}>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> Centralized Multi-Branch P&L</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> Central Commissary Stock Transfers</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> Custom IRD API Integrations</li>
-                <li style={{ display: 'flex', alignItems: 'center', gap: '8px' }}><Check size={16} color="#10B981" /> Dedicated Kathmandu Account Manager</li>
-              </ul>
-            </div>
             <button
               type="button"
               onClick={onNavigateLogin}
               style={{
-                width: '100%',
-                padding: '12px',
-                borderRadius: '8px',
-                border: '1px solid rgba(255, 255, 255, 0.15)',
-                backgroundColor: 'rgba(255, 255, 255, 0.06)',
+                backgroundColor: 'rgba(255, 255, 255, 0.15)',
                 color: '#FFFFFF',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                padding: '16px 28px',
+                borderRadius: '12px',
+                fontSize: '1.05rem',
                 fontWeight: 700,
-                fontSize: '0.88rem',
                 cursor: 'pointer',
               }}
             >
-              Contact Sales
+              Sign In to Existing Account
             </button>
           </div>
         </div>
       </section>
 
-      {/* ── 6. FAQ ACCORDION ─────────────────────────────────────────────── */}
-      <section id="faq" style={{ padding: '70px 24px', maxWidth: '860px', margin: '0 auto' }}>
-        <div style={{ textAlign: 'center', marginBottom: '40px' }}>
-          <p style={{ color: '#10B981', fontSize: '0.85rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', margin: '0 0 8px' }}>
-            Frequently Asked Questions
-          </p>
-          <h2 style={{ fontSize: 'clamp(1.8rem, 3.2vw, 2.4rem)', fontWeight: 800, margin: 0 }}>
-            Everything you need to know about RESTRO8.
-          </h2>
-        </div>
-
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-          {faqs.map((faq, idx) => {
-            const isOpen = openFaqIndex === idx;
-            return (
-              <div
-                key={idx}
-                style={{
-                  borderRadius: '12px',
-                  backgroundColor: 'rgba(255, 255, 255, 0.02)',
-                  border: '1px solid rgba(255, 255, 255, 0.08)',
-                  overflow: 'hidden',
-                }}
-              >
-                <button
-                  type="button"
-                  onClick={() => setOpenFaqIndex(isOpen ? null : idx)}
-                  style={{
-                    width: '100%',
-                    padding: '18px 20px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    border: 'none',
-                    backgroundColor: 'transparent',
-                    color: '#FFFFFF',
-                    textAlign: 'left',
-                    fontSize: '0.95rem',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                  }}
-                >
-                  <span>{faq.q}</span>
-                  <ChevronDown
-                    size={18}
-                    style={{
-                      transform: isOpen ? 'rotate(180deg)' : 'rotate(0deg)',
-                      transition: 'transform 0.2s ease',
-                      color: '#10B981',
-                    }}
-                  />
-                </button>
-                {isOpen && (
-                  <div style={{ padding: '0 20px 18px 20px', fontSize: '0.86rem', color: '#94A3B8', lineHeight: 1.6 }}>
-                    {faq.a}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      {/* ── 7. FOOTER ─────────────────────────────────────────────────────── */}
-      <footer
-        style={{
-          borderTop: '1px solid rgba(255, 255, 255, 0.08)',
-          padding: '40px 24px',
-          backgroundColor: '#0A0F17',
-        }}
-      >
+      {/* ── 10. CLEAN GLOBAL FOOTER ─────────────────────────────────────────── */}
+      <footer style={{ backgroundColor: '#FFFFFF', borderTop: '1px solid #E2E8F0', padding: '60px 24px 30px' }}>
         <div
           style={{
             maxWidth: '1240px',
             margin: '0 auto',
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+            gap: '40px',
+            marginBottom: '48px',
+          }}
+        >
+          {/* Brand & Contact Info */}
+          <div style={{ maxWidth: '320px' }}>
+            <BrandLogo />
+            <p style={{ fontSize: '0.88rem', color: '#64748B', lineHeight: 1.6, marginTop: '14px', marginBottom: '16px' }}>
+              The modern, offline-first restaurant management operating system engineered specifically for Nepal's culinary industry.
+            </p>
+            <div style={{ fontSize: '0.82rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div>🏢 New Baneshwor, Kathmandu, Nepal</div>
+              <div>📞 Hotline: +977-1-4567890 / 9801234567</div>
+              <div>✉️ support@restro8.app</div>
+            </div>
+          </div>
+
+          {/* Solutions */}
+          <div>
+            <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0F172A', marginBottom: '16px' }}>Solutions</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem', color: '#64748B' }}>
+              <span>POS Billing Terminal</span>
+              <span>Kitchen Display (KDS)</span>
+              <span>Table QR Digital Ordering</span>
+              <span>13% IRD VAT Tax Invoices</span>
+              <span>Fonepay QR Settlement</span>
+            </div>
+          </div>
+
+          {/* Restaurant Types */}
+          <div>
+            <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0F172A', marginBottom: '16px' }}>Restaurant Types</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem', color: '#64748B' }}>
+              <span>Dine-In Restaurants</span>
+              <span>Cafes & Coffee Shops</span>
+              <span>Thakali Kitchens</span>
+              <span>Restro-Bars & Lounges</span>
+              <span>Cloud Kitchens & Bakery</span>
+            </div>
+          </div>
+
+          {/* Quick Access */}
+          <div>
+            <div style={{ fontSize: '0.88rem', fontWeight: 800, color: '#0F172A', marginBottom: '16px' }}>Quick Access</div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', fontSize: '0.88rem' }}>
+              <button
+                onClick={() => onLaunchWorkspace('SuperAdmin')}
+                style={{ background: 'none', border: 'none', padding: 0, textAlign: 'left', color: '#0F8F6F', fontWeight: 700, cursor: 'pointer' }}
+              >
+                Launch Workspace
+              </button>
+              <button
+                onClick={onNavigateLogin}
+                style={{ background: 'none', border: 'none', padding: 0, textAlign: 'left', color: '#475569', fontWeight: 600, cursor: 'pointer' }}
+              >
+                Sign In / Login
+              </button>
+              <button
+                onClick={onNavigateMenu}
+                style={{ background: 'none', border: 'none', padding: 0, textAlign: 'left', color: '#475569', fontWeight: 600, cursor: 'pointer' }}
+              >
+                Public Guest QR Menu
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            maxWidth: '1240px',
+            margin: '0 auto',
+            borderTop: '1px solid #F1F5F9',
+            paddingTop: '24px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             flexWrap: 'wrap',
-            gap: '20px',
+            gap: '12px',
+            fontSize: '0.82rem',
+            color: '#94A3B8',
           }}
         >
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-            <BrandLogo />
-            <span style={{ fontSize: '0.78rem', color: '#64748B' }}>
-              &copy; {new Date().getFullYear()} RESTRO8 Inc. The Modern Restaurant OS for Nepal.
-            </span>
-          </div>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '20px', fontSize: '0.82rem', color: '#94A3B8' }}>
-            <span>Kathmandu Support Desk: +977-1-4567890</span>
-            <span>·</span>
-            <a href="mailto:support@restro8.app" style={{ color: '#94A3B8', textDecoration: 'none' }}>
-              support@restro8.app
-            </a>
-          </div>
+          <div>© {new Date().getFullYear()} RESTRO8 Nepal Inc. All rights reserved.</div>
+          <div>Built with pride in Kathmandu 🇳🇵 for infinite hospitality.</div>
         </div>
       </footer>
     </div>
