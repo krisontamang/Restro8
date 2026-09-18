@@ -953,7 +953,7 @@ export const OrdersHubView: React.FC = () => {
                               gap: '4px',
                             }}
                           >
-                            <Receipt size={12} /> KOT
+                            KOT
                           </button>
                           <button
                             onClick={() => setSettlingOrder(order)}
@@ -1236,7 +1236,7 @@ export const OrdersHubView: React.FC = () => {
                 margin: '20px auto',
               }}
             >
-              <Receipt size={40} style={{ margin: '0 auto 12px auto', opacity: 0.4 }} />
+              <Utensils size={40} style={{ margin: '0 auto 12px auto', opacity: 0.4 }} />
               <div style={{ fontSize: '1rem', fontWeight: 800, color: 'var(--color-foreground)' }}>
                 No {showCompletedKOTs ? 'Completed' : 'Pending'} Kitchen Tickets
               </div>

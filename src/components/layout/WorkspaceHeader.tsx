@@ -1,4 +1,4 @@
-import { Bell, ChevronDown, Globe, LogOut, Menu, Moon, Search, Sun } from 'lucide-react';
+import { Bell, ChevronDown, Globe, LogOut, Menu, Moon, Search, Sun, User } from 'lucide-react';
 import { useRestaurant } from '../../context/RestaurantContext';
 import { BrandLogo } from '../brand/BrandLogo';
 import type { UserRole } from '../../types/restaurant';
@@ -9,6 +9,7 @@ interface Props {
   onRestaurant: () => void;
   onNavigateLanding?: () => void;
   onNavigateLogin?: () => void;
+  onNavigateAccount?: () => void;
 }
 
 export function WorkspaceHeader({
@@ -17,6 +18,7 @@ export function WorkspaceHeader({
   onRestaurant,
   onNavigateLanding,
   onNavigateLogin,
+  onNavigateAccount,
 }: Props) {
   const { settings, darkMode, setDarkMode, setActiveTab, userRole, setUserRole } = useRestaurant();
   return <header className="workspace-header">
@@ -26,7 +28,7 @@ export function WorkspaceHeader({
       <button className="workspace-restaurant" onClick={onRestaurant} aria-label="Change active restaurant"><span className="restaurant-avatar">{settings.name.slice(0, 1)}</span><span><strong>{settings.name}</strong><small>Restaurant workspace</small></span><ChevronDown size={14} /></button>
     </div>
     <div className="workspace-header-right">
-      <span className="local-status" title="Records are saved in this browser. Cloud sync is not configured."><i /> Local workspace</span>
+      <span className="local-status" title="Restro8 live operational workspace"><i /> Live workspace</span>
       <button className="workspace-search" onClick={onSearch} aria-label="Search commands"><Search size={18} /><span>Search anything…</span><kbd>Ctrl K</kbd></button>
       {onNavigateLanding && (
         <button className="icon-action" onClick={onNavigateLanding} title="View RESTRO8 Landing Page" aria-label="View Landing Page"><Globe size={18} /></button>
@@ -43,6 +45,9 @@ export function WorkspaceHeader({
           <option value="cashier">Cashier</option>
         </select>
       </label>
+      {onNavigateAccount && (
+        <button className="icon-action" onClick={onNavigateAccount} title="Account & Workspace Settings" aria-label="Account Settings"><User size={18} /></button>
+      )}
       {onNavigateLogin && (
         <button className="icon-action" onClick={onNavigateLogin} title="Sign out to Login Dashboard" aria-label="Sign out"><LogOut size={18} /></button>
       )}

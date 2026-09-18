@@ -15,7 +15,8 @@ export const SeatTableModal: React.FC<SeatTableModalProps> = ({
   onOrderNow,
 }) => {
   const { seatTable, setActiveTab, setDraftTable } = useRestaurant();
-  const [guestCount, setGuestCount] = useState<number>(Math.min(2, table.seats));
+  const maxSeats = Math.max(1, table.seats || (table as any).capacity || 4);
+  const [guestCount, setGuestCount] = useState<number>(Math.min(2, maxSeats));
   const [serverName, setServerName] = useState<string>('Bikash Tamang (Captain)');
 
   const staffMembers = [
@@ -56,7 +57,7 @@ export const SeatTableModal: React.FC<SeatTableModalProps> = ({
           <div>
             <h3 style={{ fontSize: '1.25rem', fontWeight: 800 }}>Seat Guests</h3>
             <p style={{ fontSize: '0.82rem', color: 'var(--color-muted-foreground)' }}>
-              {table.label} ({table.seats} seats max) &bull; {table.zone.toUpperCase()} ZONE
+              {table.label || (table as any).name || 'Table'} ({maxSeats} seats max) &bull; {(table.zone || 'main').toUpperCase()} ZONE
             </p>
           </div>
           <button
@@ -87,7 +88,7 @@ export const SeatTableModal: React.FC<SeatTableModalProps> = ({
             <Users size={16} /> Party Size (Guests)
           </label>
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-            {Array.from({ length: table.seats }, (_, i) => i + 1).map((num) => (
+            {Array.from({ length: maxSeats }, (_, i) => i + 1).map((num) => (
               <button
                 key={num}
                 onClick={() => setGuestCount(num)}

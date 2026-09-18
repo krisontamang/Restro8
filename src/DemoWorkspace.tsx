@@ -1,5 +1,7 @@
 import React, { useState, useEffect, Suspense, lazy } from 'react';
 import { RestaurantProvider, useRestaurant } from './context/RestaurantContext';
+import { useAuth } from './context/authState';
+import { isAppHost } from './lib/accountRules';
 import { Sidebar } from './components/layout/Sidebar';
 import { WorkspaceHeader } from './components/layout/WorkspaceHeader';
 import { PremiumDashboard } from './components/dashboard/PremiumDashboard';
@@ -114,9 +116,10 @@ const ViewFallback: React.FC = () => (
 interface MainAppProps {
   onNavigateLanding?: () => void;
   onNavigateLogin?: () => void;
+  onNavigateAccount?: () => void;
 }
 
-const MainApp: React.FC<MainAppProps> = ({ onNavigateLanding, onNavigateLogin }) => {
+const MainApp: React.FC<MainAppProps> = ({ onNavigateLanding, onNavigateLogin, onNavigateAccount }) => {
   const {
     activeTab,
     setActiveTab,
@@ -245,6 +248,7 @@ const MainApp: React.FC<MainAppProps> = ({ onNavigateLanding, onNavigateLogin })
           onRestaurant={() => setIsRestaurantSwitcherOpen(true)}
           onNavigateLanding={onNavigateLanding}
           onNavigateLogin={onNavigateLogin}
+          onNavigateAccount={onNavigateAccount}
         />
 
         {/* Dynamic Main View with Production Error Boundary & Lazy Loading */}
@@ -386,4 +390,19 @@ const MainApp: React.FC<MainAppProps> = ({ onNavigateLanding, onNavigateLogin })
   );
 };
 
-export default function DemoWorkspace({onNavigate}:{onNavigate:(path:string)=>void}) { return <><div className="development-preview-banner" role="status">Development workspace · Local data only · Not a subscriber account</div><RestaurantProvider><MainApp onNavigateLanding={()=>onNavigate("/")} onNavigateLogin={()=>onNavigate("/login")}/></RestaurantProvider></>; }
+export default function DemoWorkspace({onNavigate}:{onNavigate:(path:string)=>void}) {
+  const { signOut } = useAuth();
+  const handleLogout = async () => {
+    await signOut();
+    onNavigate('/login');
+  };
+  return (
+    <RestaurantProvider>
+      <MainApp
+        onNavigateLanding={isAppHost() ? undefined : () => onNavigate('/')}
+        onNavigateLogin={handleLogout}
+        onNavigateAccount={() => onNavigate('/account')}
+      />
+    </RestaurantProvider>
+  );
+}

@@ -49,21 +49,26 @@ export const FloorPlanView: React.FC = () => {
 
   // Filter tables
   const filteredTables = tables.filter((t) => {
-    if (selectedZone !== 'all' && t.zone !== selectedZone) return false;
-    if (selectedStatus !== 'all' && t.status !== selectedStatus) return false;
+    const tZone = t.zone || 'main';
+    const tStatus = t.status || 'available';
+    const tLabel = t.label || (t as any).name || `Table ${t.number || ''}`;
+    const tServer = t.serverName || '';
+
+    if (selectedZone !== 'all' && tZone !== selectedZone) return false;
+    if (selectedStatus !== 'all' && tStatus !== selectedStatus) return false;
     if (searchQuery.trim()) {
       const q = searchQuery.toLowerCase();
       return (
-        t.label.toLowerCase().includes(q) ||
-        (t.serverName && t.serverName.toLowerCase().includes(q))
+        tLabel.toLowerCase().includes(q) ||
+        tServer.toLowerCase().includes(q)
       );
     }
     return true;
   });
 
   // Analytics on Floor
-  const totalSeats = tables.reduce((acc, t) => acc + t.seats, 0);
-  const occupiedTables = tables.filter((t) => t.status === 'occupied');
+  const totalSeats = tables.reduce((acc, t) => acc + (t.seats || (t as any).capacity || 0), 0);
+  const occupiedTables = tables.filter((t) => t.status === 'occupied' || (t.status as any) === 'Occupied');
   const activeCovers = occupiedTables.reduce((acc, t) => acc + (t.guestCount || 0), 0);
   const totalUnsettledBill = occupiedTables.reduce((acc, t) => acc + (t.totalAmount || 0), 0);
   const occupancyRate = Math.round((occupiedTables.length / (tables.length || 1)) * 100);
@@ -239,11 +244,14 @@ export const FloorPlanView: React.FC = () => {
         }}
       >
         {filteredTables.map((table) => {
-          const isOccupied = table.status === 'occupied';
+          const isOccupied = table.status === 'occupied' || (table.status as any) === 'Occupied';
           const isDirty = table.status === 'dirty';
-          const isAvailable = table.status === 'available';
-          const isReserved = table.status === 'reserved';
+          const isAvailable = table.status === 'available' || (table.status as any) === 'Open' || (!isOccupied && !isDirty && table.status !== 'reserved');
+          const isReserved = table.status === 'reserved' || (table.status as any) === 'Reserved';
           const elapsedMin = getElapsedMinutes(table.seatedTime);
+          const zoneLabel = (table.zone || 'main').toUpperCase();
+          const seatsCount = table.seats || (table as any).capacity || 4;
+          const tableLabel = table.label || (table as any).name || `Table ${table.number || ''}`;
 
           return (
             <div
@@ -285,7 +293,7 @@ export const FloorPlanView: React.FC = () => {
                         margin: 0,
                       }}
                     >
-                      {table.label}
+                      {tableLabel}
                     </h2>
                     <span
                       style={{
@@ -295,10 +303,10 @@ export const FloorPlanView: React.FC = () => {
                         fontWeight: 700,
                       }}
                     >
-                      {table.zone.toUpperCase()} &bull; {table.seats} Seats Max
+                      {zoneLabel} &bull; {seatsCount} Seats Max
                     </span>
                   </div>
-                  <TableStatusBadge status={table.status} />
+                  <TableStatusBadge status={table.status || 'available'} />
                 </div>
 
                 {/* Table Body Content */}
@@ -373,7 +381,7 @@ export const FloorPlanView: React.FC = () => {
                         Reserved Tonight
                       </div>
                       <div style={{ fontSize: '0.72rem', color: 'var(--r8-text-muted)' }}>
-                        Party of {table.guestCount || table.seats} guests
+                        Party of {table.guestCount || seatsCount} guests
                       </div>
                     </div>
                   </div>
@@ -413,7 +421,7 @@ export const FloorPlanView: React.FC = () => {
                       Available for Guests
                     </div>
                     <div style={{ fontSize: '0.76rem', fontWeight: 600, color: 'var(--r8-brand-emerald)', marginTop: '2px' }}>
-                      Accommodates up to {table.seats} guests
+                      Accommodates up to {seatsCount} guests
                     </div>
                   </div>
                 )}

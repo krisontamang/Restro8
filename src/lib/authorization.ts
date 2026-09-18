@@ -11,11 +11,14 @@ export type SecureAction =
   | 'system_settings'
   | 'delete_restaurant';
 
-// Normalizes role aliases (e.g. 'kitchen' -> 'chef', 'billing' -> 'cashier')
+export * from './permissions';
+
+// Normalizes role aliases (e.g. 'kitchen' -> 'chef', 'billing' -> 'cashier', 'owner' -> 'SuperAdmin')
 export function normalizeRole(role?: string): UserRole {
   const clean = (role || 'manager').toLowerCase().trim();
-  if (clean === 'superadmin') return 'SuperAdmin';
+  if (clean === 'superadmin' || clean === 'owner') return 'SuperAdmin';
   if (clean === 'admin') return 'admin';
+  if (clean === 'manager') return 'manager';
   if (clean === 'cashier' || clean === 'billing') return 'cashier';
   if (clean === 'chef' || clean === 'kitchen') return 'chef';
   if (clean === 'waiter' || clean === 'server') return 'waiter';

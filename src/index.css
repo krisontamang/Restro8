@@ -1,4 +1,5 @@
 :root {
+  color-scheme: light;
   /* ==========================================================================
      RESTRO8 COLOR SYSTEM — BRAND PHILOSOPHY SPECIFICATION
      Two Primary Colors (Emerald Teal + Prosperity Gold) + Pure White + True AMOLED Black
@@ -336,7 +337,8 @@
    RESTRO8 DARK MODE — TRUE AMOLED BLACK FOUNDATION
    Deep, Calm, Premium, Focused & Energetic (#000000 Foundation)
    ========================================================================== */
-.dark {
+.dark, :root.dark {
+  color-scheme: dark;
   /* ── 1. CORE DARK BRAND OVERRIDES ───────────────────────────────────────── */
   --r8-color-primary:            #19B889;   /* Recognizable AMOLED Emerald */
   --r8-color-primary-dark:       #24C79B;   /* Hover Emerald */
@@ -487,6 +489,26 @@ button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-
 
 input, select, textarea {
   font-family: inherit;
+}
+
+select {
+  color-scheme: light;
+}
+
+select option {
+  background-color: #ffffff;
+  color: #111827;
+}
+
+.dark select,
+:root.dark select {
+  color-scheme: dark;
+}
+
+.dark select option,
+:root.dark select option {
+  background-color: #101a16;
+  color: #eef3eb;
 }
 
 /* Custom Scrollbars */

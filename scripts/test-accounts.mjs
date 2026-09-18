@@ -1,13 +1,29 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync,readdirSync} from 'node:fs';
-import {resolvePublicRoute,passwordIssue,emailIssue,authMessage,subscriptionIsCurrent,isSafePublicKey} from '../src/lib/accountRules.ts';
+import {resolvePublicRoute,passwordIssue,emailIssue,authMessage,subscriptionIsCurrent,isSafePublicKey,isAppHost,getAppUrl,getMarketingUrl} from '../src/lib/accountRules.ts';
 
 test('every workspace alias routes through the verified account gate',()=>{
   for(const path of ['/app','/app/','/account','/workspace','/pos','/dashboard']) assert.equal(resolvePublicRoute(path),'account');
   assert.equal(resolvePublicRoute('/','?view=app'),'account');
   assert.equal(resolvePublicRoute('/','?view=workspace'),'account');
   assert.equal(resolvePublicRoute('/demo'),'demo');
+});
+test('app subdomain routes to account workspace and separates from landing',()=>{
+  assert.equal(isAppHost('app.yourdomain.com'), true);
+  assert.equal(isAppHost('workspace.yourdomain.com'), true);
+  assert.equal(isAppHost('pos.yourdomain.com'), true);
+  assert.equal(isAppHost('app.localhost'), true);
+  assert.equal(isAppHost('yourdomain.com'), false);
+  assert.equal(isAppHost('www.yourdomain.com'), false);
+
+  // On app subdomain, root '/' routes to 'account' (which renders dashboard if authed, login if unauthed)
+  assert.equal(resolvePublicRoute('/', '', 'app.yourdomain.com'), 'account');
+  assert.equal(resolvePublicRoute('/login', '', 'app.yourdomain.com'), 'login');
+  assert.equal(resolvePublicRoute('/signup', '', 'app.yourdomain.com'), 'signup');
+
+  // On main domain, root '/' routes to landing
+  assert.equal(resolvePublicRoute('/', '', 'yourdomain.com'), 'landing');
 });
 test('public account routes have explicit, fail-closed destinations',()=>{
   const routes={'/':'landing','/np':'landing','/login':'login','/signin':'login','/auth':'login','/signup':'signup','/forgot-password':'forgot','/reset-password':'reset','/auth/callback':'callback','/menu':'menu','/unknown':'not-found'};
@@ -45,6 +61,7 @@ test('actual client key guard rejects secrets, non-anon JWTs and malformed confi
 test('public account components contain no simulated login or local role grants',()=>{
   const auth=readFileSync(new URL('../src/components/auth/AuthDashboardView.tsx',import.meta.url),'utf8');
   assert.match(auth,/signInWithPassword/); assert.match(auth,/resetPasswordForEmail/); assert.match(auth,/updateUser/);
+  assert.match(auth,/signInWithOAuth/);
   assert.doesNotMatch(auth,/localStorage|888888|SuperAdmin|setTimeout/);
   const root=readFileSync(new URL('../src/App.tsx',import.meta.url),'utf8');
   assert.match(root,/import\.meta\.env\.DEV \? lazy/);

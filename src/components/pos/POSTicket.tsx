@@ -1,17 +1,11 @@
 import React from 'react';
+import { draftTotals, type DraftOrder } from '../../utils/draftOrder';
 import { Order, Table, RestaurantSettings } from '../../types/restaurant';
-import { Button, PriceDisplay, Badge, QuantityControl, EmptyState, Select } from '../ui';
-import { ShoppingBag, Trash2, Send, CreditCard, UtensilsCrossed, AlertCircle } from 'lucide-react';
+import { Button, PriceDisplay, Badge, QuantityControl, EmptyState } from '../ui';
+import { ShoppingBag, Trash2, Send, CreditCard, UtensilsCrossed } from 'lucide-react';
 
 interface POSTicketProps {
-  draftOrder: {
-    tableId?: string | null;
-    orderType: Order['orderType'];
-    items: Order['items'];
-    discountPercent: number;
-    tipAmount: number;
-    customerInfo?: { name: string; phone: string };
-  };
+  draftOrder: DraftOrder;
   tables: Table[];
   settings: RestaurantSettings;
   onTableChange: (tableId: string | null) => void;
@@ -39,18 +33,13 @@ export const POSTicket: React.FC<POSTicketProps> = ({
   onSettleBill,
   isSubmitting = false,
 }) => {
-  // Calculations
-  const subtotal = draftOrder.items.reduce((sum, it) => sum + it.price * it.quantity, 0);
-  const discountAmount = +(subtotal * (draftOrder.discountPercent / 100)).toFixed(2);
-  const taxableAmount = Math.max(0, subtotal - discountAmount);
+  const { subtotal, discount: discountAmount, tax, total: grandTotal, quantity } = draftTotals(draftOrder, settings);
   const isVat = settings.taxMode === 'vat_registered';
-  const tax = isVat ? +(taxableAmount * 0.13).toFixed(2) : 0;
-  const grandTotal = +(taxableAmount + tax + draftOrder.tipAmount).toFixed(2);
 
   const discountOptions = [0, 5, 10, 15, 20];
 
   return (
-    <div
+    <div className="pos-ticket-body"
       style={{
         display: 'flex',
         flexDirection: 'column',
@@ -62,7 +51,7 @@ export const POSTicket: React.FC<POSTicketProps> = ({
       }}
     >
       {/* Ticket Header & Destination Selectors */}
-      <div
+      <div className="pos-ticket-header"
         style={{
           padding: 'var(--r8-space-3) var(--r8-space-4)',
           borderBottom: '1px solid var(--r8-border-subtle)',
@@ -95,7 +84,7 @@ export const POSTicket: React.FC<POSTicketProps> = ({
               <ShoppingBag size={18} />
             </div>
             <div>
-              <h2
+              <h2 id="pos-ticket-heading"
                 style={{
                   fontSize: '0.96rem',
                   fontWeight: 800,
@@ -104,10 +93,10 @@ export const POSTicket: React.FC<POSTicketProps> = ({
                   letterSpacing: '-0.01em',
                 }}
               >
-                KOT / BOT Ticket
+                Current ticket
               </h2>
               <span style={{ fontSize: '0.74rem', color: 'var(--r8-text-muted)' }}>
-                {draftOrder.items.length} {draftOrder.items.length === 1 ? 'item' : 'items'} in order
+                {quantity} {quantity === 1 ? 'item' : 'items'} in order
               </span>
             </div>
           </div>
@@ -138,78 +127,28 @@ export const POSTicket: React.FC<POSTicketProps> = ({
           )}
         </div>
 
-        {/* Order Type & Table Controls */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: '1fr 1.2fr',
-            gap: 'var(--r8-space-2)',
-          }}
-        >
+        <div className="pos-destination-fields">
           <div>
-            <select
-              aria-label="Order Type"
-              value={draftOrder.orderType}
-              onChange={(e) => onOrderTypeChange(e.target.value as Order['orderType'])}
-              disabled={isSubmitting}
-              style={{
-                width: '100%',
-                padding: '7px 10px',
-                borderRadius: 'var(--r8-radius-md)',
-                border: '1px solid var(--r8-border-subtle)',
-                backgroundColor: 'var(--r8-bg-surface)',
-                color: 'var(--r8-text-primary)',
-                fontSize: '0.82rem',
-                fontWeight: 600,
-                outline: 'none',
-                cursor: 'pointer',
-              }}
-            >
-              <option value="dine-in">Dine-In (डाइन-इन)</option>
-              <option value="takeaway">Takeaway (प्याक)</option>
-              <option value="delivery">Delivery (डेलिभरी)</option>
-              <option value="bar">Bar Counter (बार)</option>
+            <label htmlFor="pos-order-type">Order type</label>
+            <select id="pos-order-type" value={draftOrder.orderType} onChange={event => onOrderTypeChange(event.target.value as Order['orderType'])} disabled={isSubmitting}>
+              <option value="dine-in">Dine-in</option>
+              <option value="takeaway">Takeaway</option>
+              <option value="delivery">Delivery</option>
+              <option value="bar">Bar counter</option>
             </select>
           </div>
-
           <div>
-            <select
-              aria-label="Select Table"
-              value={draftOrder.tableId || ''}
-              onChange={(e) => onTableChange(e.target.value || null)}
-              disabled={isSubmitting || draftOrder.orderType === 'takeaway' || draftOrder.orderType === 'delivery'}
-              style={{
-                width: '100%',
-                padding: '7px 10px',
-                borderRadius: 'var(--r8-radius-md)',
-                border: '1px solid var(--r8-border-subtle)',
-                backgroundColor:
-                  draftOrder.orderType === 'takeaway' || draftOrder.orderType === 'delivery'
-                    ? 'var(--r8-bg-subtle)'
-                    : 'var(--r8-bg-surface)',
-                color: 'var(--r8-text-primary)',
-                fontSize: '0.82rem',
-                fontWeight: 600,
-                outline: 'none',
-                cursor:
-                  draftOrder.orderType === 'takeaway' || draftOrder.orderType === 'delivery'
-                    ? 'not-allowed'
-                    : 'pointer',
-              }}
-            >
-              <option value="">{draftOrder.orderType === 'dine-in' ? 'Select Table...' : 'Walk-in / Counter'}</option>
-              {tables.map((tbl) => (
-                <option key={tbl.id} value={tbl.id}>
-                  {tbl.label} &bull; {tbl.zone || 'Floor'} ({tbl.status.toUpperCase()})
-                </option>
-              ))}
-            </select>
+            <label htmlFor="pos-table">Table / counter</label>
+            {draftOrder.orderType === 'dine-in' ? <select id="pos-table" value={draftOrder.tableId || ''} onChange={event => onTableChange(event.target.value || null)} disabled={isSubmitting}>
+              <option value="">Walk-in / Counter</option>
+              {tables.map(table => <option key={table.id} value={table.id}>{table.label} · {table.zone || 'Floor'} ({table.status.replaceAll('_', ' ')})</option>)}
+            </select> : <output id="pos-table" className="pos-counter-value">Walk-in / Counter</output>}
           </div>
         </div>
       </div>
 
       {/* Ticket Items Scroll Area */}
-      <div
+      <div className="pos-ticket-items"
         style={{
           flex: 1,
           overflowY: 'auto',
@@ -224,13 +163,13 @@ export const POSTicket: React.FC<POSTicketProps> = ({
             <EmptyState
               icon={<UtensilsCrossed size={36} />}
               title="Ticket is empty"
-              description="Select dishes from the catalog to build this KOT / BOT ticket."
+              description="Choose dishes in Menu selection, then review quantities and send your ticket."
             />
           </div>
         ) : (
           draftOrder.items.map((it, idx) => (
             <div
-              key={`${it.id}-${idx}`}
+              key={it.id}
               style={{
                 padding: 'var(--r8-space-3)',
                 borderRadius: 'var(--r8-radius-md)',
@@ -328,7 +267,7 @@ export const POSTicket: React.FC<POSTicketProps> = ({
       </div>
 
       {/* Ticket Footer & Settlement Calculation */}
-      <div
+      <div className="pos-ticket-footer"
         style={{
           padding: 'var(--r8-space-3) var(--r8-space-4)',
           borderTop: '1px solid var(--r8-border-subtle)',
@@ -354,6 +293,7 @@ export const POSTicket: React.FC<POSTicketProps> = ({
               <button
                 type="button"
                 key={pct}
+                aria-pressed={draftOrder.discountPercent === pct}
                 onClick={() => onDiscountChange(pct)}
                 disabled={isSubmitting}
                 style={{
@@ -367,7 +307,7 @@ export const POSTicket: React.FC<POSTicketProps> = ({
                       : 'var(--r8-bg-subtle)',
                   color:
                     draftOrder.discountPercent === pct
-                      ? '#FFFFFF'
+                      ? 'var(--r8-btn-primary-text)'
                       : 'var(--r8-text-secondary)',
                   border: '1px solid var(--r8-border-subtle)',
                   cursor: 'pointer',
@@ -398,8 +338,8 @@ export const POSTicket: React.FC<POSTicketProps> = ({
               color: 'var(--r8-text-muted)',
             }}
           >
-            <span>Taxable Subtotal:</span>
-            <PriceDisplay amount={taxableAmount} size="sm" />
+            <span>Items subtotal:</span>
+            <PriceDisplay amount={subtotal} size="sm" />
           </div>
 
           {draftOrder.discountPercent > 0 && (
@@ -425,10 +365,12 @@ export const POSTicket: React.FC<POSTicketProps> = ({
                 color: 'var(--r8-brand-primary)',
               }}
             >
-              <span>13% IRD VAT:</span>
+              <span>VAT ({+(settings.vatRate * 100).toFixed(2)}%):</span>
               <span>+ {tax.toFixed(2)}</span>
             </div>
           )}
+
+          {draftOrder.tipAmount > 0 && <div className="pos-tip-row"><span>Tip:</span><PriceDisplay amount={draftOrder.tipAmount} size="sm" /></div>}
 
           {/* Grand Total */}
           <div
@@ -482,7 +424,7 @@ export const POSTicket: React.FC<POSTicketProps> = ({
             }}
           >
             <Send size={15} style={{ marginRight: '6px' }} />
-            <span>Send KOT</span>
+            <span>Send ticket</span>
           </Button>
 
           <Button
@@ -496,7 +438,7 @@ export const POSTicket: React.FC<POSTicketProps> = ({
             }}
           >
             <CreditCard size={15} style={{ marginRight: '6px' }} />
-            <span>Settle</span>
+            <span>Pay now</span>
           </Button>
         </div>
       </div>

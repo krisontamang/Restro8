@@ -1,8 +1,9 @@
 import { splitShiftTotals, splitTenderError } from '../utils/settlement';
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState, useEffect, useReducer } from 'react';
 import {
   MenuItem,
   Table,
+  DiningZone,
   Order,
   Reservation,
   Customer,
@@ -37,6 +38,7 @@ import {
 import { getNepaliDate, generateInvoiceNumber } from '../utils/nepalDate';
 import { safeStorage, readStored } from '../lib/storage';
 import { stockIssue, stockRequirements } from '../utils/orderStock';
+import { createDraftOrder, draftOrderReducer, draftTotals, isDraftOrder, normalizeDraftOrder, type DraftOrder } from '../utils/draftOrder';
 
 export type NavigationTab =
   | 'dashboard'
@@ -105,18 +107,6 @@ export type NavigationTab =
   | 'analytics'
   | 'notifications'
   | 'design-system';
-
-interface DraftOrder {
-  tableId?: string;
-  tableNumber?: number;
-  customerName?: string;
-  customerPan?: string;
-  orderType: OrderType;
-  items: OrderItem[];
-  notes?: string;
-  tipAmount: number;
-  discountPercent: number;
-}
 
 interface RestaurantContextType {
   // Settings & Identity
@@ -339,6 +329,41 @@ export const SAMPLE_CUSTOMERS: Customer[] = [
   },
 ];
 
+function normalizeTable(t: any, index: number): Table {
+  const number = typeof t.number === 'number' ? t.number : (typeof t.sn === 'number' ? t.sn : index + 1);
+  const label = t.label || t.name || `Table ${number}`;
+  let zone: DiningZone = 'main';
+  if (t.zone && ['rooftop', 'cabin', 'main', 'garden', 'bar'].includes(t.zone)) {
+    zone = t.zone;
+  } else if (t.type && typeof t.type === 'string') {
+    const typeLower = t.type.toLowerCase();
+    if (typeLower.includes('cabin')) zone = 'cabin';
+    else if (typeLower.includes('rooftop')) zone = 'rooftop';
+    else if (typeLower.includes('bar')) zone = 'bar';
+    else if (typeLower.includes('garden')) zone = 'garden';
+  }
+  const seats = typeof t.seats === 'number' ? t.seats : (typeof t.capacity === 'number' ? t.capacity : 4);
+  let status: TableStatus = 'available';
+  if (t.status === 'occupied' || t.status === 'Occupied') status = 'occupied';
+  else if (t.status === 'dirty' || t.status === 'Needs Cleaning') status = 'dirty';
+  else if (t.status === 'reserved' || t.status === 'Reserved') status = 'reserved';
+  else if (t.status === 'available' || t.status === 'Open' || t.status === 'vacant') status = 'available';
+
+  return {
+    ...t,
+    id: String(t.id || `tbl-${number}`),
+    number,
+    label,
+    zone,
+    seats,
+    status,
+    totalAmount: typeof t.totalAmount === 'number' ? t.totalAmount : 0,
+    guestCount: typeof t.guestCount === 'number' ? t.guestCount : undefined,
+    serverName: typeof t.serverName === 'string' ? t.serverName : undefined,
+    seatedTime: typeof t.seatedTime === 'string' ? t.seatedTime : undefined,
+  };
+}
+
 export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   // Settings
   const [settings, setSettings] = useState<RestaurantSettings>(() => {
@@ -391,8 +416,11 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [menuItems, setMenuItems] = useState<MenuItem[]>(() => readStored(STORAGE_KEYS.MENU, INITIAL_MENU_ITEMS,
     (value): value is MenuItem[] => Array.isArray(value) && value.every(row => row && typeof row.id === 'string')));
 
-  const [tables, setTables] = useState<Table[]>(() => readStored(STORAGE_KEYS.TABLES, INITIAL_TABLES,
-    (value): value is Table[] => Array.isArray(value) && value.every(row => row && typeof row.id === 'string')));
+  const [tables, setTables] = useState<Table[]>(() => {
+    const raw = readStored(STORAGE_KEYS.TABLES, INITIAL_TABLES,
+      (value): value is Table[] => Array.isArray(value) && value.every(row => row && typeof row.id === 'string'));
+    return raw.map(normalizeTable);
+  });
 
   const [orders, setOrders] = useState<Order[]>(() => readStored(STORAGE_KEYS.ORDERS, INITIAL_ORDERS,
     (value): value is Order[] => Array.isArray(value) && value.every(row => row && typeof row.id === 'string')));
@@ -410,20 +438,18 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   const [selectedTableId, setSelectedTableId] = useState<string | null>(null);
 
   // POS Draft Order
-  const [draftOrder, setDraftOrder] = useState<DraftOrder>(() => readStored('restro8_draft_v1', {
-    tableId: undefined, tableNumber: undefined, orderType: 'dine-in', items: [], tipAmount: 0, discountPercent: 0, notes: '',
-  }, (value): value is DraftOrder => !!value && typeof value === 'object' && Array.isArray((value as DraftOrder).items) &&
-    (value as DraftOrder).items.every(item => typeof item?.menuItemId === 'string' && Number.isFinite(item.price) && Number.isInteger(item.quantity) && item.quantity > 0) &&
-    ['dine-in', 'takeaway', 'delivery', 'bar'].includes((value as DraftOrder).orderType) &&
-    Number.isFinite((value as DraftOrder).tipAmount) && Number.isFinite((value as DraftOrder).discountPercent)));
+  const [draftOrder, dispatchDraft] = useReducer(draftOrderReducer, undefined, () =>
+    normalizeDraftOrder(readStored('restro8_draft_v1', createDraftOrder(), isDraftOrder)));
   useEffect(() => { safeStorage.setItem('restro8_draft_v1', JSON.stringify(draftOrder)); }, [draftOrder]);
 
   // Sync theme class
   useEffect(() => {
     if (darkMode) {
       document.documentElement.classList.add('dark');
+      document.documentElement.style.colorScheme = 'dark';
     } else {
       document.documentElement.classList.remove('dark');
+      document.documentElement.style.colorScheme = 'light';
     }
     safeStorage.setItem(STORAGE_KEYS.DARK_MODE, String(darkMode));
   }, [darkMode]);
@@ -437,6 +463,20 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
   useEffect(() => {
     safeStorage.setItem(STORAGE_KEYS.SETTINGS, JSON.stringify(settings));
   }, [settings]);
+
+  // Sync active verified cloud workspace if authenticated
+  useEffect(() => {
+    let active = true;
+    import('../lib/accountApi').then(({ loadAccount }) => {
+      loadAccount().then(({ workspaces }) => {
+        if (active && workspaces[0]?.name) {
+          const cloudName = workspaces[0].name.trim();
+          setSettings(prev => (prev.name !== cloudName ? { ...prev, name: cloudName } : prev));
+        }
+      }).catch(() => {});
+    }).catch(() => {});
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     safeStorage.setItem(STORAGE_KEYS.MENU, JSON.stringify(menuItems));
@@ -654,137 +694,56 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     });
   };
 
-  // Table assignment for POS
+  // Draft transitions live in a pure reducer; notifications and audio stay here.
   const setDraftTable = (tableId: string | null) => {
-    if (!tableId) {
-      setDraftOrder((prev) => ({ ...prev, tableId: undefined, tableNumber: undefined }));
-      setSelectedTableId(null);
-      return;
-    }
-    const tbl = tables.find((t) => t.id === tableId);
-    if (tbl) {
-      setDraftOrder((prev) => ({
-        ...prev,
-        tableId: tbl.id,
-        tableNumber: tbl.number,
-      }));
-      setSelectedTableId(tbl.id);
-    }
+    const table = tables.find(t => t.id === tableId);
+    if (tableId && !table) return;
+    dispatchDraft({ type: 'table', table });
+    setSelectedTableId(table?.id ?? null);
   };
 
   const setDraftOrderType = (orderType: OrderType) => {
-    setDraftOrder((prev) => ({ ...prev, orderType }));
+    dispatchDraft({ type: 'orderType', orderType });
+    if (orderType !== 'dine-in') setSelectedTableId(null);
   };
 
-  // POS Operations
-  const addItemToDraft = (
-    item: MenuItem,
-    selectedOptions?: Record<string, string>,
-    notes?: string
-  ) => {
+  const addItemToDraft = (item: MenuItem, selectedOptions?: Record<string, string>, notes?: string) => {
     if (!item.inStock || item.stockQuantity <= 0) {
-      addToast('Item Unavailable', `${item.name} is currently 86'd / sold out!`, 'warning');
+      addToast('Item Unavailable', `${item.name} is currently sold out.`, 'warning');
       return;
     }
-
-    const inDraft = draftOrder.items.filter(i => i.menuItemId === item.id && !i.isRefill).reduce((n, i) => n + i.quantity, 0);
-    if (inDraft >= item.stockQuantity) { addToast('Stock limit', `Only ${item.stockQuantity} portions available.`, 'warning'); return; }
-    let extraPrice = 0;
-    if (selectedOptions && item.options) {
-      item.options.forEach((opt) => {
-        const choice = opt.choices.find((c) => c.label === selectedOptions[opt.name]);
-        if (choice) extraPrice += choice.extraPrice;
-      });
+    const inDraft = stockRequirements(draftOrder.items).get(item.id) ?? 0;
+    if (inDraft >= item.stockQuantity) {
+      addToast('Stock limit', `Only ${item.stockQuantity} portions available.`, 'warning');
+      return;
     }
-
-    const itemEffectivePrice = item.price + extraPrice;
-
-    setDraftOrder((prev) => {
-      const existingIdx = prev.items.findIndex(
-        (i) =>
-          i.menuItemId === item.id &&
-          JSON.stringify(i.selectedOptions || {}) === JSON.stringify(selectedOptions || {}) &&
-          (i.notes || '') === (notes || '') &&
-          !i.isRefill
-      );
-
-      let updatedItems: OrderItem[];
-      if (existingIdx > -1) {
-        updatedItems = [...prev.items];
-        updatedItems[existingIdx] = {
-          ...updatedItems[existingIdx],
-          quantity: updatedItems[existingIdx].quantity + 1,
-        };
-      } else {
-        const newOrderItem: OrderItem = {
-          id: 'draft-item-' + Date.now() + '-' + Math.random().toString(36).slice(2, 6),
-          menuItemId: item.id,
-          name: item.name,
-          nepaliName: item.nepaliName,
-          price: itemEffectivePrice,
-          quantity: 1,
-          selectedOptions: selectedOptions || {},
-          notes: notes || '',
-          station: item.station,
-          ticketType: item.ticketType,
-          isCompleted: false,
-        };
-        updatedItems = [...prev.items, newOrderItem];
-      }
-
-      playCartDing();
-      return { ...prev, items: updatedItems };
-    });
+    dispatchDraft({ type: 'add', item, selectedOptions, notes, id: `draft-item-${Date.now()}-${Math.random().toString(36).slice(2, 6)}` });
+    playCartDing();
   };
 
   const updateDraftItemQty = (index: number, delta: number) => {
     if (!Number.isInteger(delta)) return;
     const line = draftOrder.items[index];
-    if (line && delta > 0) {
+    if (line && delta > 0 && !line.isRefill) {
       const dish = menuItems.find(item => item.id === line.menuItemId);
       const requested = (stockRequirements(draftOrder.items).get(line.menuItemId) ?? 0) + delta;
-      if (!line.isRefill && (!dish?.inStock || requested > dish.stockQuantity)) { addToast('Stock limit', 'There are no more portions available for this dish.', 'warning'); return; }
-    }
-    setDraftOrder((prev) => {
-      const items = [...prev.items];
-      if (!items[index]) return prev;
-
-      const newQty = items[index].quantity + delta;
-      if (newQty <= 0) {
-        items.splice(index, 1);
-      } else {
-        items[index] = { ...items[index], quantity: newQty };
+      if (!dish?.inStock || requested > dish.stockQuantity) {
+        addToast('Stock limit', 'There are no more portions available for this dish.', 'warning');
+        return;
       }
-      return { ...prev, items };
-    });
+    }
+    dispatchDraft({ type: 'quantity', index, delta, menuItems });
   };
 
-  const removeDraftItem = (index: number) => {
-    setDraftOrder((prev) => {
-      const items = [...prev.items];
-      items.splice(index, 1);
-      return { ...prev, items };
-    });
+  const removeDraftItem = (index: number) => dispatchDraft({ type: 'remove', index });
+  const setDraftTipAmount = (value: number) => dispatchDraft({ type: 'tip', value });
+  const setDraftDiscountPercent = (value: number) => dispatchDraft({ type: 'discount', value });
+  const setDraftNotes = (notes: string) => dispatchDraft({ type: 'notes', notes });
+  const setDraftCustomerInfo = (name: string, pan?: string) => dispatchDraft({ type: 'customer', name, pan });
+  const clearDraft = () => {
+    dispatchDraft({ type: 'reset' });
+    setSelectedTableId(null);
   };
-
-  const setDraftTipAmount = (amount: number) =>
-    setDraftOrder((prev) => ({ ...prev, tipAmount: Number.isFinite(amount) ? Math.max(0, amount) : 0 }));
-  const setDraftDiscountPercent = (pct: number) =>
-    setDraftOrder((prev) => ({ ...prev, discountPercent: Number.isFinite(pct) ? Math.max(0, Math.min(100, pct)) : 0 }));
-  const setDraftNotes = (notes: string) => setDraftOrder((prev) => ({ ...prev, notes }));
-  const setDraftCustomerInfo = (name: string, pan?: string) =>
-    setDraftOrder((prev) => ({ ...prev, customerName: name, customerPan: pan }));
-
-  const clearDraft = () =>
-    setDraftOrder({
-      tableId: undefined,
-      tableNumber: undefined,
-      orderType: 'dine-in',
-      items: [],
-      tipAmount: 0,
-      discountPercent: 0,
-      notes: '',
-    });
 
   // Push Draft to KDS as active Live Order (KOT / BOT)
   const sendDraftToKitchen = (): Order | null => {
@@ -798,13 +757,7 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     const quantities = stockRequirements(draftOrder.items);
     const { formattedBS, fiscalYear } = getNepaliDate();
 
-    const subtotal = draftOrder.items.reduce((sum, it) => sum + it.price * it.quantity, 0);
-    const discount = +(subtotal * (draftOrder.discountPercent / 100)).toFixed(2);
-    const taxableAmount = Math.max(0, subtotal - discount);
-
-    // Nepal IRD 13% VAT
-    const tax = settings.taxMode === 'vat_registered' ? +(taxableAmount * settings.vatRate).toFixed(2) : 0;
-    const total = +(taxableAmount + tax + draftOrder.tipAmount).toFixed(2);
+    const { subtotal, discount, taxableAmount, tax, total } = draftTotals(draftOrder, settings);
 
     const newOrderNumber =
       orders.length > 0 ? Math.max(...orders.map((o) => o.orderNumber)) + 1 : 101;
@@ -1518,7 +1471,7 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({ ch
     setStaff(INITIAL_STAFF);
     setSettings(INITIAL_SETTINGS);
     clearDraft();
-    addToast('Reset to Nepal Starter Data', 'Loaded Himalayan Restro & Cafe demo data.', 'info');
+    addToast('Reset to Nepal Starter Data', 'Loaded Himalayan Restro & Cafe starter data.', 'info');
   };
 
   return (

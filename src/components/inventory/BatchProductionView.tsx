@@ -72,7 +72,7 @@ export const BatchProductionView: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Batch_Production_Chiya_Durbar.csv';
+    a.download = 'Restro8_Batch_Production.csv';
     a.click();
     URL.revokeObjectURL(url);
     setIsOptionsMenuOpen(false);

@@ -115,7 +115,7 @@ export const StockGroupView: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Stock_Groups_Chiya_Durbar.csv';
+    a.download = 'Restro8_Stock_Groups.csv';
     a.click();
     URL.revokeObjectURL(url);
     setIsOptionsMenuOpen(false);

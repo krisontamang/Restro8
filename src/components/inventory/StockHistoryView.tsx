@@ -50,7 +50,7 @@ export const StockHistoryView: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Stock_History_Chiya_Durbar.csv';
+    a.download = 'Restro8_Stock_History.csv';
     a.click();
     URL.revokeObjectURL(url);
     setIsOptionsMenuOpen(false);

@@ -57,18 +57,27 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
             cursor: disabled ? 'not-allowed' : 'pointer',
             opacity: disabled ? 0.5 : 1,
             transition: 'border-color var(--r8-motion-fast)',
+            colorScheme: 'light dark',
             ...style,
           }}
           {...props}
         >
           {placeholder && (
-            <option value="" disabled>
+            <option value="" disabled style={{ backgroundColor: 'var(--r8-bg-surface, #ffffff)', color: 'var(--r8-text-muted, #64748b)' }}>
               {placeholder}
             </option>
           )}
           {options
             ? options.map((opt) => (
-                <option key={opt.value} value={opt.value} disabled={opt.disabled}>
+                <option
+                  key={opt.value}
+                  value={opt.value}
+                  disabled={opt.disabled}
+                  style={{
+                    backgroundColor: 'var(--r8-bg-surface, #ffffff)',
+                    color: 'var(--r8-text-primary, #111827)',
+                  }}
+                >
                   {opt.label}
                 </option>
               ))

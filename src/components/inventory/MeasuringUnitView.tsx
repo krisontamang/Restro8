@@ -82,7 +82,7 @@ export const MeasuringUnitView: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Measuring_Units_Chiya_Durbar.csv';
+    a.download = 'Restro8_Measuring_Units.csv';
     a.click();
     URL.revokeObjectURL(url);
     setIsOptionsMenuOpen(false);

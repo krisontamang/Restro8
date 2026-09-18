@@ -76,7 +76,7 @@ export const SuppliersView: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Suppliers_Chiya_Durbar.csv';
+    a.download = 'Restro8_Suppliers.csv';
     a.click();
     URL.revokeObjectURL(url);
     setIsOptionsMenuOpen(false);

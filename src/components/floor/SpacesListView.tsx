@@ -95,7 +95,7 @@ export const SpacesListView: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Spaces_Chiya_Durbar.csv';
+    a.download = 'Restro8_Spaces.csv';
     a.click();
     URL.revokeObjectURL(url);
     setIsOptionsMenuOpen(false);

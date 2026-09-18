@@ -1,371 +1,85 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { ArrowRight, ShoppingBag } from 'lucide-react';
 import { useRestaurant } from '../../context/RestaurantContext';
-import { MenuItem, MenuCategory, DietaryTag, Order } from '../../types/restaurant';
+import type { MenuItem, Order } from '../../types/restaurant';
 import { PaymentModal } from '../modals/PaymentModal';
 import { ReceiptModal } from '../modals/ReceiptModal';
-import { POSProductGrid } from './POSProductGrid';
 import { POSTicket } from './POSTicket';
+import { POSMenuPanel } from './POSMenuPanel';
 import { POSCustomizerModal } from './POSCustomizerModal';
-import { SearchInput, Badge } from '../ui';
-import { ArrowRight, ShoppingBag } from 'lucide-react';
+import { draftTotals } from '../../utils/draftOrder';
 import { formatNPR } from '../../utils/nepalDate';
+import './pos.css';
 
-export const POSView: React.FC = () => {
+export function POSView() {
   const {
-    menuItems,
-    tables,
-    draftOrder,
-    setDraftTable,
-    setDraftOrderType,
-    addItemToDraft,
-    updateDraftItemQty,
-    removeDraftItem,
-    setDraftDiscountPercent,
-    clearDraft,
-    sendDraftToKitchen,
-    settings,
+    menuItems, tables, draftOrder, setDraftTable, setDraftOrderType, addItemToDraft,
+    updateDraftItemQty, removeDraftItem, setDraftDiscountPercent, clearDraft,
+    sendDraftToKitchen, settings,
   } = useRestaurant();
-
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<MenuCategory | 'all'>('all');
-  const [selectedTag, setSelectedTag] = useState<DietaryTag | 'all'>('all');
   const [mobilePanel, setMobilePanel] = useState<'menu' | 'ticket'>('menu');
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // Customizer modal state
   const [customizingItem, setCustomizingItem] = useState<MenuItem | null>(null);
-
-  // Settlement directly from POS
   const [payingOrder, setPayingOrder] = useState<Order | null>(null);
   const [receiptOrder, setReceiptOrder] = useState<Order | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const submissionLock = useRef(false);
+  const submissionTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  useEffect(() => () => clearTimeout(submissionTimer.current), []);
+  const showMenu = useCallback(() => setMobilePanel('menu'), []);
+  const { quantity, total } = draftTotals(draftOrder, settings);
 
-  const searchInputRef = useRef<HTMLInputElement>(null);
-
-  // Keyboard shortcut listener
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'F2') {
-        e.preventDefault();
-        searchInputRef.current?.focus();
-      } else if (e.key === 'Escape') {
-        if (customizingItem) {
-          setCustomizingItem(null);
-        } else if (searchQuery) {
-          setSearchQuery('');
-        }
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [customizingItem, searchQuery]);
-
-  const categories: { id: MenuCategory | 'all'; label: string; icon?: React.ReactNode }[] = [
-    { id: 'all', label: 'All Items' },
-    { id: 'momo', label: 'Momo Junction (मोमो)' },
-    { id: 'thakali_newari', label: 'Thakali & Newari' },
-    { id: 'appetizers', label: 'Sekuwa & Snacks' },
-    { id: 'cafe_bakery', label: 'Himalayan Coffee' },
-    { id: 'beverages_bar', label: 'Beer & Bar (BOT)' },
-    { id: 'hookah', label: 'Lounge Hookah' },
-  ];
-
-  const dietaryTags: { id: DietaryTag | 'all'; label: string; icon?: React.ReactNode }[] = [
-    { id: 'all', label: 'All Dietary' },
-    { id: 'chef-pick', label: 'Chef Special' },
-    { id: 'veg', label: 'Pure Veg' },
-    { id: 'spicy', label: 'Spicy' },
-  ];
-
-  // Filtered menu
-  const filteredMenuItems = menuItems.filter((item) => {
-    if (selectedCategory !== 'all' && item.category !== selectedCategory) return false;
-    if (selectedTag !== 'all' && !item.tags.includes(selectedTag)) return false;
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      return (
-        item.name.toLowerCase().includes(q) ||
-        (item.nepaliName && item.nepaliName.toLowerCase().includes(q)) ||
-        item.description.toLowerCase().includes(q)
-      );
-    }
-    return true;
-  });
-
-  const handleItemCardClick = (item: MenuItem) => {
-    if (!item.inStock || (item.stockQuantity !== undefined && item.stockQuantity <= 0)) return;
-
-    if (item.options && item.options.length > 0) {
-      setCustomizingItem(item);
-    } else {
-      addItemToDraft(item);
-    }
+  const addItem = (item: MenuItem) => {
+    if (!item.inStock || item.stockQuantity <= 0) return;
+    if (item.options?.length) setCustomizingItem(item);
+    else addItemToDraft(item);
   };
 
-  const handleConfirmCustomization = (
-    item: MenuItem,
-    selectedOptions: Record<string, string>,
-    notes: string
-  ) => {
-    addItemToDraft(item, selectedOptions, notes);
-    setCustomizingItem(null);
-  };
-
-  const handleSendKOT = () => {
-    if (draftOrder.items.length === 0 || isSubmitting) return;
+  const submitDraft = (settle: boolean) => {
+    if (!draftOrder.items.length || submissionLock.current) return;
+    submissionLock.current = true;
     setIsSubmitting(true);
     try {
       const order = sendDraftToKitchen();
-      if (order) setMobilePanel('menu');
-    } finally {
-      // Small debounce to prevent fast double-tapping
-      setTimeout(() => setIsSubmitting(false), 350);
-    }
-  };
-
-  const handleInstantSettle = () => {
-    if (draftOrder.items.length === 0 || isSubmitting) return;
-    setIsSubmitting(true);
-    try {
-      const createdOrder = sendDraftToKitchen();
-      if (createdOrder) {
-        setPayingOrder(createdOrder);
+      if (order) {
+        setMobilePanel('menu');
+        if (settle) setPayingOrder(order);
       }
     } finally {
-      setTimeout(() => setIsSubmitting(false), 350);
+      submissionTimer.current = setTimeout(() => {
+        submissionLock.current = false;
+        setIsSubmitting(false);
+      }, 350);
     }
   };
 
-  return (
-    <div className="pos-shell" style={{ height: 'calc(100vh - var(--header-height))', overflow: 'hidden' }}>
-      {/* Mobile POS Switcher (Menu vs Ticket) */}
-      <div className="mobile-pos-switcher" role="group" aria-label="POS workspace view">
-        <button
-          type="button"
-          className={mobilePanel === 'menu' ? 'is-active' : ''}
-          aria-pressed={mobilePanel === 'menu'}
-          onClick={() => setMobilePanel('menu')}
-        >
-          Menu
-        </button>
-        <button
-          type="button"
-          className={mobilePanel === 'ticket' ? 'is-active' : ''}
-          aria-pressed={mobilePanel === 'ticket'}
-          onClick={() => setMobilePanel('ticket')}
-        >
-          Ticket <span aria-live="polite">({draftOrder.items.length})</span>
-        </button>
-      </div>
-
-      {/* POS Workspace Grid */}
-      <div
-        className="pos-workspace"
-        style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 410px',
-          height: '100%',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Left Column: Menu Catalog Browser */}
-        <div
-          className={`pos-catalog ${mobilePanel === 'menu' ? 'is-active' : ''}`}
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            height: '100%',
-            overflow: 'hidden',
-            backgroundColor: 'var(--r8-bg-base)',
-          }}
-        >
-          {/* Top Search & Filter Bar */}
-          <div
-            className="pos-catalog-toolbar"
-            style={{
-              padding: 'var(--r8-space-3) var(--r8-space-4)',
-              backgroundColor: 'var(--r8-bg-surface)',
-              borderBottom: '1px solid var(--r8-border-subtle)',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 'var(--r8-space-2)',
-            }}
-          >
-            <div className="pos-catalog-heading"><div><h1>Something for every craving.</h1><p>Select a dish to start your next great service.</p></div><Badge variant="primary">{menuItems.length} dishes</Badge></div>
-            {/* Search Input & Dietary Filters */}
-            <div
-              className="pos-search-row"
-              style={{
-                display: 'flex',
-                gap: 'var(--r8-space-3)',
-                alignItems: 'center',
-              }}
-            >
-              <div style={{ flex: 1 }}>
-                <SearchInput
-                  ref={searchInputRef}
-                  aria-label="Search menu"
-                  hotkey="F2"
-                  value={searchQuery}
-                  onChange={setSearchQuery}
-                  placeholder="Find a dish or drink…"
-                />
-              </div>
-
-              {/* Dietary Tags */}
-              <div
-                className="pos-dietary-filters"
-                style={{
-                  display: 'flex',
-                  gap: 'var(--r8-space-1)',
-                  flexWrap: 'nowrap',
-                  overflowX: 'auto',
-                }}
-              >
-                {dietaryTags.map((tag) => {
-                  const isSelected = selectedTag === tag.id;
-                  return (
-                    <button
-                      key={tag.id}
-                      type="button"
-                      onClick={() => setSelectedTag(tag.id)}
-                      aria-pressed={isSelected}
-                      style={{
-                        padding: '6px 10px',
-                        borderRadius: 'var(--r8-radius-sm)',
-                        fontSize: '0.76rem',
-                        fontWeight: isSelected ? 700 : 500,
-                        backgroundColor: isSelected
-                          ? 'rgba(14, 165, 233, 0.12)'
-                          : 'var(--r8-bg-surface-elevated)',
-                        color: isSelected
-                          ? 'var(--r8-brand-primary)'
-                          : 'var(--r8-text-secondary)',
-                        border: isSelected
-                          ? '1px solid var(--r8-brand-primary)'
-                          : '1px solid var(--r8-border-subtle)',
-                        whiteSpace: 'nowrap',
-                        cursor: 'pointer',
-                        transition: 'all var(--r8-transition-fast)',
-                      }}
-                    >
-                      {tag.label}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Category Tab Row */}
-            <div
-              className="pos-category-filters"
-              style={{
-                display: 'flex',
-                gap: 'var(--r8-space-2)',
-                overflowX: 'auto',
-                paddingBottom: '2px',
-                scrollbarWidth: 'none',
-              }}
-            >
-              {categories.map((cat) => {
-                const isSelected = selectedCategory === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    type="button"
-                    onClick={() => setSelectedCategory(cat.id)}
-                    aria-pressed={isSelected}
-                    style={{
-                      padding: '7px 12px',
-                      borderRadius: 'var(--r8-radius-md)',
-                      fontSize: '0.82rem',
-                      fontWeight: isSelected ? 800 : 600,
-                      backgroundColor: isSelected
-                        ? 'var(--r8-brand-primary)'
-                        : 'var(--r8-bg-surface-elevated)',
-                      color: isSelected ? '#FFFFFF' : 'var(--r8-text-primary)',
-                      border: isSelected ? '1px solid transparent' : '1px solid var(--r8-border-subtle)',
-                      whiteSpace: 'nowrap',
-                      cursor: 'pointer',
-                      transition: 'all var(--r8-transition-fast)',
-                      boxShadow: isSelected ? 'var(--r8-shadow-sm)' : 'none',
-                    }}
-                  >
-                    {cat.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Menu Items Grid Scroll Container */}
-          <div
-            style={{
-              flex: 1,
-              overflowY: 'auto',
-              padding: 'var(--r8-space-4)',
-              boxSizing: 'border-box',
-            }}
-          >
-            <POSProductGrid
-              items={filteredMenuItems}
-              onItemClick={handleItemCardClick}
-              searchQuery={searchQuery}
-            />
-          </div>
-        </div>
-
-        {/* Right Column: Live Order Ticket Builder */}
-        <div
-          className={`pos-ticket ${mobilePanel === 'ticket' ? 'is-active' : ''}`}
-          style={{
-            height: '100%',
-            overflow: 'hidden',
-          }}
-        >
-          <POSTicket
-            draftOrder={draftOrder}
-            tables={tables}
-            settings={settings}
-            onTableChange={setDraftTable}
-            onOrderTypeChange={setDraftOrderType}
-            onUpdateQty={updateDraftItemQty}
-            onRemoveItem={removeDraftItem}
-            onClearDraft={clearDraft}
-            onDiscountChange={setDraftDiscountPercent}
-            onSendKOT={handleSendKOT}
-            onSettleBill={handleInstantSettle}
-            isSubmitting={isSubmitting}
-          />
-        </div>
-      </div>
-
-      {mobilePanel === 'menu' && draftOrder.items.length > 0 && <button className="mobile-ticket-cta" onClick={() => setMobilePanel('ticket')}><span><ShoppingBag size={17} /> View ticket · {draftOrder.items.reduce((n, item) => n + item.quantity, 0)} items</span><span>{formatNPR(draftOrder.items.reduce((n, item) => n + item.price * item.quantity, 0))} <ArrowRight size={17} /></span></button>}
-
-      {/* Dish Customizer Modal */}
-      {customizingItem && (
-        <POSCustomizerModal
-          item={customizingItem}
-          onClose={() => setCustomizingItem(null)}
-          onConfirm={handleConfirmCustomization}
-        />
-      )}
-
-      {/* Payment Modal */}
-      {payingOrder && (
-        <PaymentModal
-          order={payingOrder}
-          onClose={() => setPayingOrder(null)}
-          onReceiptView={(settled) => {
-            setPayingOrder(null);
-            setReceiptOrder(settled);
-          }}
-        />
-      )}
-
-      {/* Receipt Modal */}
-      {receiptOrder && (
-        <ReceiptModal order={receiptOrder} onClose={() => setReceiptOrder(null)} />
-      )}
+  return <div className="pos-shell">
+    <p className="sr-only" role="status" aria-atomic="true">Current ticket: {quantity} {quantity === 1 ? 'item' : 'items'}, total {formatNPR(total)}.</p>
+    <div className="mobile-pos-switcher" role="group" aria-label="POS workspace view">
+      <button type="button" className={mobilePanel === 'menu' ? 'is-active' : ''} aria-pressed={mobilePanel === 'menu'} onClick={showMenu}>Menu selection</button>
+      <button type="button" className={mobilePanel === 'ticket' ? 'is-active' : ''} aria-pressed={mobilePanel === 'ticket'} onClick={() => setMobilePanel('ticket')}>Current ticket ({quantity})</button>
     </div>
-  );
-};
+    <div className="pos-workspace">
+      <POSMenuPanel items={menuItems} active={mobilePanel === 'menu'} onShowMenu={showMenu} onItemClick={addItem} />
+      <section className={`pos-ticket ${mobilePanel === 'ticket' ? 'is-active' : ''}`} aria-labelledby="pos-ticket-heading">
+        <POSTicket draftOrder={draftOrder} tables={tables} settings={settings}
+          onTableChange={setDraftTable} onOrderTypeChange={setDraftOrderType}
+          onUpdateQty={updateDraftItemQty} onRemoveItem={removeDraftItem}
+          onClearDraft={clearDraft} onDiscountChange={setDraftDiscountPercent}
+          onSendKOT={() => submitDraft(false)} onSettleBill={() => submitDraft(true)} isSubmitting={isSubmitting} />
+      </section>
+    </div>
+    {mobilePanel === 'menu' && quantity > 0 && <button type="button" className="mobile-ticket-cta" onClick={() => setMobilePanel('ticket')}>
+      <span><ShoppingBag size={17} aria-hidden="true" /> Review ticket · {quantity} {quantity === 1 ? 'item' : 'items'}</span>
+      <span>{formatNPR(total)} <ArrowRight size={17} aria-hidden="true" /></span>
+    </button>}
+    {customizingItem && <POSCustomizerModal item={customizingItem} onClose={() => setCustomizingItem(null)} onConfirm={(item, options, notes) => {
+      addItemToDraft(item, options, notes);
+      setCustomizingItem(null);
+    }} />}
+    {payingOrder && <PaymentModal order={payingOrder} onClose={() => setPayingOrder(null)} onReceiptView={order => {
+      setPayingOrder(null);
+      setReceiptOrder(order);
+    }} />}
+    {receiptOrder && <ReceiptModal order={receiptOrder} onClose={() => setReceiptOrder(null)} />}
+  </div>;
+}

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ArrowRight, Check, ChevronDown, CookingPot, LayoutDashboard, Plus, Search, UtensilsCrossed } from 'lucide-react';
 import { BrandLogo } from '../brand/BrandLogo';
 const revenue = [18, 26, 21, 38, 32, 46, 42, 59, 50, 68, 61, 77];
@@ -7,19 +7,85 @@ const dishes = [
   {name:'Thakali khana',category:'From our kitchen',price:680,image:'/images/menu/thakali-mutton.png'},
   {name:'Jhol momo',category:'A little comfort',price:330,image:'/images/menu/jhol-momo.png'},
 ];
+
+function useCountUp(target: number, duration: number, active: boolean) {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!active) {
+      setCount(0);
+      return;
+    }
+    if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setCount(target);
+      return;
+    }
+
+    let start: number | null = null;
+    let frame: number;
+
+    const step = (timestamp: number) => {
+      if (!start) start = timestamp;
+      const progress = Math.min((timestamp - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - progress, 3);
+      setCount(Math.round(ease * target));
+
+      if (progress < 1) {
+        frame = requestAnimationFrame(step);
+      } else {
+        setCount(target);
+      }
+    };
+
+    frame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(frame);
+  }, [target, duration, active]);
+
+  return count;
+}
+
 export function ProductPreview({ compact = false }: { compact?: boolean }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
   const [tab,setTab] = useState<'overview' | 'kitchen' | 'menu'>('overview');
   const [ready,setReady] = useState(false);
   const [quantities,setQuantities] = useState([0,0,0]);
+
+  useEffect(() => {
+    if (typeof IntersectionObserver === 'undefined') {
+      setInView(true);
+      return;
+    }
+    const node = containerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(node);
+    return () => observer.disconnect();
+  }, []);
+
+  const isOverviewActive = inView && tab === 'overview';
+  const collected = useCountUp(24850, 1300, isOverviewActive);
+  const orders = useCountUp(42, 1000, isOverviewActive);
+  const tables = useCountUp(8, 850, isOverviewActive);
+
   const subtotal = quantities.reduce((sum,quantity,index) => sum + quantity * dishes[index].price,0);
-  return <div className={'site-preview ' + (compact ? 'is-compact' : '')}>
+  return <div ref={containerRef} className={'site-preview ' + (compact ? 'is-compact' : '')}>
     <div className="preview-chrome"><span className="preview-dots" aria-hidden="true"><i/><i/><i/></span><span>YOUR NEXT GREAT SERVICE</span><span className="preview-sample">Sample data</span></div>
     <div className="preview-shell"><aside className="preview-sidebar" aria-hidden="true"><BrandLogo compact/><span className={tab === 'overview' ? 'is-active' : ''}><LayoutDashboard size={17}/></span><span className={tab === 'kitchen' ? 'is-active' : ''}><CookingPot size={17}/></span><span className={tab === 'menu' ? 'is-active' : ''}><UtensilsCrossed size={17}/></span><span className="preview-avatar">YK</span></aside>
       <div className="preview-main"><div className="preview-top"><span><i/>Your kitchen <ChevronDown size={12}/></span><Search size={16} aria-hidden="true"/></div>
         <div className="preview-switcher" role="group" aria-label="Explore the product preview">{(['overview','kitchen','menu'] as const).map(value => <button type="button" key={value} aria-pressed={tab===value} onClick={() => setTab(value)}>{value === 'overview' ? 'Overview' : value === 'kitchen' ? 'Kitchen' : 'Menu & orders'}</button>)}</div>
         {tab === 'overview' && <div className="preview-content preview-enter"><div className="preview-heading"><div><p>THE BIG PICTURE</p><h3>A good day, in the making.</h3></div><span className="preview-date">Today <ChevronDown size={11}/></span></div>
-          <div className="preview-metrics"><div className="is-featured"><span>Collected</span><strong>Rs. 24,850</strong><small>Today’s sample sales</small></div><div><span>Orders</span><strong>42</strong><small>6 in preparation</small></div><div><span>Tables</span><strong>8 <em>/ 12</em></strong><small>4 ready to welcome</small></div></div>
-          <div className="preview-detail-grid"><section className="preview-revenue"><div><strong>A steady service</strong><span>Sales · NPR</span></div><div className="preview-bars" role="img" aria-label="Illustrative sample sales chart increasing through the day">{revenue.map((height,index) => <i key={index} style={{height:height+'%'}}/>)}</div><div className="preview-axis"><span>10:00</span><span>14:00</span><span>18:00</span><span>22:00</span></div></section><section className="preview-floor"><strong>A place for everyone</strong><div>{Array.from({length:6},(_,index) => <span key={index} className={index%3===1 ? 'is-empty':''}>T{String(index+1).padStart(2,'0')}</span>)}</div><small><i/>Available <b/>Occupied</small></section></div>
+          <div className="preview-metrics"><div className="is-featured"><span>Collected</span><strong>Rs. {collected.toLocaleString('en-US')}</strong><small>Today’s sample sales</small></div><div><span>Orders</span><strong>{orders}</strong><small>6 in preparation</small></div><div><span>Tables</span><strong>{tables} <em>/ 12</em></strong><small>4 ready to welcome</small></div></div>
+          <div className="preview-detail-grid"><section className="preview-revenue"><div><strong>A steady service</strong><span>Sales · NPR</span></div><div className="preview-bars" role="img" aria-label="Illustrative sample sales chart increasing through the day">{revenue.map((height,index) => <i key={index} style={{height: (isOverviewActive ? height : 0)+'%', transitionDelay: (index * 40)+'ms'}}/>)}</div><div className="preview-axis"><span>10:00</span><span>14:00</span><span>18:00</span><span>22:00</span></div></section><section className="preview-floor"><strong>A place for everyone</strong><div>{Array.from({length:6},(_,index) => <span key={index} className={index%3===1 ? 'is-empty':''}>T{String(index+1).padStart(2,'0')}</span>)}</div><small><i/>Available <b/>Occupied</small></section></div>
           <div className="preview-order"><span className="preview-order-icon"><CookingPot size={18}/></span><div><strong>Table 04 · Dinner for two</strong><small>2 momo · 1 thakali · 2 chiya</small></div><span className="preview-status">Preparing</span></div>
         </div>}
         {tab === 'kitchen' && <div className="preview-content preview-enter"><div className="preview-heading"><div><p>KEEP SERVICE MOVING</p><h3>A calmer kitchen.</h3></div><span className="preview-date">2 tickets</span></div><div className="preview-tickets"><article><span className="preview-ticket-number">#104 · {ready ? 'READY' : 'PREPARING'}</span><h4>Garden table 4</h4><p>5 min · Main kitchen</p><div className="preview-ticket-line"><b>2×</b><span>Steamed momo<small>Achar on the side</small></span></div><div className="preview-ticket-line"><b>1×</b><span>Thakali khana</span></div><button type="button" onClick={() => setReady(!ready)}>{ready ? <Check size={16}/> : <CookingPot size={16}/>} {ready ? 'Ready · reset preview' : 'Send to the pass'}</button></article><article><span className="preview-ticket-number">#105 · WAITING</span><h4>Window table 2</h4><p>2 min · Coffee station</p><div className="preview-ticket-line"><b>2×</b><span>Masala chiya<small>Less sugar, please</small></span></div><span className="preview-note">The details that make service personal.</span></article></div><p className="preview-feedback" role="status">{ready ? 'Sample ticket ready. Your team knows what happens next.' : 'Try sending the sample ticket to the pass.'}</p></div>}

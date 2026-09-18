@@ -141,7 +141,7 @@ export const TablesListView: React.FC = () => {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'Tables_Chiya_Durbar.csv';
+    a.download = 'Restro8_Tables.csv';
     a.click();
     URL.revokeObjectURL(url);
     setIsOptionsMenuOpen(false);

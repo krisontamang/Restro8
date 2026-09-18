@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import {
-  Sparkles,
   Search,
   ExternalLink,
   ChevronDown,
@@ -433,7 +432,7 @@ export const ReleaseNotesView: React.FC = () => {
                         gap: '6px',
                       }}
                     >
-                      <Sparkles size={14} color="var(--r8-brand-primary)" />
+                      <CheckCircle2 size={14} color="var(--r8-brand-primary)" />
                       <span>Technical Architecture & Compliance Notes</span>
                     </div>
                     <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '0.8rem', color: 'var(--color-muted-foreground)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
